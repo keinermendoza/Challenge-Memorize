@@ -109,7 +109,30 @@ def flashcard_create(request):
         response =  render(request, 'school/partials/forms/create_flashcard.html', {'flashcard_form':form})
         response = reswap(response, "innerHTML")
         return retarget(response, '#flashcard-form-container')
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def flashcard_edit(request, flashcard_id):
+    if not request.htmx or flashcard_id not in request.user.flashcards:
+        return HttpResponseForbidden()
     
+    flashcard = FlashCard.objects.get(id=flashcard_id)
+    form = FlashCardForm(data=request.POST, instance=flashcard)
+
+    if request.method == "GET":
+        return (request, 'school/partials/forms/flashcard_edit.html', {'form':form})
+    
+    else:
+        if form.is_valid():
+            form.save()
+
+            flashcards = request.user.flashcards.all()
+            return (request, 'school/partials/cards/list.html', {'cards':flashcards})
+        else:
+            return (request, 'school/partials/forms/flashcard_edit.html', {'form':form})
+
+
+
 @login_required
 @require_http_methods(["DELETE"])
 def flashcard_delete(request, flashcard_id):

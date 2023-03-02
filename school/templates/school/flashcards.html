@@ -3,9 +3,14 @@
 
 {% block main %}
 <section class="flex flex-col items-center sm:flex-row sm:items-start gap-x-10 gap-y-5 justify-between ">
-    <div id='flashcard-form-container'>
-        {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
+    <div>
+        <div id='flashcard-form-container'>
+            {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
+        </div>
+        <div id='flashcard-edit-container'>
+        </div>
     </div>
+
     <div>
         <div id="search-form-container" class="mb-6">
             {% include "school/partials/forms/flashcard_search.html" with form=search_form %}

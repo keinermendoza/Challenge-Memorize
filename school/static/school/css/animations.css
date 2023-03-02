@@ -46,11 +46,15 @@
     animation-fill-mode: forwards;
 }
 
-.acordeon-element {
-    max-height: 0%;
+.answer-acordeon {
+    display: grid;
+    grid-template-rows: 0fr;
     overflow: hidden;
-    transition: max-height 0.5s;
+    transition: grid-template-rows 0.5s;
 }
-.acordeon-element .is-open {
-    max-height: 100%;
+.answer-acordeon.is-open {
+    grid-template-rows: 1fr;
+}
+.answer-acordeon > .answer {
+    overflow:hidden;
 }
