@@ -11,10 +11,51 @@
 
     <title>{% block title %}{% endblock title %}</title>
 </head>
-<body>
-    
+<body class="text-white flex flex-col min-h-screen w-full">
+    <header class="mx-auto w-full max-w-xxl bg-[hsl(269,47%,17%)]">
+        <div class="flex justify-between gap-6 items-center px-2 py-1 md:px-4 md:py-2">
+
+        <span class="text-lg font-bold font-mono">🐍 KM</span>
+
+        <!-- hidden in screens shorter than sm -->
+        <nav class="hidden sm:flex grow justify-between">
+            <ul class="flex gap-3">        
+                <li>
+                    <a href="">Flashcards</a>
+                </li>
+
+                <li>
+                    <a href="">Resume</a>
+                </li>
+            </ul>
+
+            <ul class="flex gap-3">
+                {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'school:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'school:register' %}">Register</a>
+                </li>
+                <li>
+                    <a href="{% url 'school:login' %}">Login</a>
+                </li>
+                {% endif %}
+                
+            </ul>
+        </nav>
+
+        <!-- hidden on screens hiegier than sm -->
+        <button class="rounded px-2 py-1 bg-teal-400 sm:hidden">Show</button>
+                
+    </div>
+    </header>
+    <main class="bg-[#15022b] grow p-2  md:p-4">
+
     {% block main %}
     {% endblock main %}
+    </main>
         
 </body>
 </html>

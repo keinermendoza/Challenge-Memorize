@@ -70,3 +70,7 @@ def login_view(request):
                 login(request, user)
                 return redirect(reverse("school:home"))
     return render(request, "school/login.html", {"form":form})
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse("school:login"))
