@@ -8,12 +8,16 @@
 
     <link rel="stylesheet" href="{% static 'tailwind/tail.css' %}">
     <script src="{% static 'js/htmx.min.js.gz' %}"></script>
+    <script src="{% static 'js/alpine.js' %}"></script>
+
 
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body class="text-white flex flex-col min-h-screen w-full">
-    <header class="mx-auto w-full max-w-xxl bg-darkheader">
-        <div class="flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
+    <header x-data="{isMobileOpen: false}" 
+        class="w-full bg-darkheader shadow-md shadow-slate-200">
+        
+        <div class="mx-auto max-w-[1500px] h-12 flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
 
         <span class="text-lg font-bold font-mono">🐍 KM</span>
 
@@ -47,10 +51,41 @@
         </nav>
 
         <!-- hidden on screens hiegier than sm -->
-        <button class="rounded px-2 py-1 bg-teal-400 sm:hidden">Show</button>
+        <button @click="isMobileOpen = !isMobileOpen"
+            x-on:resize.window="isMobileOpen = false"
+            class="rounded grid place-content-center w-7 h-7 bg-teal-400 sm:hidden">
+            <span  x-bind:class="isMobileOpen ? 'block' : 'hidden'">
+                <img src="{% static 'school/icons/x.svg' %}" alt="close mobile navbar icon">
+            </span>    
+            <span  x-bind:class="isMobileOpen ? 'hidden' : 'block'">
+                <img src="{% static 'school/icons/snake.svg' %}" alt="open mobile navbar icon">
+            </span>
+        </button>
                 
     </div>
+    
+    {% comment %} MOBILE MENU {% endcomment %}
+    <nav x-bind:class="isMobileOpen ? 'opacity-100 top-12' : 'opacity-0 top-10'"
+        x-cloak  
+        class="transition-all duration-300 bg-darkheader absolute w-full overflow-hidden">
+        <ul class="min-h-[calc(100vh-48px)] flex flex-col text-center">
+            <li>
+                <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
+                href="{% url 'school:register' %}">Register</a>
+            </li>
+            <li>
+                <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
+                href="{% url 'school:login' %}">Login</a>
+            </li>
+            <li>
+                <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
+                href="{% url 'school:home' %}">Home</a>
+            </li>
+        </ul>
+    </nav>
+
     </header>
+    
     <main class="bg-darkbody grow p-5  md:p-10">
         <div class="mx-auto w-full max-w-6xl">
             {% block main %}

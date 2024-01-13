@@ -12,7 +12,7 @@ class RegisterForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean(self):
+    def clean_confirm_password(self):
         cd = super().clean()
         if cd.get("password") != cd.get("confirm_password"):
             raise forms.ValidationError("passwords dosen't match")
