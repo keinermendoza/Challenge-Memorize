@@ -1,11 +1,37 @@
 {% extends 'school/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
 
 {% block main %}
+<section class="flex flex-col sm:flex-row gap-x-10 gap-y-5 justify-between items-center">
+    <figure class="max-w-[300px] mx-2 overflow-hidden text-center">
+        <h1 class="font-mono text-2xl font-semibold">The Snake Study Platform</h1>
+        <img class="w-full h-auto object-contain" src="{% static 'school/images/snake.png' %}" alt="A cute python lerning programming in it's laptop">
+        <figcaption class="text-sm">Your platform for learning to code. in the pythonic way.</figcaption>
+    </figure>
 
-    <form action="{% url 'school:register' %}" method="post">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Register</button>
-    </form>
-{% endblock main %}
+    <div class="max-w-[400px] w-full bg-darkheader p-3 rounded-md"
+        id="form-container">
+        <h1 class="text-xl font-semibold mb-3">Register</h1>
+        <form action="{% url 'school:register' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="block" for="{{ field.id_for_label }}">{{field.label}}</label>
+        
+                {% for error in field.errors %}
+                    <p class="text-red-500">{{ error }}</p>
+                {% endfor %}
+
+                {% render_field field  class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2 " %}
+            </div>
+            {% endfor %}
+
+            <button class="px-2 py-1 float-right text-black bg-teal-500" type="submit">Register</button>
+        </form>
+    </div>
+</section>
+
+    {% endblock main %}
     

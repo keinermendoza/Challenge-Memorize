@@ -12,8 +12,8 @@
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body class="text-white flex flex-col min-h-screen w-full">
-    <header class="mx-auto w-full max-w-xxl bg-[hsl(269,47%,17%)]">
-        <div class="flex justify-between gap-6 items-center px-2 py-1 md:px-4 md:py-2">
+    <header class="mx-auto w-full max-w-xxl bg-darkheader">
+        <div class="flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
 
         <span class="text-lg font-bold font-mono">🐍 KM</span>
 
@@ -51,10 +51,11 @@
                 
     </div>
     </header>
-    <main class="bg-[#15022b] grow p-2  md:p-4">
-
-    {% block main %}
-    {% endblock main %}
+    <main class="bg-darkbody grow p-5  md:p-10">
+        <div class="mx-auto w-full max-w-6xl">
+            {% block main %}
+            {% endblock main %}
+        </div>
     </main>
         
 </body>

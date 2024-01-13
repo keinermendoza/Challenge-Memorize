@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # thirds
     "django_htmx",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
