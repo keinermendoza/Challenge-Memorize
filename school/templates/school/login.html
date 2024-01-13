@@ -13,11 +13,11 @@
     <div class="max-w-[400px] w-full">
         <div class=" bg-darkheader p-3 rounded-md"
             id="form-container">
-            {% include 'school/partials/forms/register.html' with form=form %}
+            {% include 'school/partials/forms/login.html' with form=form %}
         </div>
         <p class="text-center mt-3">
-            <span>If You have an Account you can </span><br>
-            <a class="text-teal-400 underline" href="{% url 'school:login' %}">login here</a>
+            <span>If You don't have an Account you can </span><br>
+            <a class="text-teal-400 underline" href="{% url 'school:register' %}">resgister here</a>
         </p>
     </div>
 

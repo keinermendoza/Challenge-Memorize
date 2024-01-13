@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+
+<h1 class="text-xl font-semibold mb-3">Login</h1>
+<form action="{% url 'school:login' %}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-3">
+        <label class="block" for="{{ field.id_for_label }}">
+            {{field.label}}
+
+                       
+        </label>
+
+        {% for error in field.errors %}
+            <p class="text-red-500">{{ error }}</p>
+        {% endfor %}
+
+
+
+        <!-- adding autofocus to the first input -->
+        {% if forloop.first %}
+            {% render_field field autofocus=autofocus  class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2 " %}
+        {% else %}
+            {% render_field field autofocus=autofocus  class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2 " %}
+        {% endif %}
+        
+    </div>
+    {% endfor %}
+    <div class="text-right">
+        <button class="px-2 py-1 text-black bg-teal-500" type="submit">Login</button>
+    </div>
+</form>
