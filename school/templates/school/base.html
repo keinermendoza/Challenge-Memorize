@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{% static 'tailwind/tail.css' %}">
     <script src="{% static 'js/htmx.min.js.gz' %}"></script>
-    <script src="{% static 'js/alpine.js' %}"></script>
+    <script defer src="{% static 'js/alpine.js' %}"></script>
 
 
     <title>{% block title %}{% endblock title %}</title>
@@ -25,7 +25,7 @@
         <nav class="hidden sm:flex grow justify-between">
             <ul class="flex gap-3">        
                 <li>
-                    <a href="">Flashcards</a>
+                    <a href="{% url 'school:flashcard_list' %}">Flashcards</a>
                 </li>
 
                 <li>
@@ -36,14 +36,14 @@
             <ul class="flex gap-3">
                 {% if user.is_authenticated %}
                 <li>
-                    <a href="{% url 'school:logout' %}">Logout</a>
+                    <a href="{% url 'account:logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li>
-                    <a href="{% url 'school:register' %}">Register</a>
+                    <a href="{% url 'account:register' %}">Register</a>
                 </li>
                 <li>
-                    <a href="{% url 'school:login' %}">Login</a>
+                    <a href="{% url 'account:login' %}">Login</a>
                 </li>
                 {% endif %}
                 
@@ -65,21 +65,25 @@
     </div>
     
     {% comment %} MOBILE MENU {% endcomment %}
-    <nav x-bind:class="isMobileOpen ? 'opacity-100 top-12' : 'opacity-0 top-10'"
+    <nav x-bind:class="isMobileOpen ? 'block opacity-100 top-12' : 'hidden opacity-0 top-10'"
         x-cloak  
         class="transition-all duration-300 bg-darkheader absolute w-full overflow-hidden">
         <ul class="min-h-[calc(100vh-48px)] flex flex-col text-center">
             <li>
                 <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
-                href="{% url 'school:register' %}">Register</a>
+                href="{% url 'account:register' %}">Register</a>
             </li>
             <li>
                 <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
-                href="{% url 'school:login' %}">Login</a>
+                href="{% url 'account:login' %}">Login</a>
             </li>
             <li>
                 <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
                 href="{% url 'school:home' %}">Home</a>
+            </li>
+            <li>
+                <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
+                href="{% url 'school:flashcard_list' %}">Flashcards</a>
             </li>
         </ul>
     </nav>

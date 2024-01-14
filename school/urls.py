@@ -3,9 +3,11 @@ from . import views
 
 app_name = 'school'
 urlpatterns = [
-    path('register/', views.register, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+   
+    path('flashcards/', views.flashcard_list, name='flashcard_list'),
+    path('flashcards/create/', views.flashcard_create, name='flashcard_create'),
+
+
 
     path('', views.home, name='home'),
 

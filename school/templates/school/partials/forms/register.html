@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 
 <h1 class="text-xl font-semibold mb-3">Register</h1>
-<form action="{% url 'school:register' %}" method="post">
+<form action="{% url 'account:register' %}" method="post">
     {% csrf_token %}
     {% for field in form %}
         {% comment %} PASSWORD INPUTS using ALPINEJS {% endcomment %}
