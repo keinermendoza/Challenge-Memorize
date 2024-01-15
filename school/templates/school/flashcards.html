@@ -3,12 +3,12 @@
 
 {% block main %}
 <section class="flex flex-col sm:flex-row gap-x-10 gap-y-5 justify-between items-center">
-    <div id='form-container'>
+    <div id='flashcard-form-container'>
         <form method="post" action="{% url 'school:flashcard_list' %}">
             {% csrf_token %}
 
             <!-- ========= NON FIELD ERROR ========== -->
-            {% if form.non_field_errors %}
+            {% if flashcard_form.non_field_errors %}
                 <div class="non-field-errors">
                     {% for error in form.non_field_errors %}
                     <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
@@ -16,6 +16,7 @@
                 </div>
             {% endif %}
 
+            
             <!-- ========= QUESTION ========== -->
             <div class="mb-3">
                 <label class="block mb-1" for="{{ flashcard_form.question.id_for_label }}">
@@ -24,73 +25,66 @@
                 {% for error in flashcard_form.question.errors %}
                     <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
                 {% endfor %}
+
                 {% render_field flashcard_form.question class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
             </div>
 
-            <!-- ========= OPTIONS ========== -->
-            
-            <fieldset class="mb-3">
-                <legend class="block mb-1">Register the Answers</legend>
-
-                <div class="flex flex-col text-black" id="options-contaienr">
-                    {{ formset.management_form }}
-                    {% for form in formset %}
-                        <div class="flex justify-between">
-                            
-                            {% render_field form.option class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-                            {% render_field form.right %}
-                            {% render_field form.DELETE type="button" value="X" class="delete-btn pointer w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}  
-
-                        </div>
-                    {% endfor %}
-                    
-                    <!-- ========= EMPTY FORM ========== -->
-                    <div id="extra-form" class="hidden">
-                        {% render_field formset.empty_form.option class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-                        {% render_field formset.empty_form.right %}
-                        {% render_field formset.empty_form.DELETE type="button" value="X" class="delete-btn pointer w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}  
-                    </div>
-
-                </div>
-            </fieldset>
-
-            <div class="mb-3 flex gap-3 justify-between">
-
-                <!-- ========= CATEGORY ========== -->
-                <div class="">
-                    <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
-                        {{flashcard_form.category.label}}
-                    </label>
-                    {% for error in flashcard_form.category.errors %}
-                        <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                    {% endfor %}
-                    {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-                </div>
-
-                <!-- ========= LEVEL ========== -->
-                <div class="">
-                    <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
-                        {{flashcard_form.level.label}}
-                    </label>
-                    {% for error in flashcard_form.level.errors %}
-                        <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                    {% endfor %}
-                    {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-                </div>
-
+            <!-- ========= ANSWER ========== -->
+            <div class="mb-3">
+                <label class="block mb-1" for="{{ flashcard_form.answer.id_for_label }}">
+                    {{flashcard_form.answer.label}}
+                </label>
+                {% for error in flashcard_form.answer.errors %}
+                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                {% endfor %}
+                
+                {% render_field flashcard_form.answer class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
             </div>
 
+            <!-- ========= CATEGORY ========== -->
+            <div class="mb-3">
+                <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
+                    {{flashcard_form.category.label}}
+                </label>
+                {% for error in flashcard_form.category.errors %}
+                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                {% endfor %}
+                
+                {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+            </div>
 
-            <div class="text-right">
-                <button class="px-2 py-1 text-black bg-teal-500" type="submit">Login</button>
+            <!-- ========= LEVEL ========== -->
+            <div class="mb-3">
+                <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
+                    {{flashcard_form.level.label}}
+                </label>
+                {% for error in flashcard_form.level.errors %}
+                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                {% endfor %}
+                
+                {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
             </div>
         </form>
     </div>
 
-    <div id="flashcard-list-container">
-    {% for card in flashcards %}
-        {{card}}
-    {% endfor %}
-    </div>
+    <ul id="card-list-container">
+        {% for card in cards %}
+        <li>
+            <article>
+                <h3>{{card.question}}</h3>
+                <p>Type: 
+                {% if card.is_multiple_choice  %}
+                Multiple Choice
+                {% else %}
+                Simple Answer                   
+                {% endif %}
+                </p>
+                <p>Created on {{card.created}}</p>
+            </article>
+        </li>
+        {% empty %}
+        <p>You haven't registred any card yet. It's time for create one!</p>
+        {% endfor %}
+    </ul>
 </section>
 {% endblock main %}

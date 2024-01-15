@@ -1,20 +1,18 @@
 from django.contrib import admin
-from school.models import FlashCard, FlashcardCategory, FlashCardAnswerOptions
+from school.models import FlashCard, ChoicesCard, StudyCategory, ChoicesCardAnswerOptions
 
-
-@admin.register(FlashcardCategory)
-class FlashcardCategoryAdmin(admin.ModelAdmin):
+@admin.register(StudyCategory)
+class ChoicesCardCategoryAdmin(admin.ModelAdmin):
     pass
 
-class FlashCardAnswerOptionsInline(admin.TabularInline):
+class ChoicesCardAnswerOptionsInline(admin.TabularInline):
     extra = 2
-    model = FlashCardAnswerOptions
+    model = ChoicesCardAnswerOptions
 
-@admin.register(FlashCard)
-class FLashCardAdmin(admin.ModelAdmin):
+@admin.register(ChoicesCard)
+class ChoicesCardAdmin(admin.ModelAdmin):
 
     list_display = ["shorted_question", "category", "level"]
-    inlines = [FlashCardAnswerOptionsInline]
+    inlines = [ChoicesCardAnswerOptionsInline]
     
-
-    
+admin.site.register(FlashCard)

@@ -3,6 +3,16 @@
 <h1 class="text-xl font-semibold mb-3">Register</h1>
 <form action="{% url 'account:register' %}" method="post">
     {% csrf_token %}
+
+    <!-- ========= NON FIELD ERROR ========== -->
+    {% if flashcard_form.non_field_errors %}
+        <div class="non-field-errors">
+            {% for error in form.non_field_errors %}
+            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
     {% for field in form %}
         {% comment %} PASSWORD INPUTS using ALPINEJS {% endcomment %}
         {% if field.field.widget.input_type == "password" %}

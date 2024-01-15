@@ -1,7 +1,9 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import Truncator
-class FlashcardCategory(models.Model): # fcat
+from account.models import User
+
+class StudyCategory(models.Model): # fcat
     name = models.CharField(max_length=100)
 
     class Meta:
@@ -12,7 +14,8 @@ class FlashcardCategory(models.Model): # fcat
     def __str__(self):
         return self.name
 
-class FlashCard(models.Model): # f
+class AbstractCard(models.Model):
+    """BASE CLASS for inerith to FlashCard and ChoiceCard"""
     class Level(models.IntegerChoices):
         EASY = (1, 'Easy')
         NORMAL = (2, 'Normal')
@@ -20,7 +23,6 @@ class FlashCard(models.Model): # f
         MASTER = (4, 'Master')
 
     question = models.CharField(max_length=100)
-    category = models.ForeignKey(FlashcardCategory ,related_name="flashcards", on_delete=models.CASCADE, null=True)
     level = models.IntegerField(choices=Level.choices, default=Level.NORMAL)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -31,12 +33,17 @@ class FlashCard(models.Model): # f
 
     def __str__(self):
         return self.shorted_question
+    
+    class Meta:
+        abstract = True
 
+class FlashCard(AbstractCard):
+    answer = models.TextField()
+    category = models.ForeignKey(StudyCategory ,related_name="flashcards", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, related_name="flashcards", on_delete=models.DO_NOTHING)
     
     def get_absolute_url(self):
         return reverse("flashcards", args={"pk": self.pk})
-        
-   
     
     class Meta:
         ordering = ["-created"]
@@ -44,9 +51,26 @@ class FlashCard(models.Model): # f
             fields=["-created"]
         )]
 
-class FlashCardAnswerOptions(models.Model): #f opt
+class ChoicesCard(AbstractCard): # f
+    category = models.ForeignKey(StudyCategory ,related_name="choicecards", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, related_name="choicecards", on_delete=models.DO_NOTHING)
+
+    @property
+    def is_multiple_choice():
+        return True
+    
+    def get_absolute_url(self):
+        return reverse("flashcards", args={"pk": self.pk})
+    
+    class Meta:
+        ordering = ["-created"]
+        indexes = [models.Index(
+            fields=["-created"]
+        )]
+
+class ChoicesCardAnswerOptions(models.Model): #f opt
     option = models.CharField(max_length=100)
     right = models.BooleanField(default=False)
-    question = models.ForeignKey(FlashCard, related_name="option", on_delete=models.CASCADE, blank=True)
+    question = models.ForeignKey(ChoicesCard, related_name="option", on_delete=models.CASCADE, blank=True)
 
 
