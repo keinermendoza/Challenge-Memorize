@@ -1,11 +1,12 @@
 from itertools import chain
+from operator import attrgetter
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django import forms
-from account.models import User
+from django_htmx.http import retarget
 from school.models import FlashCard, ChoicesCard, ChoicesCardAnswerOptions
-from django.contrib.auth.decorators import login_required
 
 class ChoicesCardForm(forms.ModelForm):
     class Meta:
@@ -28,7 +29,17 @@ AnswerOptionFormSet = forms.inlineformset_factory(
 class FlashCardForm(forms.ModelForm):
     class Meta:
         model = FlashCard
-        fields = '__all__'
+        exclude = ["user"]
+
+# utils
+def get_all_user_cards(request):
+    flashcards = FlashCard.objects.filter(user=request.user)
+    choicescards = ChoicesCard.objects.filter(user=request.user)
+        
+    cards = list(chain(flashcards, choicescards))
+    sorted_cards = sorted(cards, key=attrgetter("created"), reverse=True)
+    return sorted_cards
+
 
 def home(request):
     return render(request, 'school/home.html')
@@ -36,16 +47,29 @@ def home(request):
 
 @login_required
 def flashcard_list(request):
-    flashcards = FlashCard.objects.filter(user=request.user).values_list("question", "created", "level")
-    # TODO  resolving how to acces properties 
-    choicescards = ChoicesCard.objects.filter(user=request.user).values_list("question", "created", "level", "is_multiple_choice")
-    cards = list(chain(flashcards, choicescards))
-    print("CARDS", cards, "FLASHCARDS", flashcards, "CHOICECARDS" ,choicescards)
+    cards = get_all_user_cards(request)
     flashcard_form = FlashCardForm()
     return render(request, 'school/flashcards.html', {'cards':cards,
                                                       'flashcard_form':flashcard_form})
 
+@login_required
+def flashcard_create(request):
+    if request.method == "POST":
+        form = FlashCardForm(request.POST)
+        
+        if form.is_valid():
+            flashcard = form.save(commit=False)
+            flashcard.user = request.user
+            flashcard.save()
 
+            cards = get_all_user_cards(request)
+            return render(request, 'school/partials/cards/list.html', {'cards':cards})
+        else:
+            response =  render(request, 'school/partials/forms/create_flashcard.html', {'flashcard_form':form})
+            return retarget(response, '#flashcard-form-container')
+    
+    return HttpResponseNotAllowed(["POST"])
+    
 @login_required
 def choicecard_create(request):
 
@@ -79,6 +103,3 @@ def choicecard_create(request):
                                                       'flashcard_form':choicescard_form,
                                                       'formset':formset})
 
-@login_required
-def flashcard_create(request):
-    pass

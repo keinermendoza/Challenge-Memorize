@@ -1,0 +1,23 @@
+{% load static %}
+{% for card in cards %}
+<li>
+    <article class="relative p-3 rounded bg-darkheader border border-teal-300">
+        <div class="absolute top-2 right-2 w-7 h-7 grid cursor-pointer place-content-center bg-teal-500  rounded">
+            <!-- TODO CREATE THIS VIEW AND ADD IT TO THE DIV hx-delete={% url 'school:lashcards_delete' %} -->
+            <img 
+                src="{% static 'school/icons/trash.svg' %}" alt="Button for Delete the flashcard">
+        </div>
+        <h3 class="mr-10">{{card.question}}</h3>
+        <p>Type: 
+        {% if card.is_multiple_choice  %}
+        Multiple Choice
+        {% else %}
+        Simple Answer                   
+        {% endif %}
+        </p>
+        <p>Created on {{card.created}}</p>
+    </article>
+</li>
+{% empty %}
+<p>You haven't registred any card yet. It's time for create one!</p>
+{% endfor %}

@@ -1,0 +1,73 @@
+{% load widget_tweaks %}
+
+<form method="post" action="{% url 'school:flashcard_create' %}"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'school:flashcard_create' %}"
+    hx-target="#card-list-container"
+    class="form-card"
+    >
+
+    <!-- ========= NON FIELD ERROR ========== -->
+    {% if flashcard_form.non_field_errors %}
+        <div class="non-field-errors">
+            {% for error in form.non_field_errors %}
+            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    
+    <!-- ========= QUESTION ========== -->
+    <div class="mb-3">
+        <label class="block mb-1" for="{{ flashcard_form.question.id_for_label }}">
+            {{flashcard_form.question.label}}
+        </label>
+        {% for error in flashcard_form.question.errors %}
+            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+        {% endfor %}
+
+        {% render_field flashcard_form.question class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+    </div>
+
+    <!-- ========= ANSWER ========== -->
+    <div class="mb-3">
+        <label class="block mb-1" for="{{ flashcard_form.answer.id_for_label }}">
+            {{flashcard_form.answer.label}}
+        </label>
+        {% for error in flashcard_form.answer.errors %}
+            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+        {% endfor %}
+        
+        {% render_field flashcard_form.answer rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+    </div>
+
+    <fieldset class="grid grid-cols-2 gap-3">
+        <!-- ========= CATEGORY ========== -->
+        <div class="mb-3">
+            <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
+                {{flashcard_form.category.label}}
+            </label>
+            {% for error in flashcard_form.category.errors %}
+                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% endfor %}
+            
+            {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+        </div>
+
+        <!-- ========= LEVEL ========== -->
+        <div class="mb-3">
+            <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
+                {{flashcard_form.level.label}}
+            </label>
+            {% for error in flashcard_form.level.errors %}
+                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% endfor %}
+            
+            {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+        </div>
+    </fieldset>
+
+    <div class="text-right">
+        <button class="px-2 py-1 text-black bg-teal-500" type="submit">Create</button>
+    </div>
+</form>

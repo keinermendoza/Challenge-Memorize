@@ -2,89 +2,13 @@
 {% load widget_tweaks %}
 
 {% block main %}
-<section class="flex flex-col sm:flex-row gap-x-10 gap-y-5 justify-between items-center">
+<section class="flex flex-col items-center sm:flex-row sm:items-start gap-x-10 gap-y-5 justify-between ">
     <div id='flashcard-form-container'>
-        <form method="post" action="{% url 'school:flashcard_list' %}">
-            {% csrf_token %}
-
-            <!-- ========= NON FIELD ERROR ========== -->
-            {% if flashcard_form.non_field_errors %}
-                <div class="non-field-errors">
-                    {% for error in form.non_field_errors %}
-                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            
-            <!-- ========= QUESTION ========== -->
-            <div class="mb-3">
-                <label class="block mb-1" for="{{ flashcard_form.question.id_for_label }}">
-                    {{flashcard_form.question.label}}
-                </label>
-                {% for error in flashcard_form.question.errors %}
-                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                {% endfor %}
-
-                {% render_field flashcard_form.question class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-            </div>
-
-            <!-- ========= ANSWER ========== -->
-            <div class="mb-3">
-                <label class="block mb-1" for="{{ flashcard_form.answer.id_for_label }}">
-                    {{flashcard_form.answer.label}}
-                </label>
-                {% for error in flashcard_form.answer.errors %}
-                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                {% endfor %}
-                
-                {% render_field flashcard_form.answer class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-            </div>
-
-            <!-- ========= CATEGORY ========== -->
-            <div class="mb-3">
-                <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
-                    {{flashcard_form.category.label}}
-                </label>
-                {% for error in flashcard_form.category.errors %}
-                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                {% endfor %}
-                
-                {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-            </div>
-
-            <!-- ========= LEVEL ========== -->
-            <div class="mb-3">
-                <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
-                    {{flashcard_form.level.label}}
-                </label>
-                {% for error in flashcard_form.level.errors %}
-                    <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
-                {% endfor %}
-                
-                {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-            </div>
-        </form>
+        {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
     </div>
 
-    <ul id="card-list-container">
-        {% for card in cards %}
-        <li>
-            <article>
-                <h3>{{card.question}}</h3>
-                <p>Type: 
-                {% if card.is_multiple_choice  %}
-                Multiple Choice
-                {% else %}
-                Simple Answer                   
-                {% endif %}
-                </p>
-                <p>Created on {{card.created}}</p>
-            </article>
-        </li>
-        {% empty %}
-        <p>You haven't registred any card yet. It's time for create one!</p>
-        {% endfor %}
+    <ul id="card-list-container" class="flex flex-col gap-3">
+        {% include "school/partials/cards/list.html" with cards=cards %}
     </ul>
 </section>
 {% endblock main %}

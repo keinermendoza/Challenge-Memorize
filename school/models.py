@@ -40,7 +40,11 @@ class AbstractCard(models.Model):
 class FlashCard(AbstractCard):
     answer = models.TextField()
     category = models.ForeignKey(StudyCategory ,related_name="flashcards", on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, related_name="flashcards", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, related_name="flashcards", on_delete=models.DO_NOTHING, blank=True)
+    
+    @property
+    def is_multiple_choice(self):
+        return False
     
     def get_absolute_url(self):
         return reverse("flashcards", args={"pk": self.pk})
@@ -56,7 +60,7 @@ class ChoicesCard(AbstractCard): # f
     user = models.ForeignKey(User, related_name="choicecards", on_delete=models.DO_NOTHING)
 
     @property
-    def is_multiple_choice():
+    def is_multiple_choice(self):
         return True
     
     def get_absolute_url(self):
