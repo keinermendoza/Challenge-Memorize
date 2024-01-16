@@ -1,11 +1,12 @@
 from itertools import chain
 from operator import attrgetter
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.views.decorators.http import require_http_methods
+from django.http import HttpResponse, HttpResponseForbidden
 from django import forms
-from django_htmx.http import retarget
+from django_htmx.http import retarget, reswap
 from school.models import FlashCard, ChoicesCard, ChoicesCardAnswerOptions
 
 class ChoicesCardForm(forms.ModelForm):
@@ -53,23 +54,37 @@ def flashcard_list(request):
                                                       'flashcard_form':flashcard_form})
 
 @login_required
+@require_http_methods(["POST"])
 def flashcard_create(request):
-    if request.method == "POST":
-        form = FlashCardForm(request.POST)
-        
-        if form.is_valid():
-            flashcard = form.save(commit=False)
-            flashcard.user = request.user
-            flashcard.save()
+    form = FlashCardForm(request.POST)
+    
+    if form.is_valid():
+        flashcard = form.save(commit=False)
+        flashcard.user = request.user
+        flashcard.save()
 
-            cards = get_all_user_cards(request)
-            return render(request, 'school/partials/cards/list.html', {'cards':cards})
-        else:
-            response =  render(request, 'school/partials/forms/create_flashcard.html', {'flashcard_form':form})
-            return retarget(response, '#flashcard-form-container')
+        # cards = get_all_user_cards(request)
+        return render(request, 'school/partials/cards/detail.html', {'card':flashcard,
+                                                                    'new_card':True})
+    else:
+        response =  render(request, 'school/partials/forms/create_flashcard.html', {'flashcard_form':form})
+        response = reswap(response, "innerHTML")
+        return retarget(response, '#flashcard-form-container')
     
-    return HttpResponseNotAllowed(["POST"])
+@login_required
+@require_http_methods(["DELETE"])
+def flashcard_delete(request, flashcard_id):
+    flashcard = get_object_or_404(FlashCard, pk=flashcard_id)
+
+    if flashcard.user != request.user:
+        return HttpResponseForbidden()
     
+    flashcard.delete() 
+    return HttpResponse(status=204)
+    
+
+
+
 @login_required
 def choicecard_create(request):
 

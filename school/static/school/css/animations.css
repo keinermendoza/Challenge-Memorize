@@ -1,0 +1,47 @@
+@keyframes shrink {
+    50% {
+        opacity: 0;
+        height: auto;
+        line-height: auto;
+        padding: initial;
+        margin: initial;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+        line-height: 0;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@keyframes grow {
+    0% {
+        opacity: 0;
+        height: 0;
+        line-height: 0;
+        padding: 0;
+        margin: 0;
+    }
+    50% {
+        opacity: 0;
+        height: auto;
+        line-height: auto;
+        padding: initial;
+        margin: initial;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.new-card-animation {
+    animation-name: grow;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.deleted-card-animation {
+    animation-name: shrink;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}

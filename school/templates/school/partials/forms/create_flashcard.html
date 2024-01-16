@@ -4,6 +4,7 @@
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'school:flashcard_create' %}"
     hx-target="#card-list-container"
+    hx-swap="afterbegin"
     class="form-card"
     >
 
@@ -41,9 +42,9 @@
         {% render_field flashcard_form.answer rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
     </div>
 
-    <fieldset class="grid grid-cols-2 gap-3">
+    <fieldset class="mb-3 flex items-end gap-3">
         <!-- ========= CATEGORY ========== -->
-        <div class="mb-3">
+        <div class="grow">
             <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
                 {{flashcard_form.category.label}}
             </label>
@@ -55,7 +56,7 @@
         </div>
 
         <!-- ========= LEVEL ========== -->
-        <div class="mb-3">
+        <div class="grow">
             <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
                 {{flashcard_form.level.label}}
             </label>
