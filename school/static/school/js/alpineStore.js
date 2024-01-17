@@ -101,7 +101,7 @@ htmx.on("htmx:afterRequest", (e) => {
             // it's necesary delete the parent element
             // TODO change gap in ul by mb in the li. for  
             card.onanimationend = (e) => e.target.parentElement.remove()
-
+            
             Swal.fire({
                 icon: "success",
                 title: "Note Updated",

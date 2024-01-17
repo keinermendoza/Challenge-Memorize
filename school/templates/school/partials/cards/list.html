@@ -1,16 +1,19 @@
 {% load static %}
+<div class="flex flex-col gap-3">
 
-{% for card in cards %}
-<li>
-    {% include 'school/partials/cards/detail.html' with card=card %}
-</li>
-{% empty %}
-<p>You haven't registred any card yet. It's time for create one!</p>
-{% endfor %}
+    <ul id="card-list-container" class="flex flex-col">
+    {% for card in cards %}
+        {% include 'school/partials/cards/detail.html' with card=card %}
+    {% empty %}
+        <p>You haven't registred any card yet. It's time for create one!</p>
+    {% endfor %}
+    </ul>
+        
+    <!-- HERE GOES THE VALIDATION FOR DJANGO PAGINATION -->
+    {% if True %}
+        <button class=""
+            hx-get="{ url 'school:flashcards_list' }?page={aqui la paginacion de django}"
+        >Load More</button>
+    {% endif %}
 
-<!-- HERE GOES THE VALIDATION FOR DJANGO PAGINATION -->
-{% if True %}
-    <button class=""
-        hx-get="{ url 'school:flashcards_list' }?page={aqui la paginacion de django}"
-    >Load More</button>
-{% endif %}
+</div>

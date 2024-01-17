@@ -1,24 +1,27 @@
 {% load static  %}
-<article class="relative p-3 rounded bg-darkheader border border-teal-300
-    {% if new_card %}
-        new-card-animation
-    {% endif %}">
+<li class="mb-3">
+    <article class="flex flex-col gap-y-2 relative p-3 rounded bg-darkheader border border-teal-300
+        {% if new_card %}
+            new-card-animation
+        {% endif %}">
+        <div class="flex justify-between">
+            
+            <span class="text-sm rounded px-2 py-1 bg-darkbody">
+                {{card.category | upper}}
+            </span>
 
-    <div class="btn-delete-card absolute top-2 right-2 w-7 h-7 grid cursor-pointer place-content-center bg-teal-500  rounded"
-        hx-delete="{% url 'school:flashcard_delete' card.id %}"
-        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            <button type="button" class="btn-delete-card w-7 h-7 grid cursor-pointer place-content-center bg-teal-500  rounded"
+                hx-delete="{% url 'school:flashcard_delete' card.id %}"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-        <!-- TODO CREATE THIS VIEW AND ADD IT TO THE DIV hx-delete= -->
-        <img 
-            src="{% static 'school/icons/trash.svg' %}" alt="Button for Delete the flashcard">
-    </div>
-    <h3 class="mr-10">{{card.question}}</h3>
-    <p>Type: 
-    {% if card.is_multiple_choice  %}
-    Multiple Choice
-    {% else %}
-    Simple Answer                   
-    {% endif %}
-    </p>
-    <p>Created on {{card.created}}</p>
-</article>
+                <img src="{% static 'school/icons/trash.svg' %}" alt="Button for Delete the flashcard">
+            </button>
+        </div>
+
+        <h3 class="text-xl font-semibold">{{card.question | capfirst}}</h3>
+        
+        
+        
+        <p class="text-sm italic">Created on {{card.created}}</p>
+    </article>
+</li>

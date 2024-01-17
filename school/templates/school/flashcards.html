@@ -6,9 +6,12 @@
     <div id='flashcard-form-container'>
         {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
     </div>
-
-    <ul id="card-list-container" class="flex flex-col gap-3">
+    <div>
+        <div class="mb-3 flex gap-x-3">
+            {% include "school/partials/forms/flashcard_search.html" with form=search_form %}
+        </div>
         {% include "school/partials/cards/list.html" with cards=cards %}
-    </ul>
+    </div>
+
 </section>
 {% endblock main %}

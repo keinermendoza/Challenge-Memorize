@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseForbidden
 from django import forms
 from django_htmx.http import retarget, reswap
-from school.models import FlashCard, ChoicesCard, ChoicesCardAnswerOptions
+from school.models import StudyCategory, FlashCard, ChoicesCard, ChoicesCardAnswerOptions
 
 class ChoicesCardForm(forms.ModelForm):
     class Meta:
@@ -32,6 +32,7 @@ class FlashCardForm(forms.ModelForm):
         model = FlashCard
         exclude = ["user"]
 
+
 # utils
 def get_all_user_cards(request):
     flashcards = FlashCard.objects.filter(user=request.user)
@@ -50,8 +51,20 @@ def home(request):
 def flashcard_list(request):
     cards = get_all_user_cards(request)
     flashcard_form = FlashCardForm()
+    search_form = SearchForm()
+    print(search_form)
     return render(request, 'school/flashcards.html', {'cards':cards,
-                                                      'flashcard_form':flashcard_form})
+                                                      'flashcard_form':flashcard_form,
+                                                      'search_form': search_form})
+
+# @login_required
+# def flashcard_search(request):
+#     # cards = get_all_user_cards(request)
+#     flashcards = FlashCard.objects.filter(user=request.user)
+
+#     return render(request, 'school/flashcards.html', {'cards':cards,
+#                                                       'flashcard_form':flashcard_form})
+
 
 @login_required
 @require_http_methods(["POST"])
