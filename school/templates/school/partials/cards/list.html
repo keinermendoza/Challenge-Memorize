@@ -5,7 +5,12 @@
     {% for card in cards %}
         {% include 'school/partials/cards/detail.html' with card=card %}
     {% empty %}
-        <p>You haven't registred any card yet. It's time for create one!</p>
+        {% if searching %}
+            <p>No matches</p>
+        {% else %}
+            <p>You haven't registred any card yet. It's time for create one!</p>
+        {% endif %}
+        
     {% endfor %}
     </ul>
         

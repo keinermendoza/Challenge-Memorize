@@ -1,6 +1,6 @@
 {% load static  %}
-<li class="mb-3">
-    <article class="flex flex-col gap-y-2 relative p-3 rounded bg-darkheader border border-teal-300
+<li class="mb-3" x-data="{cardOpen: false}">
+    <article class="flex flex-col gap-y-2 overflow-hidden p-3 rounded bg-darkheader border border-teal-300
         {% if new_card %}
             new-card-animation
         {% endif %}">
@@ -23,5 +23,15 @@
         
         
         <p class="text-sm italic">Created on {{card.created}}</p>
+
+        <button @click="cardOpen = !cardOpen" class="p-3 bg-blue-500">Show Answer</div>
+
+        <div class="flex">
+            <div class="separator bg-pink-950">
+                <p x-bind:class="cardOpen ? ' is-open' : ''" class="acordeon-element"><span class="text-lg font-semibold">Answer: </span> {{card.answer | capfirst }}</p>
+            </div>
+        </div>
+        
     </article>
+    
 </li>

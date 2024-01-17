@@ -7,11 +7,12 @@
         {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
     </div>
     <div>
-        <div class="mb-6">
+        <div id="search-form-container" class="mb-6">
             {% include "school/partials/forms/flashcard_search.html" with form=search_form %}
         </div>
-        {% include "school/partials/cards/list.html" with cards=cards %}
+        <div id="section-card-list-container">
+            {% include "school/partials/cards/list.html" with cards=cards %}
+        </div>
     </div>
-
 </section>
 {% endblock main %}

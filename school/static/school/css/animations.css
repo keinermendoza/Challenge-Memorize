@@ -45,3 +45,12 @@
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
+
+.acordeon-element {
+    max-height: 0%;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.acordeon-element .is-open {
+    max-height: 100%;
+}

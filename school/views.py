@@ -52,17 +52,33 @@ def get_all_user_cards(request):
 
 
 def home(request):
-    print(CATEGORIES)
-    print(LEVELS)
+
     return render(request, 'school/home.html')
 
 
 @login_required
 def flashcard_list(request):
-    cards = get_all_user_cards(request)
+    cards = FlashCard.objects.filter(user=request.user)
     flashcard_form = FlashCardForm()
-    search_form = SearchFlashcardForm()
-    print(search_form)
+    search_form = SearchFlashcardForm(request.GET or None)
+
+    if search_form.is_valid():
+        cd = search_form.cleaned_data
+
+        if cd["category"]:
+            cards = cards.filter(category=cd["category"])
+        if cd["level"]:
+            cards = cards.filter(level=cd["level"])
+        if cd["question"]:
+            cards = cards.filter(question__icontains=cd["question"])
+
+    if request.htmx:
+        if len(search_form.errors) == 0:
+            return render(request, 'school/partials/cards/list.html', {'cards':cards,
+                                                                       'searching': True})
+        else:
+            response = render(request, 'school/partials/forms/flashcard_search.html', {'form':search_form})
+            return retarget(response, "#search-form-container")
     return render(request, 'school/flashcards.html', {'cards':cards,
                                                       'flashcard_form':flashcard_form,
                                                       'search_form': search_form})

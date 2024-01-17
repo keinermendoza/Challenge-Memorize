@@ -1,5 +1,9 @@
 {% load widget_tweaks %}
-<form action="">
+<form action="{% url 'school:flashcard_list' %}"
+    hx-get="{% url 'school:flashcard_list' %}"
+    hx-target="#section-card-list-container"
+    hx-swap="innerHTML transition:true"
+    hx-push-url="true">
     <h2 class="text-2xl mb-3">Search a Flashcard</h2>
      <!-- ========= NON FIELD ERROR ========== -->
      {% if flashcard_form.non_field_errors %}
