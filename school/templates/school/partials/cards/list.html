@@ -1,6 +1,6 @@
 {% load static %}
 <div class="flex flex-col gap-3">
-
+    <h2 class="text-2xl">Flashcards</h2>
     <ul id="card-list-container" class="flex flex-col">
     {% for card in cards %}
         {% include 'school/partials/cards/detail.html' with card=card %}

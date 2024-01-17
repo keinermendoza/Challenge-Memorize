@@ -32,6 +32,14 @@ class FlashCardForm(forms.ModelForm):
         model = FlashCard
         exclude = ["user"]
 
+CATEGORIES = list(StudyCategory.objects.all().values_list("id","name"))
+CATEGORIES.insert(0, ('', '--------'))
+LEVELS = FlashCard.Level.choices
+LEVELS.insert(0, ('', '--------'))
+class SearchFlashcardForm(forms.Form):
+    category = forms.ChoiceField(choices=CATEGORIES, required=False)
+    level = forms.ChoiceField(choices=LEVELS, required=False)
+    question = forms.CharField(max_length=20, required=False)
 
 # utils
 def get_all_user_cards(request):
@@ -44,6 +52,8 @@ def get_all_user_cards(request):
 
 
 def home(request):
+    print(CATEGORIES)
+    print(LEVELS)
     return render(request, 'school/home.html')
 
 
@@ -51,7 +61,7 @@ def home(request):
 def flashcard_list(request):
     cards = get_all_user_cards(request)
     flashcard_form = FlashCardForm()
-    search_form = SearchForm()
+    search_form = SearchFlashcardForm()
     print(search_form)
     return render(request, 'school/flashcards.html', {'cards':cards,
                                                       'flashcard_form':flashcard_form,
