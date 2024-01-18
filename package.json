@@ -4,5 +4,8 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.3.6"
+  },
+  "dependencies": {
+    "alpinejs": "^3.13.3"
   }
 }
