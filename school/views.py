@@ -113,24 +113,32 @@ def flashcard_create(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def flashcard_edit(request, flashcard_id):
-    if not request.htmx or flashcard_id not in request.user.flashcards:
+    if not request.htmx:
         return HttpResponseForbidden()
-    
-    flashcard = FlashCard.objects.get(id=flashcard_id)
-    form = FlashCardForm(data=request.POST, instance=flashcard)
 
-    if request.method == "GET":
-        return (request, 'school/partials/forms/flashcard_edit.html', {'form':form})
+    flashcard = get_object_or_404(FlashCard, id=flashcard_id, user=request.user)
     
-    else:
+    
+
+    if request.method == "POST":
+        form = FlashCardForm(data=request.POST, instance=flashcard)
+
         if form.is_valid():
             form.save()
 
             flashcards = request.user.flashcards.all()
-            return (request, 'school/partials/cards/list.html', {'cards':flashcards})
+            return render(request, 'school/partials/cards/list.html', {'cards':flashcards})
         else:
-            return (request, 'school/partials/forms/flashcard_edit.html', {'form':form})
+            response = render(request, 'school/partials/forms/flashcard_edit.html', {'form':form,
+                                                                                     'flashcard_id':flashcard_id})
+            return retarget(response, '#flashcard-edit-container' )
 
+
+    else:
+        form = FlashCardForm(instance=flashcard)
+        return render(request, 'school/partials/forms/flashcard_edit.html', {'form':form,
+                                                                             'flashcard_id':flashcard_id})
+    
 
 
 @login_required

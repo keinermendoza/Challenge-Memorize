@@ -1,17 +1,16 @@
 @keyframes shrink {
-    50% {
+    0% {
+        opacity: 1;
+    }
+    70% {
         opacity: 0;
-        height: auto;
-        line-height: auto;
-        padding: initial;
-        margin: initial;
     }
     100% {
         opacity: 0;
-        height: 0;
-        line-height: 0;
-        padding: 0;
-        margin: 0;
+        height: 0px;
+        line-height: 0px;
+        padding: 0px;
+        margin: 0px;
     }
 }
 
@@ -49,12 +48,22 @@
 .answer-acordeon {
     display: grid;
     grid-template-rows: 0fr;
+    margin-top: 0px;
     overflow: hidden;
-    transition: grid-template-rows 0.5s;
+    transition: grid-template-rows 0.5s,  margin-top 1s;
+
 }
 .answer-acordeon.is-open {
     grid-template-rows: 1fr;
+    margin-top: 0.75rem;
+    transition: grid-template-rows 0.5s;
+
 }
 .answer-acordeon > .answer {
     overflow:hidden;
+}
+
+/* DIALOG MODAL */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
 }
