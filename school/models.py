@@ -55,6 +55,34 @@ class FlashCard(AbstractCard):
             fields=["-created"]
         )]
 
+class Challenge(models.Model):
+    class Level(models.IntegerChoices):
+        EASY = (1, 'Easy')
+        NORMAL = (2, 'Normal')
+        HARD = (3, 'Hard')
+        MASTER = (4, 'Master')
+
+    class Status(models.IntegerChoices):
+        PROCESS = (0, 'In Process')
+        COMPLETE = (1, 'Complete')
+
+    title = models.CharField(max_length=100)
+    level = models.IntegerField(choices=Level.choices, default=Level.NORMAL)
+    status = models.IntegerField(choices=Status.choices, default=Status.PROCESS)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    number_questions = models.PositiveIntegerField()
+    questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
+
+class ChallengeQuestion(models.Model):
+    flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    answered = models.BooleanField(default=False)
+    correct_answered = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
+
 class ChoicesCard(AbstractCard): # f
     category = models.ForeignKey(StudyCategory ,related_name="choicecards", on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, related_name="choicecards", on_delete=models.DO_NOTHING)

@@ -1,0 +1,42 @@
+{% extends 'school/base.html' %}
+
+
+{% block main %}
+<div class="text-center ">
+
+    {% if user.flashcards.count > 0 %}
+    <h1 class="text-3xl font-semibold">Start Challenge</h1>
+    <p>Choose the Name, Categories, Level and number of questions for Your Challenge</p>
+    <div id="challenge-form-container">
+
+        {% include 'school/partials/forms/challenge_create.html' with form=challenge_form %}
+    </div>
+    {% else %}
+        <p>You need to register ___ one flashcard before you can create a Chalenge</p>
+        <a href="#">Go to FlashCards</a>
+    {% endif %}
+    
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in 'abc' %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endblock main %}
+    

@@ -8,6 +8,8 @@ urlpatterns = [
     path('flashcards/create/', views.flashcard_create, name='flashcard_create'),
     path('flashcards/edit/<int:flashcard_id>/', views.flashcard_edit, name='flashcard_edit'),
     path('flashcards/delete/<int:flashcard_id>/', views.flashcard_delete, name='flashcard_delete'),
+    path('challenges/', views.challenges, name='challenges'),
+
 
 
 

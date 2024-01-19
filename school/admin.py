@@ -1,5 +1,6 @@
 from django.contrib import admin
-from school.models import FlashCard, ChoicesCard, StudyCategory, ChoicesCardAnswerOptions
+from school.models import FlashCard, ChoicesCard, StudyCategory, ChoicesCardAnswerOptions\
+    , Challenge, ChallengeQuestion
 
 @admin.register(StudyCategory)
 class ChoicesCardCategoryAdmin(admin.ModelAdmin):
@@ -16,3 +17,5 @@ class ChoicesCardAdmin(admin.ModelAdmin):
     inlines = [ChoicesCardAnswerOptionsInline]
     
 admin.site.register(FlashCard)
+admin.site.register(Challenge)
+admin.site.register(ChallengeQuestion)

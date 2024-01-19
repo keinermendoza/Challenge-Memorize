@@ -5,9 +5,14 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseForbidden
+
 from django import forms
+from django.core.validators import MaxValueValidator
+
 from django_htmx.http import retarget, reswap
-from school.models import StudyCategory, FlashCard, ChoicesCard, ChoicesCardAnswerOptions
+from school.models import StudyCategory, FlashCard, ChoicesCard, ChoicesCardAnswerOptions\
+    ,Challenge, ChallengeQuestion
+
 
 class ChoicesCardForm(forms.ModelForm):
     class Meta:
@@ -153,6 +158,43 @@ def flashcard_delete(request, flashcard_id):
     return HttpResponse(status=204)
     
 
+class ChallengeForm(forms.ModelForm):
+    """this form REQUIRES the request object"""
+    class Meta:
+        model = Challenge
+        fields = ["title", "level", "number_questions"]
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        self.flashcard_num = self.request.user.flashcards.count()
+        super(ChallengeForm, self).__init__(*args, **kwargs)
+        
+        # add validation
+        self.fields['number_questions'].validators.append(MaxValueValidator(self.flashcard_num))
+        # add html max attribute
+        self.fields['number_questions'].widget.attrs['max'] = self.flashcard_num
+                                                          
+
+
+@login_required
+@require_http_methods(["GET" ,"POST"])
+def challenges(request):
+    if request.method == "POST":
+        form = ChallengeForm(data=request.POST, request=request)
+        if form.is_valid():
+            challenge = form.save(commit=False)
+            challenge.user = request.user
+            challenge.save()
+
+            question_set = request.user.flashcards.all().order_by("?")[:challenge.number_questions]
+            print(dir(challenge))
+            
+            challenge.questions.add(*question_set)
+
+            return HttpResponse('aja')
+        
+    form = ChallengeForm(request=request)
+    return render(request, 'school/challenges.html', {'challenge_form':form})
 
 
 @login_required
