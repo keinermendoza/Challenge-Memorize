@@ -12,7 +12,8 @@
     {% comment %} <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> {% endcomment %}
     
     <script  src="{% static 'js/SweetAlert.js' %}"></script>
-    
+    <script  src="{% static 'js/token.js' %}"></script>
+
     <script  src="{% static 'school/js/alpineStore.js' %}"></script>
     <script src="{% static 'school/js/utils.js' %}"></script>
     
@@ -38,7 +39,7 @@
                 </li>
 
                 <li>
-                    <a href="">Resume</a>
+                    <a href="{% url 'school:challenges' %}">Challenge</a>
                 </li>
             </ul>
 

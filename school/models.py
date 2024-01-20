@@ -74,14 +74,18 @@ class Challenge(models.Model):
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
 
 class ChallengeQuestion(models.Model):
-    flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE)
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
     answered = models.BooleanField(default=False)
     correct_answered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-
+    def get_response_url(self):
+        return reverse('school:challenge_answer', args=[self.id])
+    
+    def get_resume_url(self):
+        return reverse('school:challenge_resume', args=[self.id])
 
 class ChoicesCard(AbstractCard): # f
     category = models.ForeignKey(StudyCategory ,related_name="choicecards", on_delete=models.CASCADE, null=True)

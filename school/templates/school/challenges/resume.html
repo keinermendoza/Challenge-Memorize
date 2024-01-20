@@ -4,6 +4,7 @@
 {% block script %}
     <script src="{% static 'js/chart.js' %}"></script>
     <script src="{% static 'school/js/challengeResume.js' %}"></script>
+{{data|json_script:"questions_data" }}
 
 {% endblock script %}
     

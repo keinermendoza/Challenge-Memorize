@@ -1,15 +1,15 @@
 class Challenger {
-    constructor(container, data) {
+    constructor(container, data, answered, correct, wrong, csrftoken) {
 		this.container = container;        
 		this.data = data;
-        
+        this.csrftoken = csrftoken
         this.btnWrong;
 		this.btnCorrect;
 
 
-        this.answered = []
-        this.correct = []
-        this.wrong = []
+        this.answered = answered
+        this.correct = correct
+        this.wrong = wrong
 
         this.question = 0;
         
@@ -19,8 +19,18 @@ class Challenger {
         this.clickCorrect;
     }
 
+    putRequest(userResponse) {
+        fetch(this.data[this.question].url, {
+            method: 'PUT',
+            body: JSON.stringify({'correct' : userResponse}),
+            headers: {"X-CSRFToken":this.csrftoken},
+        }).then(res => console.log(res.status))
+    }
+
+
     clickWrong() {
 		console.log('wrong')
+        this.putRequest(false)
         this.wrong.push(this.data[this.question].id)
         this.answered.push(this.data[this.question].id)
         this.checkState()
@@ -28,13 +38,14 @@ class Challenger {
 
     clickCorrect() {
 		console.log('correct')
+        this.putRequest(true)
         this.correct.push(this.data[this.question].id)
         this.answered.push(this.data[this.question].id)
         this.checkState()
     }
 
     checkState() {
-        if (this.answered.length < this.data.length) {
+        if (this.answered.length < this.data.length) {     
             this.nextTurn()
         } else {
             this.end()
@@ -55,6 +66,7 @@ class Challenger {
         console.log('THE END')
         this.btnCorrect.style.display = 'none'
         this.btnWrong.style.display = 'none'
+        
     }
 
     createBtns() {
@@ -69,33 +81,43 @@ class Challenger {
     }
 
     render() {
+        // clean the container before next render
+        this.container.innerHTML = ''
+
         // create container for header counters
 		const headerCounters = document.createElement('div')
         headerCounters.className = "flex justify-between"
 
+
         // render new card
 		const cardContainer = document.createElement('div')
         cardContainer.innerHTML = `
+
         <div>
-            <div class="flex justify-between">
-                <span>
-                    Correct ${this.correct.length}
+            <div class="text-sm sm:text-lg sm:font-semibold py-2 px-1 bg-darkbody flex justify-around gap-3 mb-3">
+                <span class="text-center">
+                    Correct: ${this.correct.length}
+
                 </span>            
 
-                <span>
-                    Wrong ${this.wrong.length}
+                <span class="text-center">
+                    Wrong: ${this.wrong.length}
                 </span>
                 
-                <span>
-                    Answered ${this.answered.length}/${this.data.length}
+                <span class="text-center">
+                    Answered: ${this.answered.length}/${this.data.length}
                 </span>
 
             </div>
 
-            <article class="p-3 rounded  bg-darkheader border border-teal-300">
+            <article class="">
                 <div class="mb-3 flex justify-between">
                     <span class="text-sm rounded px-2 py-1 bg-darkbody">
                         ${this.data[this.question].category}
+                        
+                    </span>
+                    <span class="text-sm rounded px-2 py-1 bg-darkbody">
+                        ${this.data[this.question].level}
                     </span>
                 </div>
 
@@ -114,7 +136,12 @@ class Challenger {
                     </div>
                 </div>
             </article>
+
+            
         </div>
+
+
+
          
         `
         // create html container for buttons

@@ -4,10 +4,23 @@
 {% block script %}
 <script  src="{% static 'school/js/Challenger.js' %}"></script>
 <script src="{% static 'school/js/challengeDetail.js' %}"></script>
+{{questions|json_script:"questions_data" }}
+
 {% endblock script %}
 
 {% block main %}
-    <div  id="challenge-detail" class="p-5 border border-teal-300 rounded bg-darkheader text-white" id='flashcard-edit-container'>
+    {% comment %} <div   class="p-5 border border-teal-300 rounded bg-darkheader text-white" id='flashcard-edit-container'>
+    </div> {% endcomment %}
+
+
+    <div id="challenge-detail" class="rounded p-3 mb-5 mx-auto max-w-xl bg-darkheader border border-teal-300">
+
+        
+
+    </div>
+
+    <div class="text-center">
+        <a class="text-black text-2xl px-2 py-1 rounded bg-teal-500"  href="{% url 'school:challenge_resume' challenge_id %}">Go to Resume</a>
     </div>
 {% endblock main %}
 

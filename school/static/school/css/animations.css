@@ -67,3 +67,11 @@
 dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.7);
 }
+
+.show-at-end {
+    opacity: 0;
+    animation-name: grow;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-play-state:paused;
+}
