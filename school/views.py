@@ -199,6 +199,10 @@ def challenges(request):
 def start_challenge(request, challenge_id):
     return render(request, 'school/challenges/detail.html')
 
+
+def challenge_resume(request, challenge_id):
+    return render(request, 'school/challenges/resume.html')
+
 @login_required
 def choicecard_create(request):
 

@@ -1,0 +1,23 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'js/chart.js' %}"></script>
+    <script src="{% static 'school/js/challengeResume.js' %}"></script>
+
+{% endblock script %}
+    
+
+{% block main %}
+<section class="flex flex-wrap gap-5 items-center justify-between">
+
+    <div class="w-full  md:w-1/3">
+        <canvas class="w-full" id="myChart"></canvas>
+    </div>
+
+    <div class="w-full  md:w-1/3">
+        <canvas class="w-full" id="outro"></canvas>
+    </div>
+</section>
+{% endblock main %}
+    

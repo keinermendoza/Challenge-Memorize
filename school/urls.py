@@ -10,7 +10,7 @@ urlpatterns = [
     path('flashcards/delete/<int:flashcard_id>/', views.flashcard_delete, name='flashcard_delete'),
     path('challenges/', views.challenges, name='challenges'),
     path('challenge/start/<int:challenge_id>', views.start_challenge, name='start_challenge'),
-
+    path('challenge/resume/<int:challenge_id>', views.challenge_resume, name='challenge_resume'),
 
 
 
