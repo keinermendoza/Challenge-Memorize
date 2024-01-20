@@ -1,0 +1,13 @@
+{% extends "school/base.html" %}
+{% load static %}
+
+{% block script %}
+<script  src="{% static 'school/js/Challenger.js' %}"></script>
+<script src="{% static 'school/js/challengeDetail.js' %}"></script>
+{% endblock script %}
+
+{% block main %}
+    <div  id="challenge-detail" class="p-5 border border-teal-300 rounded bg-darkheader text-white" id='flashcard-edit-container'>
+    </div>
+{% endblock main %}
+

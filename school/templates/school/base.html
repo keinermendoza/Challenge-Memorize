@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{% static 'school/css/animations.css' %}">
     <script defer src="{% static 'js/alpine.js' %}"></script>
 
-
+    {% block script %}{% endblock script %}
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body class="text-white flex flex-col min-h-screen w-full">

@@ -191,11 +191,13 @@ def challenges(request):
             
             challenge.questions.add(*question_set)
 
-            return HttpResponse('aja')
+            return redirect(reverse('school:start_challenge', args=[challenge.id]))
         
     form = ChallengeForm(request=request)
     return render(request, 'school/challenges.html', {'challenge_form':form})
 
+def start_challenge(request, challenge_id):
+    return render(request, 'school/challenges/detail.html')
 
 @login_required
 def choicecard_create(request):
