@@ -8,7 +8,7 @@
     {% if flashcard_form.non_field_errors %}
         <div class="non-field-errors">
             {% for error in form.non_field_errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
         </div>
     {% endif %}
@@ -35,7 +35,7 @@
             </div>
             
             {% for error in field.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
             
             <input x-bind:type="visible ? 'text' : 'password';"
@@ -54,7 +54,7 @@
             </label>
   
             {% for error in field.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
   
            <input type="{{field.field.widget.input_type}}"  

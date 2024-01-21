@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+{% load dirs %}
 
 <form class="text-black" method="post" action="{% url 'school:challenges' %}"
     
@@ -11,70 +12,92 @@
 
     
     <h2 class="text-2xl mb-3">Create a New Challenge</h2>
+    {% comment %} fields = ["title", "level", "number_questions", "category"] {% endcomment %}
+
+
     {% csrf_token %}
     {{form.as_p}}
-    {% comment %}
     <!-- ========= NON FIELD ERROR ========== -->
-    {% if flashcard_form.non_field_errors %}
+    {% if form.non_field_errors %}
         <div class="non-field-errors">
             {% for error in form.non_field_errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
         </div>
     {% endif %}
 
     
-    <!-- ========= QUESTION ========== -->
+    <!-- ========= Title ========== -->
     <div class="mb-3">
-        <label class="block mb-1" for="{{ flashcard_form.question.id_for_label }}">
-            {{flashcard_form.question.label}}
+        <label class="block mb-1" for="{{ form.title.id_for_label }}">
+            {{form.title.label}}
         </label>
-        {% for error in flashcard_form.question.errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+        {% for error in form.title.errors %}
+            <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
         {% endfor %}
 
-        {% render_field flashcard_form.question class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+        {% render_field form.title class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
     </div>
 
-    <!-- ========= ANSWER ========== -->
+    <!-- ========= level ========== -->
     <div class="mb-3">
-        <label class="block mb-1" for="{{ flashcard_form.answer.id_for_label }}">
-            {{flashcard_form.answer.label}}
+        <label class="block mb-1" for="{{ form.level.id_for_label }}">
+            {{form.level.label}}
         </label>
-        {% for error in flashcard_form.answer.errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+        {% for error in form.level.errors %}
+            <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
         {% endfor %}
         
-        {% render_field flashcard_form.answer rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+        {% render_field form.level rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
     </div>
 
-    <fieldset class="mb-3 flex items-end gap-3">
+    
         <!-- ========= CATEGORY ========== -->
-        <div class="grow">
-            <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
-                {{flashcard_form.category.label}}
+        <div class="grow text-white">
+            <label class="block mb-1" for="{{ form.category.id_for_label }}">
+                {{form.category.label}}
             </label>
-            {% for error in flashcard_form.category.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% for error in form.category.errors %}
+                <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
+
+            {% comment %} <fieldset id="{{ form.category.id_for_label }}" class="mb-3 flex items-end gap-3">
+                {% render_field form.category class="category-checkbox w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+            </fieldset> {% endcomment %}
+          
+            {# Acceder al widget de cada campo #}
+
+            {% for choice in form.category %}
+            {% with widget=choice %}
+            {# Imprimir todas las propiedades del widget #}
+            {{ widget|get_class }}
             
-            {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+
+
+            {# Imprimir todas las propiedades del widget #}
+            {{ widget|get_properties }}
+            {% endwith %}
+
+            <!-- ESTO ES LO QUE ESTABA BUSCANDO -->
+            
+            {{choice.data}}
+            <br><br><br><br><br>
+            {% endfor %}
+
         </div>
 
-        <!-- ========= LEVEL ========== -->
+        <!-- ========= number_questions ========== -->
         <div class="grow">
-            <label class="block mb-1" for="{{ flashcard_form.level.id_for_label }}">
-                {{flashcard_form.level.label}}
+            <label class="block mb-1" for="{{ form.number_questions.id_for_label }}">
+                {{form.number_questions.label}}
             </label>
-            {% for error in flashcard_form.level.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            {% for error in form.number_questions.errors %}
+                <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
             
-            {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+            {% render_field form.number_questions class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
         </div>
-    </fieldset>
 
-    {% endcomment %}
     
     <div class="text-right">
         <button class="px-2 py-1 text-black bg-teal-500" type="submit">Start Challenge</button>

@@ -12,7 +12,7 @@
     {% if flashcard_form.non_field_errors %}
         <div class="non-field-errors">
             {% for error in form.non_field_errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
         </div>
     {% endif %}
@@ -24,7 +24,7 @@
             {{flashcard_form.question.label}}
         </label>
         {% for error in flashcard_form.question.errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
         {% endfor %}
 
         {% render_field flashcard_form.question class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
@@ -36,7 +36,7 @@
             {{flashcard_form.answer.label}}
         </label>
         {% for error in flashcard_form.answer.errors %}
-            <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+            <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
         {% endfor %}
         
         {% render_field flashcard_form.answer rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
@@ -49,7 +49,7 @@
                 {{flashcard_form.category.label}}
             </label>
             {% for error in flashcard_form.category.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
             
             {% render_field flashcard_form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
@@ -61,7 +61,7 @@
                 {{flashcard_form.level.label}}
             </label>
             {% for error in flashcard_form.level.errors %}
-                <p class="text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+                <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
             
             {% render_field flashcard_form.level class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}

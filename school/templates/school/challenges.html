@@ -1,4 +1,8 @@
 {% extends 'school/base.html' %}
+{% load static %}
+{% block script %}
+    <script src="{% static 'school/js/btnSelectAllListener.js' %}"></script>
+{% endblock script %}
 
 
 {% block main %}
@@ -7,7 +11,7 @@
     {% if user.flashcards.count > 0 %}
     <h1 class="text-3xl font-semibold">Start Challenge</h1>
     <p>Choose the Name, Categories, Level and number of questions for Your Challenge</p>
-    <div id="challenge-form-container">
+    <div id="challenge-form-container" class="">
 
         {% include 'school/partials/forms/challenge_create.html' with form=challenge_form %}
     </div>
@@ -15,28 +19,43 @@
         <p>You need to register ___ one flashcard before you can create a Chalenge</p>
         <a href="#">Go to FlashCards</a>
     {% endif %}
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Challenge</th>
-                <th>Title</th>
-                <th>Level</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for challenge in request.user.challenges.all %}
-            <tr>
-                <td>{{challenge.id}}</td>
-                <td>{{challenge.title}}</td>
-                <td>{{challenge.get_level_display}}</td>
-                <td>{{challenge.get_status_display}}</td>
-            </tr>
-            {% endfor %}
 
-        </tbody>
-    </table>
+    <div id="challenges-filter-form-container" class="max-w-md mx-auto">
+        {% include "school/partials/forms/challenge_filter.html" %}
+    </div>
+
+    <div id="table-challenges-container" class="w-full"> 
+        <table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
+            <thead class="text-gray-700 uppercase bg-gray-50 ">
+                <tr>
+                    <th class="hidden sm:table-cell px-6 py-3">Challenge</th>
+                    <th class="px-6 py-3">Title</th>
+                    <th class="hidden md:table-cell px-6 py-3">Level</th>
+                    <th class="hidden sm:table-cell px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Resume</th>
+
+                </tr>
+            </thead>
+            <tbody class="text-gray-600">
+                {% for challenge in challenges %}
+                <tr class="bg-white border-b ">
+                    <td class="hidden sm:table-cell px-6 py-4">{{challenge.id}}</td>
+                    <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
+                    <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
+                    <td class="hidden sm:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
+                    <td class="px-6 py-4">
+                        <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
+                            Resume
+                        </a>
+                        
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock main %}
     

@@ -26,3 +26,16 @@ function showEditModal() {
 function closeEditModal() {
     document.getElementById('flashcard-edit-container').close()
 }
+
+// clean errors from a particular form
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener("clean_errors", (e) => {
+        e.target.querySelectorAll('.error-message').forEach(error => error.remove())
+    })
+})
+
+function selectAll(checkboxAll) {
+    const all = document.querySelectorAll('.category-checkbox') //.check = checkboxAll.check 
+    console.log(all)
+
+}

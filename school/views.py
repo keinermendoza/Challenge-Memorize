@@ -11,7 +11,7 @@ from django.db.models import Count, F, Case, When, Q
 from django import forms
 from django.core.validators import MaxValueValidator
 
-from django_htmx.http import retarget, reswap
+from django_htmx.http import retarget, reswap, trigger_client_event
 from school.models import (
     StudyCategory,
     FlashCard,
@@ -57,6 +57,8 @@ CATEGORIES = list(StudyCategory.objects.all().values_list("id", "name"))
 CATEGORIES.insert(0, ("", "All Categories"))
 LEVELS = FlashCard.Level.choices
 LEVELS.insert(0, ("", "All Levels"))
+STATUS = Challenge.Status.choices
+STATUS.insert(0, ("", "All Status"))
 
 
 class SearchFlashcardForm(forms.Form):
@@ -98,13 +100,76 @@ def flashcard_list(request):
                 "school/partials/forms/flashcard_search.html",
                 {"form": search_form},
             )
-            return retarget(response, "#search-form-container")
+            response = retarget(response, "#search-form-container")
+            return trigger_client_event(response, 'clean_errors')
+        
     return render(
         request,
         "school/flashcards.html",
         {"cards": cards, "flashcard_form": flashcard_form, "search_form": search_form},
     )
 
+
+class FilterChallengeForm(forms.Form):
+    category = forms.ChoiceField(choices=CATEGORIES, required=False)
+    level = forms.ChoiceField(choices=LEVELS, required=False)
+    status = forms.ChoiceField(choices=STATUS, required=False)
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def challenges(request):
+    
+    challenges = request.user.challenges.all()
+    challenge_form = ChallengeForm(request=request)
+    filter_challenge_form = FilterChallengeForm(data=request.GET or None)
+
+    if filter_challenge_form.is_valid():
+        cd = filter_challenge_form.cleaned_data
+        
+        if cd["status"]:
+            challenges = challenges.filter(status=cd["status"])
+        if cd["level"]:
+            challenges = challenges.filter(level=cd["level"])
+        if cd["category"]:
+            challenges = challenges.filter(questions__category=cd["category"]).distinct()
+
+    # returning partials in when using htmx
+    if request.htmx:
+        
+        if len(filter_challenge_form.errors) == 0:
+            response = render(
+                request,
+                "school/partials/challenges/table.html",
+                {"challenges": challenges},
+            )
+            return trigger_client_event(response, 'clean_errors')
+        else:
+            response = render(
+                request,
+                "school/partials/forms/challenge_filter.html",
+                {"filter_challenge_form": filter_challenge_form},
+            )
+            return retarget(response, "#challenges-filter-form-container")
+
+
+    if request.method == "POST":
+        challenge_form = ChallengeForm(data=request.POST, request=request)
+        if challenge_form.is_valid():
+            challenge = challenge_form.save(commit=False)
+            challenge.user = request.user
+            challenge.save()
+
+            question_set = request.user.flashcards.all().order_by("?")[
+                : challenge.number_questions
+            ]
+
+            challenge.questions.add(*question_set)
+
+            return redirect(reverse("school:start_challenge", args=[challenge.id]))
+
+    return render(request, "school/challenges.html", {"challenge_form": challenge_form,
+                                                      "filter_challenge_form": filter_challenge_form,
+                                                      'challenges':challenges,})
 
 @login_required
 @require_http_methods(["POST"])
@@ -147,9 +212,11 @@ def flashcard_edit(request, flashcard_id):
             form.save()
 
             flashcards = request.user.flashcards.all()
-            return render(
+            response = render(
                 request, "school/partials/cards/list.html", {"cards": flashcards}
             )
+            return trigger_client_event(response, 'clean_errors')
+        
         else:
             response = render(
                 request,
@@ -181,10 +248,11 @@ def flashcard_delete(request, flashcard_id):
 
 class ChallengeForm(forms.ModelForm):
     """this form REQUIRES the request object"""
-
+    category = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                          choices=CATEGORIES)
     class Meta:
         model = Challenge
-        fields = ["title", "level", "number_questions"]
+        fields = ["title", "level", "number_questions", "category"]
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
@@ -199,29 +267,6 @@ class ChallengeForm(forms.ModelForm):
         self.fields["number_questions"].widget.attrs["max"] = self.flashcard_num
 
 
-@login_required
-@require_http_methods(["GET", "POST"])
-def challenges(request):
-    if request.method == "POST":
-        form = ChallengeForm(data=request.POST, request=request)
-        if form.is_valid():
-            challenge = form.save(commit=False)
-            challenge.user = request.user
-            challenge.save()
-
-            question_set = request.user.flashcards.all().order_by("?")[
-                : challenge.number_questions
-            ]
-
-            challenge.questions.add(*question_set)
-
-            return redirect(reverse("school:start_challenge", args=[challenge.id]))
-
-
-    form = ChallengeForm(request=request)
-    # challenges = request.user.challenges.all()
-    return render(request, "school/challenges.html", {"challenge_form": form,
-                                                      'challenges':challenges,})
 
 
 def start_challenge(request, challenge_id):

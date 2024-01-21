@@ -73,6 +73,9 @@ class Challenge(models.Model):
     number_questions = models.PositiveIntegerField()
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
 
+    def get_resume_url(self):
+        return reverse('school:challenge_resume', args=[self.id])
+
 class ChallengeQuestion(models.Model):
     flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
@@ -84,8 +87,7 @@ class ChallengeQuestion(models.Model):
     def get_response_url(self):
         return reverse('school:challenge_answer', args=[self.id])
     
-    def get_resume_url(self):
-        return reverse('school:challenge_resume', args=[self.id])
+
 
 class ChoicesCard(AbstractCard): # f
     category = models.ForeignKey(StudyCategory ,related_name="choicecards", on_delete=models.CASCADE, null=True)
