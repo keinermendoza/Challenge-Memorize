@@ -1,0 +1,31 @@
+<label class="block mb-1" for="{{ form.category.id_for_label }}">
+    {{form.category.label}}
+</label>
+{% for error in form.category.errors %}
+    <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+{% endfor %}
+
+<fieldset id="" class="mb-3 flex items-end gap-3">
+    {% for choice in form.category  %}
+    <div id="id_category" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
+        {% if forloop.first %}
+        <div>
+            <label class="w-full" for="{{choice.data.id}}">
+                <input onclick="selectAll(this)" type="{{choice.data.type}}" name="{{choice.data.name}}" 
+                    value="{{choice.data.value}}" selected="{{choice.data.selected}}"
+                    class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" id="{{choice.data.id}}">
+                {{choice.data.label}}
+            </label>
+        </div>
+        {% else %}
+        <div>
+            <label for="{{choice.data.attrs.id}}">
+                <input type="{{choice.data.type}}" name="{{choice.data.name}}" value="{{choice.data.value}}" selected="{{choice.data.selected}}"
+                class="category-checkbox w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" id="{{choice.data.attrs.id}}">
+                {{choice.data.label}}
+            </label>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset> 

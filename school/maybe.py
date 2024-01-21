@@ -1,5 +1,32 @@
+#####               ------- FORMS ---------
 
-####                    ------- TODO -------
+# class ChoicesCardForm(forms.ModelForm):
+#     class Meta:
+#         model = ChoicesCard
+#         fields = ["question", "category", "level"]
+#         widgets = {
+#             "question": forms.TextInput(attrs={"autofocus": "autofocus"}),
+#         }
+
+
+# class ChoicesCardOptionForm(forms.ModelForm):
+#     class Meta:
+#         model = ChoicesCardAnswerOptions
+#         fields = ["option", "right"]
+
+
+# AnswerOptionFormSet = forms.inlineformset_factory(
+#     ChoicesCard,
+#     ChoicesCardAnswerOptions,
+#     form=ChoicesCardOptionForm,
+#     extra=1,
+#     can_delete=True,
+#     can_delete_extra=True,
+# )
+
+
+
+####                    ------- VIEWS -------
 
 # @login_required
 # def flashcard_search(request):

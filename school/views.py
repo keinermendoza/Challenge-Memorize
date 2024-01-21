@@ -15,36 +15,12 @@ from django_htmx.http import retarget, reswap, trigger_client_event
 from school.models import (
     StudyCategory,
     FlashCard,
-    ChoicesCard,
-    ChoicesCardAnswerOptions,
     Challenge,
     ChallengeQuestion,
 )
 
 
-class ChoicesCardForm(forms.ModelForm):
-    class Meta:
-        model = ChoicesCard
-        fields = ["question", "category", "level"]
-        widgets = {
-            "question": forms.TextInput(attrs={"autofocus": "autofocus"}),
-        }
 
-
-class ChoicesCardOptionForm(forms.ModelForm):
-    class Meta:
-        model = ChoicesCardAnswerOptions
-        fields = ["option", "right"]
-
-
-AnswerOptionFormSet = forms.inlineformset_factory(
-    ChoicesCard,
-    ChoicesCardAnswerOptions,
-    form=ChoicesCardOptionForm,
-    extra=1,
-    can_delete=True,
-    can_delete_extra=True,
-)
 
 
 class FlashCardForm(forms.ModelForm):
@@ -154,22 +130,52 @@ def challenges(request):
 
     if request.method == "POST":
         challenge_form = ChallengeForm(data=request.POST, request=request)
+        
         if challenge_form.is_valid():
-            challenge = challenge_form.save(commit=False)
-            challenge.user = request.user
-            challenge.save()
 
-            question_set = request.user.flashcards.all().order_by("?")[
-                : challenge.number_questions
-            ]
+            cd = challenge_form.cleaned_data
+                
+            flashcards_in_categories = request.user.flashcards.filter(category__in=cd['category']).count()
 
-            challenge.questions.add(*question_set)
+            if not flashcards_in_categories:
+                challenge_form.add_error(None, "You don't have a flashcard in the selected categories")
+            else:   
+            
+                challenge = challenge_form.save(commit=False)
+                challenge.user = request.user
+                challenge.save()
 
-            return redirect(reverse("school:start_challenge", args=[challenge.id]))
+                question_set = request.user.flashcards.filter(category__in=cd['category']).order_by("?")[
+                    : challenge.number_questions
+                ]
 
+                challenge.questions.add(*question_set)
+
+                return redirect(reverse("school:start_challenge", args=[challenge.id]))
+            
+        print(challenge_form.errors)
     return render(request, "school/challenges.html", {"challenge_form": challenge_form,
                                                       "filter_challenge_form": filter_challenge_form,
                                                       'challenges':challenges,})
+
+class category_field_partial(forms.Form):
+    category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                      queryset=StudyCategory.objects.none())
+    def __init__(self, *args, level=None, **kwargs):
+        self.request = kwargs.pop('request')
+        super().__init__(*args, **kwargs)
+        if level is not None:
+            self.fields['category'].queryset = self.request.user.flashcards.filter(
+                level=level
+            ) ### FUNCIONA PERO ESTOY BUSCANDO FLASHCARDS CUANDO DEBERIA ESTAR BUSCADO CATEGORIES
+    
+@login_required
+@require_http_methods(["GET"])
+def update_sections_challenge_form(request):
+    level = request.GET.get('level', None)
+    if level:
+        form = category_field_partial(level=level, request=request)
+        return render(request, 'school/partials/forms/challenge_create_sections/category.html', {'form':form})
 
 @login_required
 @require_http_methods(["POST"])

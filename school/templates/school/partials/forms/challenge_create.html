@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 {% load dirs %}
 
-<form class="text-black" method="post" action="{% url 'school:challenges' %}"
+<form class="" method="post" action="{% url 'school:challenges' %}"
     
     >
     <!-- hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -12,11 +12,8 @@
 
     
     <h2 class="text-2xl mb-3">Create a New Challenge</h2>
-    {% comment %} fields = ["title", "level", "number_questions", "category"] {% endcomment %}
-
 
     {% csrf_token %}
-    {{form.as_p}}
     <!-- ========= NON FIELD ERROR ========== -->
     {% if form.non_field_errors %}
         <div class="non-field-errors">
@@ -47,47 +44,57 @@
         {% for error in form.level.errors %}
             <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
         {% endfor %}
-        
-        {% render_field form.level rows=3 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+
+        <select hx-get="{% url 'school:update_sections_challenge_form' %}"
+            hx-trigger="change"
+            hx-target="#challenge-create-category-container"
+            hx-swap="innerHTML transition:true"
+            name="{{form.level.name}}" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" 
+            rows="3" id="{{form.level.id_for_label}}">
+            {% for lev in form.level %}
+                <option selected="{{lev.data.selected}}" value="{{lev.data.value}}">{{lev.data.label}}</option>
+            {% endfor %}  
+        </select>
     </div>
 
     
         <!-- ========= CATEGORY ========== -->
-        <div class="grow text-white">
+        <div id="challenge-create-category-container" class="grow text-white">
             <label class="block mb-1" for="{{ form.category.id_for_label }}">
                 {{form.category.label}}
             </label>
             {% for error in form.category.errors %}
                 <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
             {% endfor %}
-
-            {% comment %} <fieldset id="{{ form.category.id_for_label }}" class="mb-3 flex items-end gap-3">
-                {% render_field form.category class="category-checkbox w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
-            </fieldset> {% endcomment %}
-          
-            {# Acceder al widget de cada campo #}
-
-            {% for choice in form.category %}
-            {% with widget=choice %}
-            {# Imprimir todas las propiedades del widget #}
-            {{ widget|get_class }}
-            
-
-
-            {# Imprimir todas las propiedades del widget #}
-            {{ widget|get_properties }}
-            {% endwith %}
-
-            <!-- ESTO ES LO QUE ESTABA BUSCANDO -->
-            
-            {{choice.data}}
-            <br><br><br><br><br>
-            {% endfor %}
-
+           
+            <fieldset id="" class="mb-3 flex items-end gap-3">
+                {% for choice in form.category  %}
+                <div id="id_category" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
+                    {% if forloop.first %}
+                    <div>
+                        <label class="w-full" for="{{choice.data.id}}">
+                            <input onclick="selectAll(this)" type="{{choice.data.type}}" name="{{choice.data.name}}" 
+                                value="{{choice.data.value}}" selected="{{choice.data.selected}}"
+                                class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" id="{{choice.data.id}}">
+                            {{choice.data.label}}
+                        </label>
+                    </div>
+                    {% else %}
+                    <div>
+                        <label for="{{choice.data.attrs.id}}">
+                            <input type="{{choice.data.type}}" name="{{choice.data.name}}" value="{{choice.data.value}}" selected="{{choice.data.selected}}"
+                            class="category-checkbox w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" id="{{choice.data.attrs.id}}">
+                            {{choice.data.label}}
+                        </label>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </fieldset> 
         </div>
 
         <!-- ========= number_questions ========== -->
-        <div class="grow">
+        <div id="challenge-create-number-container" class="grow">
             <label class="block mb-1" for="{{ form.number_questions.id_for_label }}">
                 {{form.number_questions.label}}
             </label>

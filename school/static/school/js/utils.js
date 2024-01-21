@@ -35,7 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function selectAll(checkboxAll) {
-    const all = document.querySelectorAll('.category-checkbox') //.check = checkboxAll.check 
-    console.log(all)
-
+    document.querySelectorAll('.category-checkbox').forEach(checkbox => checkbox.checked = checkboxAll.checked) //.check = checkboxAll.check 
 }

@@ -1,0 +1,8 @@
+<label class="block mb-1" for="{{ form.number_questions.id_for_label }}">
+    {{form.number_questions.label}}
+</label>
+{% for error in form.number_questions.errors %}
+    <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+{% endfor %}
+
+{% render_field form.number_questions class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}

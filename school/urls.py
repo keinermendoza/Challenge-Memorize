@@ -13,8 +13,8 @@ urlpatterns = [
     path('challenge/answer/<int:question_id>/', views.challenge_answer, name='challenge_answer'),
 
     path('challenge/resume/<int:challenge_id>', views.challenge_resume, name='challenge_resume'),
-
-
+    path('challenge/update/<int:challenge_id>', views.challenge_resume, name='challenge_resume'),
+    path('challenge/update-form/', views.update_sections_challenge_form, name='update_sections_challenge_form'),
 
 
 
