@@ -19,19 +19,19 @@
     <table>
         <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>Challenge</th>
+                <th>Title</th>
+                <th>Level</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            {% for a in 'abc' %}
+            {% for challenge in request.user.challenges.all %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{challenge.id}}</td>
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.get_level_display}}</td>
+                <td>{{challenge.get_status_display}}</td>
             </tr>
             {% endfor %}
 

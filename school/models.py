@@ -69,7 +69,7 @@ class Challenge(models.Model):
     title = models.CharField(max_length=100)
     level = models.IntegerField(choices=Level.choices, default=Level.NORMAL)
     status = models.IntegerField(choices=Status.choices, default=Status.PROCESS)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="challenges")
     number_questions = models.PositiveIntegerField()
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
 

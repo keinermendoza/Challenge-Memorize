@@ -212,14 +212,16 @@ def challenges(request):
             question_set = request.user.flashcards.all().order_by("?")[
                 : challenge.number_questions
             ]
-            print(dir(challenge))
 
             challenge.questions.add(*question_set)
 
             return redirect(reverse("school:start_challenge", args=[challenge.id]))
 
+
     form = ChallengeForm(request=request)
-    return render(request, "school/challenges.html", {"challenge_form": form})
+    # challenges = request.user.challenges.all()
+    return render(request, "school/challenges.html", {"challenge_form": form,
+                                                      'challenges':challenges,})
 
 
 def start_challenge(request, challenge_id):
@@ -239,7 +241,6 @@ def start_challenge(request, challenge_id):
                 "url": question.get_response_url(),  # intermediate model
             }
         )
-    print(questions)
 
     return render(
         request,
@@ -254,13 +255,20 @@ def challenge_answer(request, question_id):
     try:
         data = json.loads(request.body)
 
-        print(data)
 
         user_response = data.get("correct")
         if user_response is not None:
             question.answered = True
             question.correct_answered = user_response
             question.save()
+
+
+            ## here check for update challenge status
+            remainds = question.challenge.challenge_questions.aggregate(count=Count("id", filter=Q(answered=False))) 
+            if remainds.get('count') == 0:
+                question.challenge.status = Challenge.Status.COMPLETE
+                question.challenge.save()
+
             return HttpResponse(status=204)
     except:
         pass
@@ -293,59 +301,3 @@ def challenge_resume(request, challenge_id):
     return render(request, "school/challenges/resume.html", {'data':data})
 
 
-####                    ------- TODO -------
-
-# @login_required
-# def flashcard_search(request):
-#     # cards = get_all_user_cards(request)
-#     flashcards = FlashCard.objects.filter(user=request.user)
-
-#     return render(request, 'school/flashcards.html', {'cards':cards,
-#                                                       'flashcard_form':flashcard_form})
-
-
-@login_required
-def choicecard_create(request):
-    if request.method == "POST":
-        choicescard_form = ChoicesCardForm(request.POST)
-        formset = AnswerOptionFormSet(request.POST)
-
-        print(formset)
-        if choicescard_form.is_valid() and formset.is_valid():
-            choicescard = choicescard_form.save()
-
-            # Save variant formset
-            answers = formset.save(commit=False)
-            for obj in formset.deleted_objects:
-                obj.delete()
-            for answer in answers:
-                answer.question = choicescard
-                answer.save()
-        else:
-            print(choicescard_form.errors)
-            print(formset.errors)
-
-    else:
-        choicescard_form = ChoicesCardForm()
-        formset = AnswerOptionFormSet()
-
-    choicescard = ChoicesCard.objects.all()
-    return render(
-        request,
-        "school/flashcards.html",
-        {
-            "flashcards": choicescard,
-            "flashcard_form": choicescard_form,
-            "formset": formset,
-        },
-    )
-
-
-# utils
-def get_all_user_cards(request):
-    flashcards = FlashCard.objects.filter(user=request.user)
-    choicescards = ChoicesCard.objects.filter(user=request.user)
-
-    cards = list(chain(flashcards, choicescards))
-    sorted_cards = sorted(cards, key=attrgetter("created"), reverse=True)
-    return sorted_cards
