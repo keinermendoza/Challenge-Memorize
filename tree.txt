@@ -1,0 +1,106 @@
+school/
+├── admin.py
+├── apps.py
+├── __init__.py
+├── maybe.py
+├── migrations
+│   ├── 0001_initial.py
+│   ├── 0002_remove_flashcard_level_flashcard_level.py
+│   ├── 0003_delete_flashcardlevel.py
+│   ├── 0004_remove_flashcard_category_flashcard_category.py
+│   ├── 0005_flashcard_user_alter_flashcard_category_and_more.py
+│   ├── 0006_rename_flashcard_choicescard_and_more.py
+│   ├── 0007_alter_choicescard_category_alter_choicescard_user_and_more.py
+│   ├── 0008_flashcard_answer.py
+│   ├── 0009_alter_flashcard_user_challenge_challengequestion_and_more.py
+│   ├── 0010_alter_challenge_questions.py
+│   ├── 0011_alter_challenge_questions.py
+│   ├── 0012_rename_questions_challenge_question_set.py
+│   ├── 0013_remove_challenge_question_set_challenge_questions.py
+│   ├── 0014_alter_challenge_questions_and_more.py
+│   ├── 0015_alter_challengequestion_challenge_and_more.py
+│   ├── 0016_alter_challenge_user.py
+│   ├── __init__.py
+│   └── __pycache__
+│       ├── 0001_initial.cpython-310.pyc
+│       ├── 0002_remove_flashcard_level_flashcard_level.cpython-310.pyc
+│       ├── 0003_delete_flashcardlevel.cpython-310.pyc
+│       ├── 0004_remove_flashcard_category_flashcard_category.cpython-310.pyc
+│       ├── 0005_flashcard_user_alter_flashcard_category_and_more.cpython-310.pyc
+│       ├── 0006_rename_flashcard_choicescard_and_more.cpython-310.pyc
+│       ├── 0007_alter_choicescard_category_alter_choicescard_user_and_more.cpython-310.pyc
+│       ├── 0008_flashcard_answer.cpython-310.pyc
+│       ├── 0009_alter_flashcard_user_challenge_challengequestion_and_more.cpython-310.pyc
+│       ├── 0010_alter_challenge_questions.cpython-310.pyc
+│       ├── 0011_alter_challenge_questions.cpython-310.pyc
+│       ├── 0012_rename_questions_challenge_question_set.cpython-310.pyc
+│       ├── 0013_remove_challenge_question_set_challenge_questions.cpython-310.pyc
+│       ├── 0014_alter_challenge_questions_and_more.cpython-310.pyc
+│       ├── 0015_alter_challengequestion_challenge_and_more.cpython-310.pyc
+│       ├── 0016_alter_challenge_user.cpython-310.pyc
+│       └── __init__.cpython-310.pyc
+├── models.py
+├── __pycache__
+│   ├── admin.cpython-310.pyc
+│   ├── apps.cpython-310.pyc
+│   ├── __init__.cpython-310.pyc
+│   ├── models.cpython-310.pyc
+│   ├── urls.cpython-310.pyc
+│   └── views.cpython-310.pyc
+├── static
+│   └── school
+│       ├── css
+│       │   └── animations.css
+│       ├── icons
+│       │   ├── closedeye.svg
+│       │   ├── edit.svg
+│       │   ├── openeye.svg
+│       │   ├── snake.svg
+│       │   ├── trash.svg
+│       │   └── x.svg
+│       ├── images
+│       │   └── snake.png
+│       └── js
+│           ├── alpineStore.js
+│           ├── challengeDetail.js
+│           ├── challengeResume.js
+│           ├── Challenger.js
+│           └── utils.js
+├── templates
+│   └── school
+│       ├── base.html
+│       ├── challenges
+│       │   ├── detail.html
+│       │   └── resume.html
+│       ├── challenges.html
+│       ├── choice.html
+│       ├── flashcards.html
+│       ├── home.html
+│       ├── login.html
+│       ├── partials
+│       │   ├── cards
+│       │   │   ├── detail.html
+│       │   │   └── list.html
+│       │   ├── challenges
+│       │   │   └── table.html
+│       │   └── forms
+│       │       ├── challenge_create.html
+│       │       ├── challenge_create_sections
+│       │       │   ├── category.html
+│       │       │   └── number.html
+│       │       ├── challenge_filter.html
+│       │       ├── create_flashcard.html
+│       │       ├── flashcard_edit.html
+│       │       ├── flashcard_search.html
+│       │       ├── login.html
+│       │       └── register.html
+│       └── register.html
+├── templatetags
+│   ├── dirs.py
+│   └── __pycache__
+│       └── dirs.cpython-310.pyc
+├── tests.py
+├── urls.py
+└── views.py
+
+19 directories, 84 files

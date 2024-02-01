@@ -134,7 +134,6 @@ def challenges(request):
         if challenge_form.is_valid():
 
             cd = challenge_form.cleaned_data
-                
             flashcards_in_categories = request.user.flashcards.filter(category__in=cd['category']).count()
 
             if not flashcards_in_categories:
@@ -153,30 +152,80 @@ def challenges(request):
 
                 return redirect(reverse("school:start_challenge", args=[challenge.id]))
             
-        print(challenge_form.errors)
     return render(request, "school/challenges.html", {"challenge_form": challenge_form,
                                                       "filter_challenge_form": filter_challenge_form,
                                                       'challenges':challenges,})
 
+class ChallengeForm(forms.ModelForm):
+    """this form REQUIRES the request object"""
+    category = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                          choices=CATEGORIES)
+    class Meta:
+        model = Challenge
+        fields = ["title", "level", "number_questions", "category"]
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request", None)
+        self.flashcard_num = self.request.user.flashcards.count()
+        super(ChallengeForm, self).__init__(*args, **kwargs)
+
+        # add validation
+        self.fields["number_questions"].validators.append(
+            MaxValueValidator(self.flashcard_num)
+        )
+        # add html max attribute
+        self.fields["number_questions"].widget.attrs["max"] = self.flashcard_num
+
+
+
 class category_field_partial(forms.Form):
     category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                       queryset=StudyCategory.objects.none())
-    def __init__(self, *args, level=None, **kwargs):
-        self.request = kwargs.pop('request')
+    def __init__(self, *args, level=None, request=None, **kwargs):
         super().__init__(*args, **kwargs)
+        # self.request = kwargs.pop('request', None)
+
         if level is not None:
-            self.fields['category'].queryset = self.request.user.flashcards.filter(
-                level=level
-            ) ### FUNCIONA PERO ESTOY BUSCANDO FLASHCARDS CUANDO DEBERIA ESTAR BUSCADO CATEGORIES
+            self.fields['category'].queryset = StudyCategory.objects.filter(
+                flashcards__challenge_questions__challenge__level=level
+            ).distinct() 
     
+    def clean_category(self):
+        cd = super().clean()
+        flashcards_in_categories = self.request.user.flashcards.filter(category__in=cd['category']).count()
+        if len(cd['category']) != flashcards_in_categories:
+            raise forms.ValidationError("please select only valid categories") 
+        return cd['category']
+    
+# class number_field_partial(forms.Form):
+#     category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+#                                                       queryset=StudyCategory.objects.none())
+#     def __init__(self, *args, level=None, **kwargs):
+#         self.request = kwargs.pop('request')
+#         super().__init__(*args, **kwargs)
+#         if level is not None:
+#             self.fields['category'].queryset = StudyCategory.objects.filter(
+#                 flashcards__challenge_questions__challenge__level=level
+#             ).distinct() ### FUNCIONA PERO ESTOY BUSCANDO FLASHCARDS CUANDO DEBERIA ESTAR BUSCADO CATEGORIES
+
+
 @login_required
 @require_http_methods(["GET"])
 def update_sections_challenge_form(request):
     level = request.GET.get('level', None)
     if level:
-        form = category_field_partial(level=level, request=request)
+        form = category_field_partial(level=level)
         return render(request, 'school/partials/forms/challenge_create_sections/category.html', {'form':form})
-
+    print(request.GET)
+    category = request.GET.get('category', None)
+    if category:
+        form =  category_field_partial(level=level, request=request)
+        if form.is_valid():
+            cd = form.cleaned_data
+            print(cd)
+        else:
+            print(form.errors)
+    return HttpResponse(status=204)
 @login_required
 @require_http_methods(["POST"])
 def flashcard_create(request):
@@ -251,26 +300,6 @@ def flashcard_delete(request, flashcard_id):
     flashcard.delete()
     return HttpResponse(status=204)
 
-
-class ChallengeForm(forms.ModelForm):
-    """this form REQUIRES the request object"""
-    category = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                          choices=CATEGORIES)
-    class Meta:
-        model = Challenge
-        fields = ["title", "level", "number_questions", "category"]
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request", None)
-        self.flashcard_num = self.request.user.flashcards.count()
-        super(ChallengeForm, self).__init__(*args, **kwargs)
-
-        # add validation
-        self.fields["number_questions"].validators.append(
-            MaxValueValidator(self.flashcard_num)
-        )
-        # add html max attribute
-        self.fields["number_questions"].widget.attrs["max"] = self.flashcard_num
 
 
 

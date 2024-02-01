@@ -40,7 +40,7 @@ class AbstractCard(models.Model):
 class FlashCard(AbstractCard):
     answer = models.TextField()
     category = models.ForeignKey(StudyCategory ,related_name="flashcards", on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, related_name="flashcards", on_delete=models.DO_NOTHING, blank=True)
+    user = models.ForeignKey(User, related_name="flashcards", on_delete=models.CASCADE, blank=True)
     
     @property
     def is_multiple_choice(self):
