@@ -70,7 +70,7 @@ class Challenge(models.Model):
     level = models.IntegerField(choices=Level.choices, default=Level.NORMAL)
     status = models.IntegerField(choices=Status.choices, default=Status.PROCESS)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="challenges")
-    number_questions = models.PositiveIntegerField()
+    number_questions = models.PositiveIntegerField("Maximun number of questions")
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
 
     def get_resume_url(self):

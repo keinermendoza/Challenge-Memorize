@@ -6,7 +6,6 @@ from school.models import (
     StudyCategory,
     FlashCard,
     Challenge,
-    ChallengeQuestion,
 )
 
 CATEGORIES = list(StudyCategory.objects.all().values_list("id", "name"))
@@ -15,7 +14,6 @@ LEVELS = FlashCard.Level.choices
 LEVELS.insert(0, ("", "All Levels"))
 STATUS = Challenge.Status.choices
 STATUS.insert(0, ("", "All Status"))
-
 
 
 class FlashCardForm(forms.ModelForm):
@@ -29,6 +27,7 @@ class FilterChallengeForm(forms.Form):
     level = forms.ChoiceField(choices=LEVELS, required=False)
     status = forms.ChoiceField(choices=STATUS, required=False)
 
+
 class SearchFlashcardForm(forms.Form):
     category = forms.ChoiceField(choices=CATEGORIES, required=False)
     level = forms.ChoiceField(choices=LEVELS, required=False)
@@ -37,7 +36,10 @@ class SearchFlashcardForm(forms.Form):
 
 class ChallengeForm(forms.ModelForm):
     """this form REQUIRES the request object"""
-    category = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=CATEGORIES)
+
+    category = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, choices=[]
+    )
 
     class Meta:
         model = Challenge
@@ -54,28 +56,41 @@ class ChallengeForm(forms.ModelForm):
         )
         # add html max attribute
         self.fields["number_questions"].widget.attrs["max"] = flashcard_num
-        
-        # the categories in normal level that user has
-        self.fields['category'].choices = StudyCategory.objects.filter(flashcards__user=request.user).filter(flashcards__level=2).distinct().values_list("id", "name")
+
+        # all the categories associated with the user's flashcards
+        user_categories = StudyCategory.objects.filter(
+            flashcards__user=request.user
+        ).distinct()
+        self.fields["category"].choices = user_categories.values_list("id", "name")
+
+        # display only categories from 'normal' level for first render
+        if len(self.data) == 0:
+            self.fields["category"].choices = (
+                user_categories.filter(flashcards__level=2)
+                .distinct()
+                .values_list("id", "name")
+            )
 
 
 class category_field_partial(forms.Form):
-    category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                                      queryset=StudyCategory.objects.none())
-    
-    def __init__(self, *args, level=None, request=None, **kwargs):
+    category = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, queryset=StudyCategory.objects.none()
+    )
+
+    def __init__(self, *args, level=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.request = kwargs.pop('request', None)
+        self.request = kwargs.pop("request", None)
 
         if level is not None:
-            self.fields['category'].queryset = StudyCategory.objects.filter(
+            self.fields["category"].queryset = StudyCategory.objects.filter(
                 flashcards__level=level
-            ).distinct() 
-    
+            ).distinct()
+
     def clean_category(self):
         cd = super().clean()
-        flashcards_in_categories = self.request.user.flashcards.filter(category__in=cd['category']).count()
-        if len(cd['category']) != flashcards_in_categories:
-            raise forms.ValidationError("please select only valid categories") 
-        return cd['category']
-    
+        flashcards_in_categories = self.request.user.flashcards.filter(
+            category__in=cd["category"]
+        ).count()
+        if len(cd["category"]) != flashcards_in_categories:
+            raise forms.ValidationError("please select only valid categories")
+        return cd["category"]

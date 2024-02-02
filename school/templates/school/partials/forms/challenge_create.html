@@ -52,7 +52,7 @@
             name="{{form.level.name}}" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" 
             rows="3" id="{{form.level.id_for_label}}">
             {% for lev in form.level %}
-                <option selected="{{lev.data.selected}}" value="{{lev.data.value}}">{{lev.data.label}}</option>
+                <option {% if lev.data.selected %}selected{% endif %} value="{{lev.data.value}}">{{lev.data.label}}</option>
             {% endfor %}  
         </select>
     </div>
