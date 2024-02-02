@@ -7,17 +7,10 @@
 {% endfor %}
 
 <fieldset id="" class="mb-3 flex items-end gap-3">
-    <select hx-get="{% url 'school:update_sections_challenge_form' %}"
-    hx-trigger="change"
-    hx-target="#challenge-create-number-container"
-    hx-swap="innerHTML transition:true"
-    
-    
-    
-        multiple name="{{form.category.name}}" id="">
+
     {% for choice in form.category  %}
     {% if forloop.first %}
-        <div id="id_category" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
+        <div id="" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
             
             <div>
                 <label class="w-full" for="">
@@ -31,7 +24,6 @@
 
         {% endif %}
         <div id="" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
-            <option selected="{{choice.data.selected}}" value="{{choice.data.value}}">
             
         <div>
             <label for="{{choice.data.attrs.id}}">
@@ -43,7 +35,5 @@
             </label>
         </div>
     </div>
-        </option>
     {% endfor %}
-</select>
 </fieldset> 
