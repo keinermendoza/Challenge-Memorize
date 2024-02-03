@@ -38,6 +38,7 @@ def challenges(request):
     challenge_form = ChallengeForm(request=request)
     filter_challenge_form = FilterChallengeForm(data=request.GET or None)
 
+    # FILTERING challenges list
     if filter_challenge_form.is_valid():
         cd = filter_challenge_form.cleaned_data
 
@@ -46,9 +47,7 @@ def challenges(request):
         if cd["level"]:
             challenges = challenges.filter(level=cd["level"])
         if cd["category"]:
-            challenges = challenges.filter(
-                questions__category__flashcards__category=cd["category"]
-            ).distinct()
+            challenges = challenges.filter(categories=cd["category"])
 
     # returning partials in when using htmx
     if request.htmx:
@@ -75,21 +74,22 @@ def challenges(request):
 
             cd = challenge_form.cleaned_data
             flashcards_in_categories = request.user.flashcards.filter(
-                category__in=cd["category"]
-            ).count()
+                category__in=cd["categories"]
+            ).filter(level=cd["level"]).count()
 
             if not flashcards_in_categories:
                 challenge_form.add_error(
-                    None, "You don't have a flashcard in the selected categories"
+                    None, "You don't have flashcards with those specifications."
                 )
             else:
                 challenge = challenge_form.save(commit=False)
                 challenge.user = request.user
                 challenge.save()
+                challenge_form.save_m2m()
 
                 question_set = request.user.flashcards.filter(
-                    category__in=cd["category"]
-                ).order_by("?")[: challenge.number_questions]
+                    category__in=cd["categories"]
+                ).filter(level=cd["level"]).order_by("?")[: challenge.number_questions]
 
                 challenge.questions.add(*question_set)
 
@@ -118,7 +118,7 @@ def update_sections_challenge_form(request):
             {"form": form},
         )
     print(request.GET)
-    category = request.GET.get("category", None)
+    category = request.GET.get("categories", None)
     if category:
         form = category_field_partial(level=level, request=request)
         if form.is_valid():

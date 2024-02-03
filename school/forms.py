@@ -37,13 +37,13 @@ class SearchFlashcardForm(forms.Form):
 class ChallengeForm(forms.ModelForm):
     """this form REQUIRES the request object"""
 
-    category = forms.MultipleChoiceField(
+    categories = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, choices=[]
     )
 
     class Meta:
         model = Challenge
-        fields = ["title", "level", "number_questions", "category"]
+        fields = ["title", "level", "number_questions", "categories"]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
@@ -61,11 +61,11 @@ class ChallengeForm(forms.ModelForm):
         user_categories = StudyCategory.objects.filter(
             flashcards__user=request.user
         ).distinct()
-        self.fields["category"].choices = user_categories.values_list("id", "name")
+        self.fields["categories"].choices = user_categories.values_list("id", "name")
 
         # display only categories from 'normal' level for first render
         if len(self.data) == 0:
-            self.fields["category"].choices = (
+            self.fields["categories"].choices = (
                 user_categories.filter(flashcards__level=2)
                 .distinct()
                 .values_list("id", "name")
@@ -73,7 +73,7 @@ class ChallengeForm(forms.ModelForm):
 
 
 class category_field_partial(forms.Form):
-    category = forms.ModelMultipleChoiceField(
+    categories = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, queryset=StudyCategory.objects.none()
     )
 
@@ -82,15 +82,15 @@ class category_field_partial(forms.Form):
         self.request = kwargs.pop("request", None)
 
         if level is not None:
-            self.fields["category"].queryset = StudyCategory.objects.filter(
+            self.fields["categories"].queryset = StudyCategory.objects.filter(
                 flashcards__level=level
             ).distinct()
 
     def clean_category(self):
         cd = super().clean()
         flashcards_in_categories = self.request.user.flashcards.filter(
-            category__in=cd["category"]
+            category__in=cd["categories"]
         ).count()
-        if len(cd["category"]) != flashcards_in_categories:
+        if len(cd["categories"]) != flashcards_in_categories:
             raise forms.ValidationError("please select only valid categories")
-        return cd["category"]
+        return cd["categories"]

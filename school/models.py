@@ -72,6 +72,7 @@ class Challenge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="challenges")
     number_questions = models.PositiveIntegerField("Maximun number of questions")
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
+    categories = models.ManyToManyField(StudyCategory, related_name="challenges")
 
     def get_resume_url(self):
         return reverse('school:challenge_resume', args=[self.id])

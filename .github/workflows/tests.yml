@@ -1,6 +1,6 @@
 name: Test the code
 
-on: psuh
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest

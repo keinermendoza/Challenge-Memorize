@@ -1,14 +1,14 @@
 {% load dirs %}
-<label class="block mb-1" for="{{ form.category.id_for_label }}">
-    {{form.category.label}}
+<label class="block mb-1" for="{{ form.categories.id_for_label }}">
+    {{form.categories.label}}
 </label>
-{% for error in form.category.errors %}
+{% for error in form.categories.errors %}
     <p class="error_message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
 {% endfor %}
 
 <fieldset id="" class="mb-3 flex items-end gap-3">
 
-    {% for choice in form.category  %}
+    {% for choice in form.categories  %}
     {% if forloop.first %}
         <div id="" class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2">
             
