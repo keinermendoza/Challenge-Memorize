@@ -109,24 +109,28 @@ def challenges(request):
 @login_required
 @require_http_methods(["GET"])
 def update_sections_challenge_form(request):
-    level = request.GET.get("level", None)
-    if level:
-        form = category_field_partial(level=level)
-        return render(
-            request,
-            "school/partials/forms/challenge_create_sections/category.html",
-            {"form": form},
-        )
-    print(request.GET)
-    category = request.GET.get("categories", None)
-    if category:
-        form = category_field_partial(level=level, request=request)
-        if form.is_valid():
-            cd = form.cleaned_data
+    """
+        updates the categories section in the ChallengeForm
+        returns:
+            - validation success: a section-form partial with categories from FlashCard related to certain level
+            - validation fails: HTTP HEADER with status 400
+    """
+    if request.htmx:
+        level = request.GET.get("level", None)
+        if level:
+            form = category_field_partial(level=level)
+            return render(
+                request,
+                "school/partials/forms/challenge_create_sections/category.html",
+                {"form": form},
+            )
+    return HttpResponse(status=400)
 
-    return HttpResponse(status=204)
-
+@require_http_methods(["GET"])
 def start_challenge(request, challenge_id):
+    """
+        displays template with a json script of all questions challenge data 
+    """
     challenge = get_object_or_404(Challenge, id=challenge_id)
 
     questions = []
@@ -153,6 +157,12 @@ def start_challenge(request, challenge_id):
 
 @require_http_methods("PUT")
 def challenge_answer(request, question_id):
+    """
+        updates state of ChallengeQuestion
+        changes the value of challenge.status when all questions be answered
+        returns:
+            HTTP HEADER with satatus 204 or 400
+    """
     question = get_object_or_404(ChallengeQuestion, pk=question_id)
     try:
         data = json.loads(request.body)
@@ -176,8 +186,11 @@ def challenge_answer(request, question_id):
         pass
     return HttpResponse(status=400)
 
-
+@require_http_methods("GET")
 def challenge_resume(request, challenge_id):
+    """
+        displays template with a json script of all challenge data 
+    """
     challenge = get_object_or_404(Challenge, id=challenge_id)
 
     results_by_category = list(
