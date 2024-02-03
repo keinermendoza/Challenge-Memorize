@@ -41,3 +41,4 @@ class RegisterForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs={"autofocus":"autofocus"}))
     password = forms.CharField(widget=forms.PasswordInput)
+    next = forms.CharField(required=False)
