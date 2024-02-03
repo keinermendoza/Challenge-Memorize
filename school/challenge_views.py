@@ -203,7 +203,7 @@ def challenge_resume(request, challenge_id):
     )
 
     general_results = challenge.challenge_questions.aggregate(
-        answered=Count("id", filter=Q(answered=True)),
+        remaind=Count("id", filter=Q(answered=False)),
         correct=Count("id", filter=Q(correct_answered=True)),
         wrong=Count("id", filter=Q(correct_answered=False)),
     )
