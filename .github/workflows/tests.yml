@@ -1,6 +1,6 @@
 name: Test the code
 
-on: push
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -8,6 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set Up Python 3.11
     uses: actions/setup-python@v3
     with:
       python-version: '3.11'
