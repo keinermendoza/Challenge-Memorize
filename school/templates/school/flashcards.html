@@ -2,17 +2,20 @@
 {% load widget_tweaks %}
 
 {% block main %}
-<section class="flex flex-col items-center sm:flex-row sm:items-start gap-x-10 gap-y-5 justify-between ">
-    <div>
-        <div id='flashcard-form-container'>
+<section class="flex flex-col items-center sm:flex-row sm:items-start gap-x-10 gap-y-10 justify-between ">
+    <div class="flex flex-col gap-y-10">
+        <div id="flashcard-form-container">
             {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
+        </div>
+        <div id="category-form-container">
+            {% include "school/partials/forms/category_create.html" with form=category_form %}
         </div>
         <dialog class="p-5 border border-teal-300 rounded bg-darkheader text-white" id='flashcard-edit-container'>
         </dialog>
     </div>
 
-    <div>
-        <div id="search-form-container" class="mb-6">
+    <div class="flex flex-col gap-y-10">
+        <div id="search-form-container">
             {% include "school/partials/forms/flashcard_search.html" with form=search_form %}
         </div>
         <div id="section-card-list-container">

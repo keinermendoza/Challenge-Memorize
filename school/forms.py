@@ -15,6 +15,10 @@ LEVELS.insert(0, ("", "All Levels"))
 STATUS = Challenge.Status.choices
 STATUS.insert(0, ("", "All Status"))
 
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = StudyCategory
+        fields = ["name"]
 
 class FlashCardForm(forms.ModelForm):
     class Meta:

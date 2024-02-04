@@ -44,7 +44,7 @@
 
     <fieldset class="mb-3 flex items-end gap-3">
         <!-- ========= CATEGORY ========== -->
-        <div class="grow">
+        <div id="flashcard-category-container" class="grow">
             <label class="block mb-1" for="{{ flashcard_form.category.id_for_label }}">
                 {{flashcard_form.category.label}}
             </label>
@@ -69,6 +69,6 @@
     </fieldset>
 
     <div class="text-right">
-        <button class="px-2 py-1 text-black bg-teal-500" type="submit">Create</button>
+        <button class="text-xl py-1 px-2 rounded-sm bg-teal-500 hover:bg-teal-600 active:bg-teal-800 active:scale-95 text-black" type="submit">Create</button>
     </div>
 </form>

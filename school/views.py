@@ -13,17 +13,51 @@ from school.models import (
 from .forms import (
     FlashCardForm,
     SearchFlashcardForm,
+    CategoryForm
 )
 
 
 def home(request):
     return render(request, "school/home.html")
 
+@login_required
+@require_http_methods(["POST"])
+def category_create(request):
+    """
+        handles StudyCategory creation with CategoryForm throug htmx
+        returns:
+            - validation success: partial with category section to FlashCardForm
+            - validation fails: CategoryForm with error messages
+    """
+    if not request.htmx:
+        return HttpResponseForbidden()
+    
+    form = CategoryForm(request.POST)
+    if form.is_valid():        
+        form.save()
+        
+        categories = StudyCategory.objects.all()
+        category_section = FlashCardForm(initial={'category':categories})
+        return render(request, "school/partials/forms/flashcard_create_sections/category.html", {"form": category_section})
+    
+    else:
+        response = render(request, "school/partials/forms/category_create.html", {"form":form})
+        return retarget(response, "#category-form-container")
+        
+         
 
 @login_required
 def flashcard_list(request):
+    """
+        GET: displays page with:
+        - list of flashcards
+        - FlashCardForm for handle creation
+        - SearchCardForm for handle filtering
+        - CategoryForm for handle category creation  
+    """
     cards = FlashCard.objects.filter(user=request.user)
     flashcard_form = FlashCardForm()
+    category_form = CategoryForm()
     search_form = SearchFlashcardForm(request.GET or None)
 
     if search_form.is_valid():
@@ -55,7 +89,7 @@ def flashcard_list(request):
     return render(
         request,
         "school/flashcards.html",
-        {"cards": cards, "flashcard_form": flashcard_form, "search_form": search_form},
+        {"cards": cards, "flashcard_form": flashcard_form, "search_form": search_form, "category_form":category_form},
     )
 
 

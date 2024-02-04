@@ -1,0 +1,12 @@
+{% load widget_tweaks %}
+
+<div id="flashcard-category-container" class="grow">
+    <label class="block mb-1" for="{{ form.category.id_for_label }}">
+        {{form.category.label}}
+    </label>
+    {% for error in form.category.errors %}
+        <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
+    {% endfor %}
+    
+    {% render_field form.category class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2" %}
+</div>
