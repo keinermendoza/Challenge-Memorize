@@ -29,7 +29,8 @@
         
         <div class="mx-auto max-w-[1500px] h-12 flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
 
-        <span class="text-lg font-bold font-mono">🐍 KM</span>
+        <a class="font-bresse font-semibold whitespace-pre" href="{% url 'school:home' %}">Study  Flashcards</a>
+
 
         <!-- hidden in screens shorter than sm -->
         <nav class="hidden sm:flex grow justify-between">
@@ -45,6 +46,10 @@
 
             <ul class="flex gap-3">
                 {% if user.is_authenticated %}
+                <li>
+                    <span >Login as <strong>{{user.username | title}}</strong></span>
+                </li>
+
                 <li>
                     <a href="{% url 'account:logout' %}">Logout</a>
                 </li>
@@ -100,7 +105,7 @@
 
     </header>
     
-    <main class="bg-darkbody grow p-5  md:p-10">
+    <main class="bg-darkbody grow p-5 pt-10 md:p-10">
         <div class="mx-auto w-full max-w-6xl">
             {% block main %}
             {% endblock main %}

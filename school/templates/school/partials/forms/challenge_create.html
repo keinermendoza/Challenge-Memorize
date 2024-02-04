@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 {% load dirs %}
 
-<form class="" method="post" action="{% url 'school:challenges' %}"
+<form class="flex flex-col gap-y-4" method="post" action="{% url 'school:challenges' %}"
     
     >
     <!-- hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -11,7 +11,7 @@
     class="form-card" -->
 
     
-    <h2 class="text-2xl mb-3">Create a New Challenge</h2>
+    <h2 class="text-3xl font-bresse ">New Challenge</h2>
 
     {% csrf_token %}
     <!-- ========= NON FIELD ERROR ========== -->
@@ -25,7 +25,7 @@
 
     
     <!-- ========= Title ========== -->
-    <div class="mb-3">
+    <div class="">
         <label class="block mb-1" for="{{ form.title.id_for_label }}">
             {{form.title.label}}
         </label>
@@ -37,7 +37,7 @@
     </div>
 
     <!-- ========= level ========== -->
-    <div class="mb-3">
+    <div class="">
         <label class="block mb-1" for="{{ form.level.id_for_label }}">
             {{form.level.label}}
         </label>
@@ -59,13 +59,13 @@
 
     
         <!-- ========= CATEGORY ========== -->
-         <div id="challenge-create-category-container" class="grow text-white">
+         <div id="challenge-create-category-container" class=" text-white">
    
         {% include "school/partials/forms/challenge_create_sections/category.html" with form=form %}
         </div>
 
         <!-- ========= number_questions ========== -->
-        <div id="challenge-create-number-container" class="grow">
+        <div id="challenge-create-number-container" class="">
             <label class="block mb-1" for="{{ form.number_questions.id_for_label }}">
                 {{form.number_questions.label}}
             </label>

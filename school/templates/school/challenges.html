@@ -2,56 +2,71 @@
 {% load static %}
 
 {% block main %}
-<div class="text-center ">
+<section class="flex items-center justify-between gap-10 flex-col lg:flex-row ">
+    <!-- ===== CREATE CHALLENGE ===== -->
+    <div id="creation-challenge-div" class="w-full max-w-md flex flex-col gap-8">
+        {% if user.flashcards.count > 0 %}
+            <div>
+                <h1 class="text-5xl font-semibold mb-3 font-bresse">Start Challenge</h1>
+                <p class="text-lg">Choose the Name, Categories, Level and number of questions for Your Challenge</p>
+            </div>
+            
+            <!-- =====  CHALLENGE FORM ===== -->
+            <div id="challenge-form-container" class="">
+                {% include 'school/partials/forms/challenge_create.html' with form=challenge_form %}
+            </div>
 
-    {% if user.flashcards.count > 0 %}
-    <h1 class="text-3xl font-semibold">Start Challenge</h1>
-    <p>Choose the Name, Categories, Level and number of questions for Your Challenge</p>
-    <div id="challenge-form-container" class="">
-
-        {% include 'school/partials/forms/challenge_create.html' with form=challenge_form %}
+        {% else %}
+            <h1 class="text-5xl font-semibold mb-3 font-bresse">Not Ready</h1>
+            <p class="text-lg">You need to register at least one flashcard before you can create a Chalenge</p>
+            <div class="mt-5 text-center">
+                <a class="text-xl py-1 px-2 rounded-sm bg-teal-500 hover:bg-teal-600 active:bg-teal-800 active:scale-95 text-black" href="{% url 'school:flashcard_list' %}">Go to FlashCards</a>
+            </div>
+        {% endif %}
     </div>
-    {% else %}
-        <p>You need to register ___ one flashcard before you can create a Chalenge</p>
-        <a href="#">Go to FlashCards</a>
-    {% endif %}
 
-    <div id="challenges-filter-form-container" class="max-w-md mx-auto">
-        {% include "school/partials/forms/challenge_filter.html" %}
+    <!-- ===== LIST AND FILTER CHALLENGE ===== -->
+    <div id="filtering-challenge-div" class="grow text-center lg:place-self-end flex flex-col gap-8">
+
+        <!-- =====  CHALLENGE FILTER ===== -->
+        <div id="challenges-filter-form-container" class="flex justify-center">
+            {% include "school/partials/forms/challenge_filter.html" %}
+        </div>
+
+        <div id="table-challenges-container" class="w-full"> 
+            <table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
+                <thead class="text-gray-700 uppercase bg-gray-50 ">
+                    <tr>
+                        <th class="hidden sm:table-cell lg:hidden px-6 py-3">Challenge</th>
+                        <th class="px-6 py-3">Title</th>
+                        <th class="hidden md:table-cell px-6 py-3">Level</th>
+                        <th class="hidden sm:table-cell px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Resume</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600">
+                    {% for challenge in challenges %}
+                    <tr class="bg-white border-b ">
+                        <td class="hidden sm:table-cell lg:hidden px-6 py-4">{{challenge.id}}</td>
+                        <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
+                        <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
+                        <td class="hidden sm:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
+                        <td class="px-6 py-4">
+                            <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
+                                Resume
+                            </a>
+                            
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div id="table-challenges-container" class="w-full"> 
-        <table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
-            <thead class="text-gray-700 uppercase bg-gray-50 ">
-                <tr>
-                    <th class="hidden sm:table-cell px-6 py-3">Challenge</th>
-                    <th class="px-6 py-3">Title</th>
-                    <th class="hidden md:table-cell px-6 py-3">Level</th>
-                    <th class="hidden sm:table-cell px-6 py-3">Status</th>
-                    <th class="px-6 py-3">Resume</th>
-
-                </tr>
-            </thead>
-            <tbody class="text-gray-600">
-                {% for challenge in challenges %}
-                <tr class="bg-white border-b ">
-                    <td class="hidden sm:table-cell px-6 py-4">{{challenge.id}}</td>
-                    <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
-                    <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
-                    <td class="hidden sm:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
-                    <td class="px-6 py-4">
-                        <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
-                            Resume
-                        </a>
-                        
-                    </td>
-
-                </tr>
-                {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
-</div>
+</section>
 {% endblock main %}
     
