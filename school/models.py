@@ -4,7 +4,7 @@ from django.utils.text import Truncator
 from account.models import User
 
 class StudyCategory(models.Model): # fcat
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]
@@ -29,7 +29,7 @@ class AbstractCard(models.Model):
 
     @property
     def shorted_question(self):
-        return Truncator(text=self.question).words(num=6)
+        return Truncator(text=self.question).words(num=6, truncate=" …")
 
     def __str__(self):
         return self.shorted_question
@@ -46,8 +46,8 @@ class FlashCard(AbstractCard):
     def is_multiple_choice(self):
         return False
     
-    def get_absolute_url(self):
-        return reverse("flashcards", args={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("flashcards", args={"pk": self.pk})
     
     class Meta:
         ordering = ["-created"]
