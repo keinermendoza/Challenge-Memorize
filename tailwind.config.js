@@ -7,6 +7,9 @@ module.exports = {
         darkbody : "#15022b",
         darkheader: "#2b1740",
       },
+      fontFamily: {
+        bresse: ["bresse", "sans-serif"],
+      },
     },
   },
   plugins: [],

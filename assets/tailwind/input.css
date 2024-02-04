@@ -5,3 +5,20 @@
 .d-none {
     display:none;
 }
+
+@font-face{
+    font-family: 'nunito';
+    src: url('../fonts/nunitosans-variablefont_ytlcopszwdthwght.woff') format('woff');
+}
+
+@font-face{
+    font-family: 'bresse';
+    src: url('../fonts/breeserif-regular-webfont.woff') format('woff');
+}
+
+
+@layer base {
+    html {
+      font-family: 'nunito', monospace;
+    }
+  }
