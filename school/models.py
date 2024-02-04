@@ -46,9 +46,7 @@ class FlashCard(AbstractCard):
     def is_multiple_choice(self):
         return False
     
-    # def get_absolute_url(self):
-    #     return reverse("flashcards", args={"pk": self.pk})
-    
+
     class Meta:
         ordering = ["-created"]
         indexes = [models.Index(

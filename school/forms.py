@@ -63,8 +63,9 @@ class ChallengeForm(forms.ModelForm):
         ).distinct()
         self.fields["categories"].choices = user_categories.values_list("id", "name")
 
+            
         # display only categories from 'normal' level for first render
-        if len(self.data) == 0:
+        if len(self.data) == 0 or self.errors:
             self.fields["categories"].choices = (
                 user_categories.filter(flashcards__level=2)
                 .distinct()
