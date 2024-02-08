@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <p>Use the next button for upload a CSV file <strong>{{modelo_name}}</strong></p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit Data</button>
+    </form>
+    <small>The only formatt suportted is .csv</small>
+
+{% endblock content %}

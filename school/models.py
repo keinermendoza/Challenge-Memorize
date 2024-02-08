@@ -11,6 +11,7 @@ class StudyCategory(models.Model): # fcat
         indexes = [models.Index(
             fields=["name"]
         )]
+
     def __str__(self):
         return self.name
 
@@ -45,7 +46,6 @@ class FlashCard(AbstractCard):
     @property
     def is_multiple_choice(self):
         return False
-    
 
     class Meta:
         ordering = ["-created"]
@@ -72,6 +72,9 @@ class Challenge(models.Model):
     questions = models.ManyToManyField(FlashCard, through='ChallengeQuestion')
     categories = models.ManyToManyField(StudyCategory, related_name="challenges")
 
+    def __str__(self):
+        return self.title
+
     def get_resume_url(self):
         return reverse('school:challenge_resume', args=[self.id])
 
@@ -85,6 +88,9 @@ class ChallengeQuestion(models.Model):
 
     def get_response_url(self):
         return reverse('school:challenge_answer', args=[self.id])
+    
+    def __str__(self):
+        return f"#{self.id} from flashcard: {self.flashcard}"
     
 
 
