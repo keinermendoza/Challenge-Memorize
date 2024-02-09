@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Count, F, Case, When, Q
 
-from django_htmx.http import retarget, reswap, trigger_client_event
+from django_htmx.http import retarget, reswap, trigger_client_event, HttpResponseClientRedirect
 from school.models import (
     Challenge,
     ChallengeQuestion,
@@ -23,77 +23,15 @@ from .forms import (
 def challenges(request):
     """
         GET: display list of user's challenges
-        HX-GET: handles the filtration list of user's challenges using FilterChallengeForm
-            returns parital of: 
-            - validation success: new list of challenges
-            - validation error: filter form with errors
-        
-        POST: handles the creation of new challenge using ChallengeForm
-            returns:
-            - validation success: redirection to school:start_challenge
-            - validation error: the same view when GET but with ChallengeForm errors
+            creation challenge form
+            filter challenge form
     """
 
     challenges = request.user.challenges.all()
     challenge_form = ChallengeForm(request=request)
-    filter_challenge_form = FilterChallengeForm(data=request.GET or None)
+    filter_challenge_form = FilterChallengeForm()
 
-    # FILTERING challenges list
-    if filter_challenge_form.is_valid():
-        cd = filter_challenge_form.cleaned_data
-
-        if cd["status"]:
-            challenges = challenges.filter(status=cd["status"])
-        if cd["level"]:
-            challenges = challenges.filter(level=cd["level"])
-        if cd["category"]:
-            challenges = challenges.filter(categories=cd["category"])
-
-    # returning partials in when using htmx
-    if request.htmx:
-
-        if len(filter_challenge_form.errors) == 0:
-            response = render(
-                request,
-                "school/partials/challenges/table.html",
-                {"challenges": challenges},
-            )
-            return trigger_client_event(response, "clean_errors")
-        else:
-            response = render(
-                request,
-                "school/partials/forms/challenge_filter.html",
-                {"filter_challenge_form": filter_challenge_form},
-            )
-            return retarget(response, "#challenges-filter-form-container")
-
-    if request.method == "POST":
-        challenge_form = ChallengeForm(data=request.POST, request=request)
-
-        if challenge_form.is_valid():
-
-            cd = challenge_form.cleaned_data
-            flashcards_in_categories = request.user.flashcards.filter(
-                category__in=cd["categories"]
-            ).filter(level=cd["level"]).count()
-
-            if not flashcards_in_categories:
-                challenge_form.add_error(
-                    None, "You don't have flashcards with those specifications."
-                )
-            else:
-                challenge = challenge_form.save(commit=False)
-                challenge.user = request.user
-                challenge.save()
-                challenge_form.save_m2m()
-
-                question_set = request.user.flashcards.filter(
-                    category__in=cd["categories"]
-                ).filter(level=cd["level"]).order_by("?")[: challenge.number_questions]
-
-                challenge.questions.add(*question_set)
-
-                return redirect(reverse("school:start_challenge", args=[challenge.id]))
+        
 
     return render(
         request,
@@ -104,6 +42,86 @@ def challenges(request):
             "challenges": challenges,
         },
     )
+
+@login_required
+@require_http_methods(["POST"])
+def challenge_create(request):
+    """
+        HX-POST: handles the creation of new challenge using ChallengeForm
+            returns:
+            - validation success: redirection to school:start_challenge
+            - validation error: the same view when GET but with ChallengeForm errors
+    """
+    if not request.htmx:
+        return HttpResponseForbidden()
+    
+    form = ChallengeForm(data=request.POST, request=request)
+
+    if form.is_valid():
+        cd = form.cleaned_data
+
+        challenge = form.save(commit=False)
+        challenge.user = request.user
+        challenge.save()
+        form.save_m2m()
+
+        question_set = request.user.flashcards.filter(
+            category__in=cd["categories"]
+        ).filter(level=cd["level"]).order_by("?")[: challenge.number_questions]
+
+        challenge.questions.add(*question_set)
+        return HttpResponseClientRedirect(reverse("school:start_challenge", args=[challenge.id]))
+    
+    response = render(
+            request,
+            "school/partials/forms/challenge_create.html",
+            {"form": form},
+        )
+    response = retarget(response, "#challenge-form-container")
+    return reswap(response, 'innerHTML')
+
+@login_required
+@require_http_methods(["GET"])
+def challenge_filter(request):
+    """
+      HX-GET: handles the filtration list of user's challenges using FilterChallengeForm
+            returns parital of: 
+            - validation success: new list of challenges
+            - validation error: filter form with errors
+    """
+    if not request.htmx:
+        return HttpResponseForbidden()
+    
+    challenges = request.user.challenges.all()
+    filter_challenge_form = FilterChallengeForm(request.GET)
+
+     # FILTERING challenges list
+    if filter_challenge_form.is_valid():
+        cd = filter_challenge_form.cleaned_data
+
+        if cd["status"]:
+            challenges = challenges.filter(status=cd["status"])
+        if cd["level"]:
+            challenges = challenges.filter(level=cd["level"])
+        if cd["category"]:
+            challenges = challenges.filter(categories=cd["category"])
+
+        # if len(filter_challenge_form.errors) == 0:
+
+        response = render(
+            request,
+            "school/partials/challenges/table.html",
+            {"challenges": challenges},
+        )
+        return trigger_client_event(response, "clean_errors")
+    else:
+        response = render(
+            request,
+            "school/partials/forms/challenge_filter.html",
+            {"filter_challenge_form": filter_challenge_form},
+        )
+        return retarget(response, "#challenges-filter-form-container")
+    
 
 
 @login_required

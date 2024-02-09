@@ -1,14 +1,12 @@
 {% load widget_tweaks %}
 {% load dirs %}
 
-<form class="flex flex-col gap-y-4" method="post" action="{% url 'school:challenges' %}"
-    
-    >
-    <!-- hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    hx-post="{% url 'school:challenges' %}"
-    hx-target="#card-list-container"
-    hx-swap="afterbegin"
-    class="form-card" -->
+<form class="flex flex-col gap-y-4" method="post" action="{% url 'school:challenge_create' %}"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'school:challenge_create' %}"
+    hx-swap="none"
+    class="form-card"
+>
 
     
     <h2 class="text-3xl font-bresse ">New Challenge</h2>

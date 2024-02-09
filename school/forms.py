@@ -1,6 +1,7 @@
-import copy
 from django import forms
 from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 from school.models import (
     StudyCategory,
@@ -50,8 +51,8 @@ class ChallengeForm(forms.ModelForm):
         fields = ["title", "level", "number_questions", "categories"]
 
     def __init__(self, *args, **kwargs):
-        request = kwargs.pop("request", None)
-        flashcard_num = request.user.flashcards.count()
+        self.request = kwargs.pop("request", None)
+        flashcard_num = self.request.user.flashcards.count()
         super(ChallengeForm, self).__init__(*args, **kwargs)
 
         # add validation
@@ -63,7 +64,7 @@ class ChallengeForm(forms.ModelForm):
 
         # all the categories associated with the user's flashcards
         user_categories = StudyCategory.objects.filter(
-            flashcards__user=request.user
+            flashcards__user=self.request.user
         ).distinct()
         self.fields["categories"].choices = user_categories.values_list("id", "name")
 
@@ -76,6 +77,18 @@ class ChallengeForm(forms.ModelForm):
                 .values_list("id", "name")
             )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        category_match = Q(category__in=cleaned_data.get("categories", []))
+        level_match = Q(level=cleaned_data.get("level", None))
+
+        if not self.request.user.flashcards.filter(
+            category_match,
+            level_match
+        ).count():
+            raise ValidationError("You don't have flashcards with those specifications")
+        
+        return cleaned_data
 
 class category_field_partial(forms.Form):
     categories = forms.ModelMultipleChoiceField(
@@ -92,7 +105,7 @@ class category_field_partial(forms.Form):
             ).distinct()
 
     def clean_category(self):
-        cd = super().clean()
+        cd = super().clean_category()
         flashcards_in_categories = self.request.user.flashcards.filter(
             category__in=cd["categories"]
         ).count()

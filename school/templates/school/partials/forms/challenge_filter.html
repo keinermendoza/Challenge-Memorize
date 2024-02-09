@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
-<form action="{% url 'school:challenges' %}"
-    hx-get="{% url 'school:challenges' %}"
+<form action="{% url 'school:challenge_filter' %}"
+    hx-get="{% url 'school:challenge_filter' %}"
     hx-target="#table-challenges-container"
     hx-swap="innerHTML transition:true">
 

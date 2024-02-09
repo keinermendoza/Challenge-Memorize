@@ -14,6 +14,10 @@ urlpatterns = [
 
 
     path('challenges/', challenge_views.challenges, name='challenges'),
+    path('challenge/filter/', challenge_views.challenge_filter, name='challenge_filter'),
+    path('challenge/create/', challenge_views.challenge_create, name='challenge_create'),
+
+
     path('challenge/start/<int:challenge_id>', challenge_views.start_challenge, name='start_challenge'),
     path('challenge/answer/<int:question_id>/', challenge_views.challenge_answer, name='challenge_answer'),
 
