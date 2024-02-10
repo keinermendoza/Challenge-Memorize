@@ -21,15 +21,27 @@ class FlashCardForm(forms.ModelForm):
 
 
 class FilterChallengeForm(forms.Form):
-    category = forms.ChoiceField(choices=StudyCategory.get_categories_tuple(), required=False)
-    level = forms.ChoiceField(choices=FlashCard.get_flashcard_levels_tuple(), required=False)
-    status = forms.ChoiceField(choices=Challenge.get_challenge_status_tuple(), required=False)
+    category = forms.ChoiceField(choices=[], required=False)
+    level = forms.ChoiceField(choices=[], required=False)
+    status = forms.ChoiceField(choices=[], required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(FilterChallengeForm, self).__init__(*args, **kwargs)
+        self.fields["category"].choices = StudyCategory.get_categories_tuple()
+        self.fields["level"].choices = FlashCard.get_flashcard_levels_tuple()
+        self.fields["status"].choices = Challenge.get_challenge_status_tuple()
 
 
 class SearchFlashcardForm(forms.Form):
-    category = forms.ChoiceField(choices=StudyCategory.get_categories_tuple(), required=False)
-    level = forms.ChoiceField(choices=FlashCard.get_flashcard_levels_tuple(), required=False)
+    category = forms.ChoiceField(choices=[], required=False)
+    level = forms.ChoiceField(choices=[], required=False)
     question = forms.CharField(max_length=20, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchFlashcardForm, self).__init__(*args, **kwargs)
+        self.fields["category"].choices = StudyCategory.get_categories_tuple()
+        self.fields["level"].choices = FlashCard.get_flashcard_levels_tuple()
+
 
 
 class ChallengeForm(forms.ModelForm):
