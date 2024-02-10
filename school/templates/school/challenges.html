@@ -42,6 +42,7 @@
                         <th class="hidden md:table-cell px-6 py-3">Level</th>
                         <th class="hidden sm:table-cell px-6 py-3">Status</th>
                         <th class="px-6 py-3">Resume</th>
+                        <th class="px-6 py-3">Continue</th>
 
                     </tr>
                 </thead>
@@ -56,9 +57,14 @@
                             <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
                                 Resume
                             </a>
-                            
                         </td>
-
+                        <td>
+                        {% if challenge.status == 0 %}
+                            <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_start_challenge_url}}">
+                                Go to Challenge
+                            </a>
+                        {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
 

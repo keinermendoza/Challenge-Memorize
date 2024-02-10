@@ -109,6 +109,9 @@ class Challenge(models.Model):
     def get_resume_url(self):
         return reverse('school:challenge_resume', args=[self.id])
     
+    def get_start_challenge_url(self):
+        return reverse('school:start_challenge', args=[self.id])
+    
     @classmethod
     def get_challenge_status_tuple(cls):
         status = cls.Status.choices

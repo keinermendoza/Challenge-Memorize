@@ -223,7 +223,7 @@ def challenge_resume(request, challenge_id):
     general_results = challenge.challenge_questions.aggregate(
         remaind=Count("id", filter=Q(answered=False)),
         correct=Count("id", filter=Q(correct_answered=True)),
-        wrong=Count("id", filter=Q(correct_answered=False)),
+        wrong=Count("id", filter=Q(correct_answered=False) & Q(answered=True)),
     )
 
     data = {"detail": results_by_category, "general": general_results}
