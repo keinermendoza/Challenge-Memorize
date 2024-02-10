@@ -1,11 +1,9 @@
 from django.db import models
-from django.db.models import Q
-
 from django.urls import reverse
 from django.utils.text import Truncator
 from account.models import User
 
-class StudyCategory(models.Model): # fcat
+class StudyCategory(models.Model): 
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -67,11 +65,24 @@ class FlashCard(AbstractCard):
         levels.insert(0, ("", "All Levels"))
         return levels
     
+    def save(self, *args, **kwargs):
+        self.question = self.question.lower() 
+        super(FlashCard, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ["-created"]
         indexes = [models.Index(
             fields=["-created"]
         )]
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "question",
+                    "user"
+                ],
+                name="unique_flashcard_question_by_user_constraint")
+        ]
+
 
 class Challenge(models.Model):
     class Level(models.IntegerChoices):
@@ -105,8 +116,8 @@ class Challenge(models.Model):
         return status
 
 class ChallengeQuestion(models.Model):
-    flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
+    flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE, related_name='challenge_questions')
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='challenge_questions')
     answered = models.BooleanField(default=False)
     correct_answered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

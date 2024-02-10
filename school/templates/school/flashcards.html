@@ -4,8 +4,11 @@
 {% block main %}
 <section class="flex flex-col items-center sm:flex-row sm:items-start gap-x-10 gap-y-10 justify-between ">
     <div class="flex flex-col gap-y-10">
-        <div id="flashcard-form-container">
-            {% include "school/partials/forms/create_flashcard.html" with flashcard_form=flashcard_form %}
+        <div id="flashcard-form-container" 
+            hx-get="{% url 'school:fresh_flashcard_form'%}"
+            hx-trigger="fresh_flashcard_form from:body"
+            hx-swap="innerHTML transition:true">
+            {% include "school/partials/forms/create_flashcard.html" with form=flashcard_form %}
         </div>
         <div id="category-form-container">
             {% include "school/partials/forms/category_create.html" with form=category_form %}

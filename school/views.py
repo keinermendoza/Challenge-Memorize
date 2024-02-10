@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseForbidden, QueryDict
+from django.db import IntegrityError
 
 from django_htmx.http import retarget, reswap, trigger_client_event
 from school.models import (
@@ -38,15 +39,16 @@ def category_create(request):
         
         categories = StudyCategory.objects.all()
         category_section = FlashCardForm(initial={'category':categories})
-        return render(request, "school/partials/forms/flashcard_create_sections/category.html", {"form": category_section})
+        response = render(request, "school/partials/forms/flashcard_create_sections/category.html", {"form": category_section})
+        return trigger_client_event(response, "clean_errors")
+    
     
     else:
         response = render(request, "school/partials/forms/category_create.html", {"form":form})
         return retarget(response, "#category-form-container")
-        
-         
 
-@login_required
+
+
 def flashcard_list(request):
     """
         GET: displays page with:
@@ -101,23 +103,37 @@ def flashcard_create(request):
     if form.is_valid():
         flashcard = form.save(commit=False)
         flashcard.user = request.user
-        flashcard.save()
+        try:
+            flashcard.save()
+            response = render(
+                request,
+                "school/partials/cards/detail.html",
+                {"card": flashcard, "new_card": True},
+            )
+            return trigger_client_event(response, "fresh_flashcard_form")
+        
+        except IntegrityError:
+            form.add_error("question", "You already registred this question")
+            
+    response = render(
+        request,
+        "school/partials/forms/create_flashcard.html",
+        {"form": form},
+    )
+    response = reswap(response, "innerHTML")
+    return retarget(response, "#flashcard-form-container")
 
-        # cards = get_all_user_cards(request)
-        return render(
-            request,
-            "school/partials/cards/detail.html",
-            {"card": flashcard, "new_card": True},
-        )
-    else:
-        response = render(
-            request,
-            "school/partials/forms/create_flashcard.html",
-            {"flashcard_form": form},
-        )
-        response = reswap(response, "innerHTML")
-        return retarget(response, "#flashcard-form-container")
-
+@login_required
+@require_http_methods(["GET"])
+def fresh_flashcard_form(request):
+    """
+        Return a fresh instance of the flashcard form
+    """
+    if not request.htmx:
+        return HttpResponseForbidden()
+    form = FlashCardForm()
+    return render(request, "school/partials/forms/create_flashcard.html", {"form":form})
+    
 
 @login_required
 @require_http_methods(["GET", "POST"])
