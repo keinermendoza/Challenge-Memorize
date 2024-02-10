@@ -14,6 +14,12 @@ class CategoryForm(forms.ModelForm):
         model = StudyCategory
         fields = ["name"]
 
+    def clean_name(self):
+        if name := self.cleaned_data.get("name", None):
+            if StudyCategory.objects.filter(name=name.lower()):
+                raise forms.ValidationError(f"Sorry, the Category {name} is already registred") 
+        return name     
+
 class FlashCardForm(forms.ModelForm):
     class Meta:
         model = FlashCard
@@ -110,10 +116,10 @@ class category_field_partial(forms.Form):
             ).distinct()
 
     def clean_category(self):
-        cd = super().clean_category()
-        flashcards_in_categories = self.request.user.flashcards.filter(
-            category__in=cd["categories"]
-        ).count()
-        if len(cd["categories"]) != flashcards_in_categories:
-            raise forms.ValidationError("please select only valid categories")
-        return cd["categories"]
+        if categories := self.cleaned_data.get("categories", None):
+            flashcards = self.request.user.flashcards
+            flashcards_match_number = flashcards.filter(category__in=categories).count()
+            
+            if len(categories) != flashcards_match_number:
+                raise forms.ValidationError("please select only valid categories")
+            return categories

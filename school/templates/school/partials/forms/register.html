@@ -43,7 +43,8 @@
                 id="{{field.id_for_label}}" name="{{field.name}}"
                 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2"
                 {% if field.value %} value="{{field.value}}"{% endif %}
-                {% if forloop.first %} autofocus{% endif %}>
+                {% if forloop.first %} autofocus{% endif %}
+                {% if field.field.required %}required{% endif %}>
         </div>
   
         {% comment %} other inputs {% endcomment %}
@@ -61,7 +62,8 @@
                 id="{{field.id_for_label}}" name="{{field.name}}"
                 class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2"
                 {% if field.value %} value="{{field.value}}"{% endif %}
-                {% if forloop.first %} autofocus{% endif %}>
+                {% if forloop.first %} autofocus{% endif %}
+                {% if field.field.required %}required{% endif %}>
         </div>
         {% endif %}
     {% endfor %}

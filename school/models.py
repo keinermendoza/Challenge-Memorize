@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from django.urls import reverse
 from django.utils.text import Truncator
 from account.models import User
@@ -11,6 +13,11 @@ class StudyCategory(models.Model): # fcat
         indexes = [models.Index(
             fields=["name"]
         )]
+        constraints = [
+            models.UniqueConstraint(
+                models.functions.Lower("name"),
+                name="category_name_constraint")
+        ]
 
     def __str__(self):
         return self.name

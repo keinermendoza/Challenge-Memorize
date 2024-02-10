@@ -5,7 +5,7 @@
     
 
      <!-- ========= NON FIELD ERROR ========== -->
-     {% if flashcard_form.non_field_errors %}
+     {% if form.non_field_errors %}
      <div class="non-field-errors">
          {% for error in form.non_field_errors %}
          <p class="error-message text-red-400 text-sm mb-[0.15em]">{{ error }}</p>
@@ -50,7 +50,8 @@
                         id="{{field.id_for_label}}" name="{{field.name}}"
                         class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2"
                         {% if field.value %} value="{{field.value}}"{% endif %}
-                        {% if forloop.first %} autofocus{% endif %}>
+                        {% if forloop.first %} autofocus{% endif %}
+                        {% if field.field.required %}required{% endif %}>
                 </div>
             
             {% comment %} other inputs {% endcomment %}
@@ -68,7 +69,8 @@
                         id="{{field.id_for_label}}" name="{{field.name}}"
                         class="w-full bg-gray-800 border border-teal-300 rounded py-1 px-2"
                         {% if field.value %} value="{{field.value}}"{% endif %}
-                        {% if forloop.first %} autofocus{% endif %}>
+                        {% if forloop.first %} autofocus{% endif %}
+                        {% if field.field.required %}required{% endif %}>
                 </div>
             {% endif %}
 

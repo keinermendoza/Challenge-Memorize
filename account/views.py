@@ -47,6 +47,7 @@ def login_view(request):
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(email=cd["email"], password=cd["password"])
+            
             if user is not None:
                 login(request, user)
                 
@@ -57,7 +58,8 @@ def login_view(request):
                         return redirect(page_requested)
 
                 return redirect(reverse("school:home"))
-                
+            else:
+                form.add_error(None, "Sorry, Invalid Email or Password")    
     return render(request, "school/login.html", {"form":form, "next":next_page})
 
 def logout_view(request):
