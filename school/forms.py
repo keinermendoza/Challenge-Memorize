@@ -9,12 +9,17 @@ from school.models import (
     Challenge,
 )
 
-CATEGORIES = list(StudyCategory.objects.all().values_list("id", "name"))
-CATEGORIES.insert(0, ("", "All Categories"))
-LEVELS = FlashCard.Level.choices
-LEVELS.insert(0, ("", "All Levels"))
-STATUS = Challenge.Status.choices
-STATUS.insert(0, ("", "All Status"))
+# TODO
+# CATEGORIES = list(StudyCategory.objects.all().values_list("id", "name"))
+# CATEGORIES.insert(0, ("", "All Categories"))
+# LEVELS = FlashCard.Level.choices
+# LEVELS.insert(0, ("", "All Levels"))
+# STATUS = Challenge.Status.choices
+# STATUS.insert(0, ("", "All Status"))
+
+CATEGORIES = []
+LEVELS = []
+STATUS = []
 
 class CategoryForm(forms.ModelForm):
     class Meta:
