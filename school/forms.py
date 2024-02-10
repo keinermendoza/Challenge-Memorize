@@ -9,18 +9,6 @@ from school.models import (
     Challenge,
 )
 
-# TODO
-# CATEGORIES = list(StudyCategory.objects.all().values_list("id", "name"))
-# CATEGORIES.insert(0, ("", "All Categories"))
-# LEVELS = FlashCard.Level.choices
-# LEVELS.insert(0, ("", "All Levels"))
-# STATUS = Challenge.Status.choices
-# STATUS.insert(0, ("", "All Status"))
-
-CATEGORIES = []
-LEVELS = []
-STATUS = []
-
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = StudyCategory
@@ -33,14 +21,14 @@ class FlashCardForm(forms.ModelForm):
 
 
 class FilterChallengeForm(forms.Form):
-    category = forms.ChoiceField(choices=CATEGORIES, required=False)
-    level = forms.ChoiceField(choices=LEVELS, required=False)
-    status = forms.ChoiceField(choices=STATUS, required=False)
+    category = forms.ChoiceField(choices=StudyCategory.get_categories_tuple(), required=False)
+    level = forms.ChoiceField(choices=FlashCard.get_flashcard_levels_tuple(), required=False)
+    status = forms.ChoiceField(choices=Challenge.get_challenge_status_tuple(), required=False)
 
 
 class SearchFlashcardForm(forms.Form):
-    category = forms.ChoiceField(choices=CATEGORIES, required=False)
-    level = forms.ChoiceField(choices=LEVELS, required=False)
+    category = forms.ChoiceField(choices=StudyCategory.get_categories_tuple(), required=False)
+    level = forms.ChoiceField(choices=FlashCard.get_flashcard_levels_tuple(), required=False)
     question = forms.CharField(max_length=20, required=False)
 
 

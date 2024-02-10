@@ -14,6 +14,12 @@ class StudyCategory(models.Model): # fcat
 
     def __str__(self):
         return self.name
+    
+    @classmethod
+    def get_categories_tuple(cls):
+        categories = list(cls.objects.all().values_list("id", "name"))
+        categories.insert(0, ("", "All Categories"))
+        return categories
 
 class AbstractCard(models.Model):
     """BASE CLASS for inerith to FlashCard and ChoiceCard"""
@@ -47,6 +53,13 @@ class FlashCard(AbstractCard):
     def is_multiple_choice(self):
         return False
 
+
+    @classmethod
+    def get_flashcard_levels_tuple(cls):
+        levels = cls.Level.choices
+        levels.insert(0, ("", "All Levels"))
+        return levels
+    
     class Meta:
         ordering = ["-created"]
         indexes = [models.Index(
@@ -77,6 +90,12 @@ class Challenge(models.Model):
 
     def get_resume_url(self):
         return reverse('school:challenge_resume', args=[self.id])
+    
+    @classmethod
+    def get_challenge_status_tuple(cls):
+        status = cls.Status.choices
+        status.insert(0, ("", "All Status"))
+        return status
 
 class ChallengeQuestion(models.Model):
     flashcard = models.ForeignKey(FlashCard, on_delete=models.CASCADE, related_name='challenge_questions') # name for acces
