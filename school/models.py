@@ -92,28 +92,3 @@ class ChallengeQuestion(models.Model):
     def __str__(self):
         return f"#{self.id} from flashcard: {self.flashcard}"
     
-
-
-class ChoicesCard(AbstractCard): # f
-    category = models.ForeignKey(StudyCategory ,related_name="choicecards", on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, related_name="choicecards", on_delete=models.DO_NOTHING)
-
-    @property
-    def is_multiple_choice(self):
-        return True
-    
-    def get_absolute_url(self):
-        return reverse("flashcards", args={"pk": self.pk})
-    
-    class Meta:
-        ordering = ["-created"]
-        indexes = [models.Index(
-            fields=["-created"]
-        )]
-
-class ChoicesCardAnswerOptions(models.Model): #f opt
-    option = models.CharField(max_length=100)
-    right = models.BooleanField(default=False)
-    question = models.ForeignKey(ChoicesCard, related_name="option", on_delete=models.CASCADE, blank=True)
-
-
