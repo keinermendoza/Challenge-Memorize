@@ -15,6 +15,7 @@ class Challenger {
         
         this.render;
         this.createBtns();
+        this.jsConfetti;
         this.clickWrong;
         this.clickCorrect;
     }
@@ -29,7 +30,12 @@ class Challenger {
 
 
     clickWrong() {
-		console.log('wrong')
+        this.jsConfetti.addConfetti({
+            emojis: ['💩'],
+            emojiSize: 60,
+            confettiNumber: 1,
+          })
+
         this.putRequest(false)
         this.wrong.push(this.data[this.question].id)
         this.answered.push(this.data[this.question].id)
@@ -37,7 +43,7 @@ class Challenger {
     }
 
     clickCorrect() {
-		console.log('correct')
+        this.jsConfetti.addConfetti()
         this.putRequest(true)
         this.correct.push(this.data[this.question].id)
         this.answered.push(this.data[this.question].id)
@@ -62,19 +68,30 @@ class Challenger {
     }
 
     end() {
+        this.jsConfetti.addConfetti({
+            emojis: ['💎'],
+            emojiSize: 30,
+            confettiNumber: 70,
+          })
+
         this.render()
-        console.log('THE END')
         this.btnCorrect.style.display = 'none'
         this.btnWrong.style.display = 'none'
         
     }
 
     createBtns() {
+        this.jsConfetti = new JSConfetti()
+
         this.btnWrong = document.createElement('button')
         this.btnCorrect = document.createElement('button')
         
         this.btnWrong.innerHTML = 'Wrong'
         this.btnCorrect.innerHTML = 'Correct'
+
+        this.btnWrong.className = 'rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95' 
+        this.btnCorrect.className = 'rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95'
+
 
         this.btnCorrect.onclick = () => this.clickCorrect()
         this.btnWrong.onclick = () => this.clickWrong()
@@ -94,7 +111,7 @@ class Challenger {
         cardContainer.innerHTML = `
 
         <div>
-            <div class="text-sm sm:text-lg sm:font-semibold py-2 px-1 bg-darkbody flex justify-around gap-3 mb-3">
+            <div class="text-sm sm:text-lg sm:font-semibold m-3 py-2 px-4 bg-darkbody flex justify-between gap-3 mb-3">
                 <span class="text-center">
                     Correct: ${this.correct.length}
 
@@ -110,10 +127,10 @@ class Challenger {
 
             </div>
 
-            <article class="">
+            <article class="mx-3">
                 <div class="mb-3 flex justify-between">
                     <span class="text-sm rounded px-2 py-1 bg-darkbody">
-                        ${this.data[this.question].category}
+                        ${this.data[this.question].category.toUpperCase()}
                         
                     </span>
                     <span class="text-sm rounded px-2 py-1 bg-darkbody">
@@ -127,7 +144,7 @@ class Challenger {
             
             
                 <div class="text-end">
-                    <button onclick="toggleAnswerVisiblity(this)" class="p-3 bg-blue-500">Show Answer</button>
+                    <button onclick="toggleAnswerVisiblity(this)" class="rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95">Show</button>
                 </div>
 
                 <div class="answer-acordeon">
@@ -146,7 +163,7 @@ class Challenger {
         `
         // create html container for buttons
         const buttonContainer = document.createElement('div')
-        buttonContainer.className = "flex justify-between"
+        buttonContainer.className = "flex justify-between mt-3 py-4 px-3 bg-teal-700"
         buttonContainer.append(this.btnCorrect, this.btnWrong)
         
         // insert card and buttons in the container

@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+
     const data = JSON.parse(document.getElementById('questions_data').textContent)
     const asnwered = data.filter(question => question.answered)
     

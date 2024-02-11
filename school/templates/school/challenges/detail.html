@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block script %}
+<script async src="{% static 'js/js-confeti.js' %}"></script>
 <script  src="{% static 'school/js/Challenger.js' %}"></script>
 <script src="{% static 'school/js/challengeDetail.js' %}"></script>
 {{questions|json_script:"questions_data" }}
@@ -11,16 +12,25 @@
 {% block main %}
     {% comment %} <div   class="p-5 border border-teal-300 rounded bg-darkheader text-white" id='flashcard-edit-container'>
     </div> {% endcomment %}
-
-
-    <div id="challenge-detail" class="rounded p-3 mb-5 mx-auto max-w-xl bg-darkheader border border-teal-300">
-
-        
-
-    </div>
-
+<section class="flex flex-col items-center justify-center min-h-[80vh]">
     <div class="text-center">
-        <a class="text-black text-2xl px-2 py-1 rounded bg-teal-500"  href="{% url 'school:challenge_resume' challenge_id %}">Go to Resume</a>
+        <h2 class="text-xl font-bresse mb-2">Wellcome To</h2>
+        <h1 class="text-5xl font-bresse mb-2">{{challenge}}</h1>
+        <p class="text-lg mb-10 max-w-md">
+            Try to answer the question, use the button <q>Show Answer</q> to check your answer
+            and finally mark the question as <q>Correct</q> or <q>Incorrect</q>
+        </p>
     </div>
+
+    <div id="challenge-detail" class="rounded w-full max-w-xl bg-darkheader border border-teal-300">
+    </div>
+
+    <div class="text-center mt-20">
+        <a class="transition-colors text-black border-amber-300 border-4 text-3xl font-bresse px-4 py-3 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" 
+        href="{% url 'school:challenge_resume' challenge.id %}">Go to Resume</a>
+    </div>
+
+</section>
+
 {% endblock main %}
 

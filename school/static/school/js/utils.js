@@ -2,9 +2,9 @@
 function toggleAnswerVisiblity(btn) {
     btn.parentElement.nextElementSibling.classList.toggle('is-open')
     if (btn.parentElement.nextElementSibling.classList.contains('is-open')) {
-        btn.innerHTML = 'Hide Answer'
+        btn.innerHTML = 'Hide'
     } else {
-        btn.innerHTML = 'Show Answer'
+        btn.innerHTML = 'Show'
     }
 }
 
