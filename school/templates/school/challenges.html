@@ -6,13 +6,13 @@
 {% with flashcard_exits=user.flashcards.count %}
 
 {% if flashcard_exits %}
-    <div class="mb-5 max-w-md mx-auto lg:mx-0">
+    <div class="mb-8 max-w-md mx-auto lg:mx-0">
         <h1 class="text-5xl font-semibold mb-3 font-bresse">Start Challenge</h1>
         <p class="text-lg">Choose the Name, Categories, Level and number of questions for Your Challenge</p>
     </div>
 {% endif %}
 
-<section class="flex items-center justify-between gap-10 flex-col lg:flex-row ">
+<section class="flex items-center justify-between gap-10 flex-col lg:items-start lg:flex-row ">
 
     <div id="creation-challenge-div" class="w-full max-w-md flex flex-col gap-8">
         {% if flashcard_exits %}
@@ -60,13 +60,13 @@
                         <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
                         <td class="hidden md:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
                         <td class="px-6 py-4">
-                            <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
+                            <a class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" href="{{challenge.get_resume_url}}">
                                 Resume
                             </a>
                         </td>
                         <td class="hidden sm:table-cell" >
                         {% if challenge.status == 0 %}
-                            <a class="transition-colors text-black border-amber-300 border-2 text-xl font-bresse px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-600  active:scale-95" href="{{challenge.get_start_challenge_url}}">
+                            <a class="transition-colors text-black border-amber-300 border-2 px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-600  active:scale-95" href="{{challenge.get_start_challenge_url}}">
                                 Continue
                             </a>
                         {% endif %}

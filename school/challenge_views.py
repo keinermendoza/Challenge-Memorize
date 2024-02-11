@@ -136,7 +136,7 @@ def update_sections_challenge_form(request):
     if request.htmx:
         level = request.GET.get("level", None)
         if level:
-            form = category_field_partial(level=level)
+            form = category_field_partial(level=level, request=request)
             return render(
                 request,
                 "school/partials/forms/challenge_create_sections/category.html",

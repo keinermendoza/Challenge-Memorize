@@ -107,12 +107,14 @@ class category_field_partial(forms.Form):
     )
 
     def __init__(self, *args, level=None, **kwargs):
-        super().__init__(*args, **kwargs)
         self.request = kwargs.pop("request", None)
+        super().__init__(*args, **kwargs)
 
+        
         if level is not None:
             self.fields["categories"].queryset = StudyCategory.objects.filter(
-                flashcards__level=level
+                flashcards__level=level,
+                flashcards__user=self.request.user
             ).distinct()
 
     def clean_category(self):
