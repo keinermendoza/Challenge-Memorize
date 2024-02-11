@@ -14,17 +14,24 @@
                 <!-- HANDELING THE RENDER IN CHALLENGE RESUME -->
                 {% if challenge_resume %}
 
-                    <span class="w-10 h-10 relative rounded-full {% if card.right_answered %}bg-right{% else %}bg-wrong{% endif %}">
-                        {% if card.right_answered %}
-                            <img class="absolute top-1 inset-0 mx-auto w-3/4" src="{% static 'school/icons/check.svg' %}" alt="question was answered right">
+                    <span class="w-10 h-10 relative rounded-full 
+                    {% if card.answered %}
+                        {% if card.right_answered %}bg-right{% else %}bg-wrong{% endif %}
+                    {% else %}bg-yellow{% endif %}">
+                        {% if card.answered %}
+                            {% if card.right_answered %}
+                                <img class="absolute top-1 inset-0 mx-auto w-3/4" src="{% static 'school/icons/check.svg' %}" alt="question was answered right">
+                            {% else %}
+                                <img class="absolute inset-0 mx-auto w-3/4" src="{% static 'school/icons/x.svg' %}" alt="question was answered wrong">
+                            {% endif %}
                         {% else %}
-                            <img class="absolute inset-0 mx-auto w-3/4" src="{% static 'school/icons/x.svg' %}" alt="question was answered wrong">
+                            <img class="absolute top-1 inset-0 mx-auto w-1/2" src="{% static 'school/icons/question.svg' %}" alt="question was answered wrong">
                         {% endif %}
                     </span>
                     
                 {% else %}
                 <!-- DELETE BUTTON -->
-                <button type="button" class="btn-delete-card w-7 h-7 grid cursor-pointer place-content-center bg-teal-500  rounded"
+                <button type="button" class="btn-delete-card w-7 h-7 rounded grid cursor-pointer place-content-center border-2 border-teal-300 transition-colors bg-teal-500  hover:bg-teal-600 active:scale-95 "
                     onclick="removeFlashcard(this)"
                     hx-delete="{% url 'school:flashcard_delete' card.id %}"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -33,7 +40,7 @@
                 </button>
 
                 <!-- EDIT BUTTON -->
-                <button class="p-1 rounded bg-teal-500 w-7 h-7" onclick="showEditModal()"
+                <button class="p-1 rounded w-7 h-7 border-2 border-teal-300 transition-colors bg-teal-500  hover:bg-teal-600 active:scale-95" onclick="showEditModal()"
                     hx-get="{% url 'school:flashcard_edit' card.id %}"
                     hx-target="#flashcard-edit-container">
                 
@@ -47,7 +54,7 @@
         
         
         <div class="text-end">
-            <button onclick="toggleAnswerVisiblity(this)" class="p-3 bg-blue-500">Show Answer</button>
+            <button onclick="toggleAnswerVisiblity(this)" class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95">Show</button>
         </div>
 
         <div class="answer-acordeon">

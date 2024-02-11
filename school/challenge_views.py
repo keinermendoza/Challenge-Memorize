@@ -211,12 +211,10 @@ def challenge_resume(request, challenge_id):
         displays template with a json script of all challenge data 
     """
     challenge = get_object_or_404(Challenge, id=challenge_id)
-    right_answered = (
-        Q(challenge_questions__correct_answered=False) &
-        Q(challenge_questions__answered=True)
-    )
+    answered = Q(challenge_questions__answered=True) 
+    right_answered = Q(challenge_questions__correct_answered=True)
 
-    flashcards_with_questions = challenge.questions.annotate(right_answered=right_answered)
+    flashcards_with_questions = challenge.questions.annotate(right_answered=right_answered, answered=answered)
     results_by_category = list(
         challenge.challenge_questions.values(
             category=F("flashcard__category__name")

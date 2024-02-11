@@ -11,7 +11,7 @@
         {% include 'school/partials/cards/detail.html' with card=card %}
     {% empty %}
         {% if searching %}
-            <p>No matches</p>
+            <p class="text-center">No matches</p>
         {% else %}
             <p>You haven't registred any card yet. It's time for create one!</p>
         {% endif %}
@@ -20,10 +20,10 @@
     </ul>
         
     <!-- HERE GOES THE VALIDATION FOR DJANGO PAGINATION -->
-    {% if True %}
+    {% comment %} {% if True %}
         <button class=""
             hx-get="{ url 'school:flashcards_list' }?page={aqui la paginacion de django}"
         >Load More</button>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
 </div>

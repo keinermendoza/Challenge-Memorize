@@ -17,6 +17,15 @@ htmx.on("htmx:afterRequest", (e) => {
 })
 
 
+htmx.on("htmx:afterRequest", (e) => {
+    if (Array.from(e.target.classList).includes("flashcard-edit")) {
+        if (e.detail.successful) {
+            if(e.detail.target.id == "flashcard-edit-container") {
+                showEditModal()
+            }
+        }
+    }
+})
 
 // CREATING CARD
 // https://www.reddit.com/r/htmx/comments/10hu6wp/how_to_know_which_event_was_triggered/

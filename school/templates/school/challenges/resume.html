@@ -10,10 +10,10 @@
     
 
 {% block main %}
-<h1 class="text-5xl font-bresse md:mb-5 text-center">Challenge Resume</h1>
+<h1 class="text-5xl font-bresse mb-5 text-center">Challenge Resume</h1>
 
 {% if challenge.status == 0 %}
-<h2 class="text-xl md:mb-10 text-center">This challenge still open, do you want to continue?</h2>
+<h2 class="text-xl mb-10 text-center">This challenge still open, do you want to continue?</h2>
 <div class="text-center mb-20">
     <a class="transition-colors text-black border-amber-300 border-4 text-3xl font-bresse px-4 py-3 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" href="{{challenge.get_start_challenge_url}}">Continue</a>
 </div>

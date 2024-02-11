@@ -61,8 +61,10 @@ def flashcard_list(request):
     flashcard_form = FlashCardForm()
     category_form = CategoryForm()
     search_form = SearchFlashcardForm(request.GET or None)
+    searching = False
 
     if search_form.is_valid():
+        searching = True
         cd = search_form.cleaned_data
 
         if cd["category"]:
@@ -77,7 +79,7 @@ def flashcard_list(request):
             return render(
                 request,
                 "school/partials/cards/list.html",
-                {"cards": cards, "searching": True},
+                {"cards": cards, "searching": searching},
             )
         else:
             response = render(
@@ -91,7 +93,7 @@ def flashcard_list(request):
     return render(
         request,
         "school/flashcards.html",
-        {"cards": cards, "flashcard_form": flashcard_form, "search_form": search_form, "category_form":category_form},
+        {"cards": cards, "flashcard_form": flashcard_form, "search_form": search_form, "category_form":category_form, "searching": searching},
     )
 
 
@@ -147,21 +149,24 @@ def flashcard_edit(request, flashcard_id):
         form = FlashCardForm(data=request.POST, instance=flashcard)
 
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
 
-            flashcards = request.user.flashcards.all()
-            response = render(
-                request, "school/partials/cards/list.html", {"cards": flashcards}
-            )
-            return trigger_client_event(response, "clean_errors")
+                flashcards = request.user.flashcards.all()
+                response = render(
+                    request, "school/partials/cards/list.html", {"cards": flashcards}
+                )
+                return trigger_client_event(response, "clean_errors")
 
-        else:
-            response = render(
-                request,
-                "school/partials/forms/flashcard_edit.html",
-                {"form": form, "flashcard_id": flashcard_id},
-            )
-            return retarget(response, "#flashcard-edit-container")
+            except IntegrityError:
+                form.add_error("question", "You already registred this question")
+                
+        response = render(
+            request,
+            "school/partials/forms/flashcard_edit.html",
+            {"form": form, "flashcard_id": flashcard_id},
+        )
+        return retarget(response, "#flashcard-edit-container")
 
     else:
         form = FlashCardForm(instance=flashcard)
