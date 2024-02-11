@@ -169,7 +169,7 @@ def start_challenge(request, challenge_id):
     return render(
         request,
         "school/challenges/detail.html",
-        {"questions": questions, "challenge_id": challenge_id},
+        {"questions": questions, "challenge": challenge},
     )
 
 
