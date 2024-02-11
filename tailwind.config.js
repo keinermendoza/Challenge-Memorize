@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         bresse: ["bresse", "sans-serif"],
       },
+      maxWidth: {
+        'extra': '1800px',
+      }
     },
   },
   plugins: [],

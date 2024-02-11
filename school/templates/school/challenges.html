@@ -2,14 +2,20 @@
 {% load static %}
 
 {% block main %}
+
+{% with flashcard_exits=user.flashcards.count %}
+
+{% if flashcard_exits %}
+    <div class="mb-5 max-w-md mx-auto lg:mx-0">
+        <h1 class="text-5xl font-semibold mb-3 font-bresse">Start Challenge</h1>
+        <p class="text-lg">Choose the Name, Categories, Level and number of questions for Your Challenge</p>
+    </div>
+{% endif %}
+
 <section class="flex items-center justify-between gap-10 flex-col lg:flex-row ">
-    <!-- ===== CREATE CHALLENGE ===== -->
+
     <div id="creation-challenge-div" class="w-full max-w-md flex flex-col gap-8">
-        {% if user.flashcards.count > 0 %}
-            <div>
-                <h1 class="text-5xl font-semibold mb-3 font-bresse">Start Challenge</h1>
-                <p class="text-lg">Choose the Name, Categories, Level and number of questions for Your Challenge</p>
-            </div>
+        {% if flashcard_exits %}
             
             <!-- =====  CHALLENGE FORM ===== -->
             <div id="challenge-form-container" class="">
@@ -24,44 +30,44 @@
             </div>
         {% endif %}
     </div>
-
+{% endwith %}
     <!-- ===== LIST AND FILTER CHALLENGE ===== -->
-    <div id="filtering-challenge-div" class="grow text-center lg:place-self-end flex flex-col gap-8">
+    <div id="filtering-challenge-div" class="grow text-center lg:place-self-start flex flex-col gap-8">
 
         <!-- =====  CHALLENGE FILTER ===== -->
-        <div id="challenges-filter-form-container" class="flex justify-center">
+        <div id="challenges-filter-form-container" class="w-full mx-auto flex justify-center">
             {% include "school/partials/forms/challenge_filter.html" %}
         </div>
 
         <div id="table-challenges-container" class="w-full"> 
             <table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
-                <thead class="text-gray-700 uppercase bg-gray-50 ">
+                <thead class="text-gray-800 uppercase bg-gray-50 ">
                     <tr>
                         <th class="hidden sm:table-cell lg:hidden px-6 py-3">Challenge</th>
                         <th class="px-6 py-3">Title</th>
                         <th class="hidden md:table-cell px-6 py-3">Level</th>
-                        <th class="hidden sm:table-cell px-6 py-3">Status</th>
+                        <th class="hidden md:table-cell px-6 py-3">Status</th>
                         <th class="px-6 py-3">Resume</th>
-                        <th class="px-6 py-3">Continue</th>
+                        <th class="hidden sm:table-cell px-6 py-3">Continue</th>
 
                     </tr>
                 </thead>
-                <tbody class="text-gray-600">
+                <tbody class="text-gray-800">
                     {% for challenge in challenges %}
                     <tr class="bg-white border-b ">
                         <td class="hidden sm:table-cell lg:hidden px-6 py-4">{{challenge.id}}</td>
                         <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
                         <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
-                        <td class="hidden sm:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
+                        <td class="hidden md:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
                         <td class="px-6 py-4">
                             <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_resume_url}}">
                                 Resume
                             </a>
                         </td>
-                        <td>
+                        <td class="hidden sm:table-cell" >
                         {% if challenge.status == 0 %}
                             <a class="px-2 py-1 rounded bg-teal-500" href="{{challenge.get_start_challenge_url}}">
-                                Go to Challenge
+                                Continue
                             </a>
                         {% endif %}
                         </td>

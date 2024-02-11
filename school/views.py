@@ -48,7 +48,7 @@ def category_create(request):
         return retarget(response, "#category-form-container")
 
 
-
+@login_required
 def flashcard_list(request):
     """
         GET: displays page with:

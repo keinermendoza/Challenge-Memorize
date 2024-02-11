@@ -27,7 +27,7 @@
     <header x-data="{isMobileOpen: false}" 
         class="w-full bg-darkheader shadow-md shadow-slate-200">
         
-        <div class="mx-auto max-w-[1500px] h-12 flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
+        <div class="mx-auto max-w-screen-2xl h-12 flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
 
         <a class="font-bresse font-semibold whitespace-pre" href="{% url 'school:home' %}">Study  Flashcards</a>
 
@@ -106,7 +106,7 @@
     </header>
     
     <main class="bg-darkbody grow p-5 pt-10 md:p-10">
-        <div class="mx-auto w-full max-w-6xl">
+        <div class="mx-auto w-full max-w-screen-2xl">
             {% block main %}
             {% endblock main %}
         </div>

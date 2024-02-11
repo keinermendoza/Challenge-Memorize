@@ -39,7 +39,7 @@ class FlasCardTests(TestCase):
         FlashCard.objects.create(
             user=user,
             category=html_category,
-            question="what is the most used Markup Language in web development",
+            question="what is the most used MARKUP Language in web development",
             answer="HTML",
         )
 
@@ -65,7 +65,7 @@ class FlasCardTests(TestCase):
 
     def test_flashcard_str(self):
         flashcard = FlashCard.objects.get(id=1)
-        self.assertEqual(flashcard.__str__(), "what is the most used Markup …")
+        self.assertEqual(flashcard.__str__(), "what is the most used markup …")
 
 
 class ChallengeTests(TestCase):
