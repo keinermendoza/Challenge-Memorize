@@ -19,7 +19,7 @@
 </div>
 {% endif %}
 
-<section class="mx-auto w-full max-w-5xl grid grid-rows-2 md:grid-cols-2">
+<section class="mx-auto w-full max-w-5xl grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 mb-28">
     <div class="grid place-content-center">
         <h3 class="text-xl font-bresse mb-5 text-center">Questions By Category</h3>
         <canvas class="w-full" id="questions-by-category"></canvas>
@@ -30,7 +30,7 @@
     </div>
 </section>
 
-<section class="w-full mx-auto max-w-sm mt-36 md:-mt-80 lg:-mt-96">
+<section class="w-full mx-auto max-w-sm">
     {% include "school/partials/cards/list.html" with cards=flashcards challenge_resume=True %}
 </section>
 {% endblock main %}

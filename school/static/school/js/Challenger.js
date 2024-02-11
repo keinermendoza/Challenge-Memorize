@@ -31,7 +31,7 @@ class Challenger {
 
     clickWrong() {
         this.jsConfetti.addConfetti({
-            emojis: ['💩'],
+            emojis: ['⚡'],
             emojiSize: 60,
             confettiNumber: 1,
           })
@@ -89,8 +89,8 @@ class Challenger {
         this.btnWrong.innerHTML = 'Wrong'
         this.btnCorrect.innerHTML = 'Correct'
 
-        this.btnWrong.className = 'rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95' 
-        this.btnCorrect.className = 'rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95'
+        this.btnWrong.className = 'rounded text-black py-1 px-2 transition-colors border-2 hover:bg-teal-400  active:scale-95' 
+        this.btnCorrect.className = 'rounded text-black py-1 px-2 transition-colors border-2 hover:bg-teal-400 active:scale-95'
 
 
         this.btnCorrect.onclick = () => this.clickCorrect()
@@ -144,7 +144,7 @@ class Challenger {
             
             
                 <div class="text-end">
-                    <button onclick="toggleAnswerVisiblity(this)" class="rounded bg-green-500 text-black py-1 px-2 transition-colors border-2 border-amber-300 hover:bg-green-600 active:scale-95">Show</button>
+                    <button onclick="toggleAnswerVisiblity(this)" class="rounded bg-teal-500 text-black py-1 px-2 transition-colors border-2 border-teal-500  hover:bg-teal-200 active:scale-95">Show</button>
                 </div>
 
                 <div class="answer-acordeon">
