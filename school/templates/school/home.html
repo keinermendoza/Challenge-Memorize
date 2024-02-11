@@ -2,30 +2,30 @@
 {% load static %}
 
 {% block main %}
-<section class="flex flex-col-reverse items-center md:flex-row justify-between gap-5 mb-16">
-    <figure class="w-full max-w-md">
+<section class="flex flex-col-reverse items-center md:flex-row justify-between gap-5">
+    <figure class="w-full max-w-md mb-20">
         <img src="{% static 'school/images/flashcards.webp' %}" alt="demostration fo flashcard page">
     </figure>
 
-    <article class="w-full max-w-md">
-        <h1 class="text-5xl font-bresse mb-2">Study Flashcards</h1>
-        <h2 class="text-2xl leading-7 mb-3">The place where you <span>memorize</span> whatever you want with <span>fun</span></h2>
-        <p>Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge</p>
-        <div class="text-center mt-10">
-            <a class="inline-block text-2xl py-1 px-2 rounded-sm bg-teal-500 hover:bg-teal-600 active:bg-teal-800 active:scale-95 text-black" href="{% url 'account:register'  %}">Start Now</a>
+    <article class="w-full max-w-md mb-20">
+        <h1 class="text-5xl font-bresse mb-3">Study Flashcards</h1>
+        <h2 class="text-2xl font-bresse mb-4">The place where you <span>memorize</span> whatever you want with <span>fun</span></h2>
+        <p class="text-lg">Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge</p>
+        <div class="text-center mt-12">
+            <a class="transition-colors text-black border-amber-300 border-4 text-3xl font-bresse px-4 py-3 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" href="{% url 'account:register'  %}">Start Now</a>
         </div>
     </article>
     
 </section>
 
-<section class="flex flex-col items-center md:flex-row justify-between gap-5 ">
-    <article class="w-full max-w-md">
-        <h2 class="text-2xl font-bresse leading-7 mb-3">Get a Resume of your Performance</h2>
-        <p class="mb-2">You can easely filter  your challenges for level, category and status</p>
-        <p>Chekout the detail information of your perfomance in each challenge with our charts</p>
+<section class="flex flex-col items-center md:flex-row justify-between gap-5">
+    <article class="w-full max-w-md mb-20">
+        <h2 class="text-3xl font-bresse mb-3">Get a Resume of your Performance</h2>
+        <p class="text-lg mb-2">You can easely filter  your challenges for level, category and status</p>
+        <p class="text-lg">Chekout the detail information of your perfomance in each challenge with our charts</p>
         
     </article>
-    <figure class="w-full max-w-md">
+    <figure class="w-full max-w-md mb-20">
         <img src="{% static 'school/images/challenges.png' %}" alt="demostration fo flashcard page">
     </figure>
 </section>

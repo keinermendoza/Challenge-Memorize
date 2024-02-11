@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="{% static 'tailwind/tail.css' %}">
     <script src="{% static 'js/htmx.min.js.gz' %}"></script>
     
-    {% comment %} <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> {% endcomment %}
-    
     <script  src="{% static 'js/SweetAlert.js' %}"></script>
     <script  src="{% static 'js/token.js' %}"></script>
 
@@ -27,7 +25,7 @@
     <header x-data="{isMobileOpen: false}" 
         class="w-full bg-darkheader shadow-md shadow-slate-200">
         
-        <div class="mx-auto max-w-screen-2xl h-12 flex justify-between gap-6 items-center px-3 py-1 md:px-6 md:py-2">
+        <div class="mx-auto max-w-1440px h-12 flex justify-between gap-6 items-center py-1 px-5 md:py-2 ">
 
         <a class="font-bresse font-semibold whitespace-pre" href="{% url 'school:home' %}">Study  Flashcards</a>
 
@@ -40,14 +38,14 @@
                 </li>
 
                 <li>
-                    <a href="{% url 'school:challenges' %}">Challenge</a>
+                    <a href="{% url 'school:challenges' %}">Challenges</a>
                 </li>
             </ul>
 
             <ul class="flex gap-3">
                 {% if user.is_authenticated %}
                 <li>
-                    <span >Login as <strong>{{user.username | title}}</strong></span>
+                    <span >Logged as <strong>{{user.username | title}}</strong></span>
                 </li>
 
                 <li>
@@ -100,13 +98,17 @@
                 <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
                 href="{% url 'school:flashcard_list' %}">Flashcards</a>
             </li>
+            <li>
+                <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
+                href="{% url 'school:challenges' %}">Challenges</a>
+            </li>
         </ul>
     </nav>
 
     </header>
     
-    <main class="bg-darkbody grow p-5 pt-10 md:p-10">
-        <div class="mx-auto w-full max-w-screen-2xl">
+    <main class="bg-darkbody grow">
+        <div class="mx-auto w-full p-5 pt-10 max-w-1440px">
             {% block main %}
             {% endblock main %}
         </div>

@@ -592,6 +592,16 @@ html {
   }
 }
 
+@media (min-width: 1440px) {
+  .\!container {
+    max-width: 1440px !important;
+  }
+
+  .container {
+    max-width: 1440px;
+  }
+}
+
 @media (min-width: 1536px) {
   .\!container {
     max-width: 1536px !important;
@@ -721,6 +731,10 @@ html {
   margin-bottom: 1.5rem;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
 .mb-\[0\.15em\] {
   margin-bottom: 0.15em;
 }
@@ -741,8 +755,16 @@ html {
   margin-top: 1.25rem;
 }
 
-.mb-8 {
-  margin-bottom: 2rem;
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.mb-24 {
+  margin-bottom: 6rem;
 }
 
 .block {
@@ -841,6 +863,10 @@ html {
   width: 100%;
 }
 
+.max-w-1440px {
+  max-width: 1440px;
+}
+
 .max-w-5xl {
   max-width: 64rem;
 }
@@ -860,10 +886,6 @@ html {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.max-w-screen-2xl {
-  max-width: 1536px;
 }
 
 .max-w-sm {
@@ -1185,6 +1207,11 @@ html {
   padding-bottom: 1rem;
 }
 
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .pt-10 {
   padding-top: 2.5rem;
 }
@@ -1454,6 +1481,11 @@ html {
 }
 
 @media (min-width: 640px) {
+  .sm\:mx-0 {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
   .sm\:flex {
     display: flex;
   }
@@ -1472,6 +1504,10 @@ html {
 
   .sm\:items-start {
     align-items: flex-start;
+  }
+
+  .sm\:text-start {
+    text-align: start;
   }
 
   .sm\:text-lg {
@@ -1542,5 +1578,17 @@ html {
 @media (min-width: 1280px) {
   .xl\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .customMax\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .customMax\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 }

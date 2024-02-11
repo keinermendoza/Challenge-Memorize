@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<h1 class="text-xl font-semibold mb-3">Register</h1>
+<h1 class="text-3xl text-center font-bresse font-medium mb-3">Register</h1>
 <form action="{% url 'account:register' %}" method="post">
     {% csrf_token %}
 
@@ -69,6 +69,6 @@
     {% endfor %}
     
     <div class="text-right">
-        <button class="px-2 py-1 text-black bg-teal-500" type="submit">Register</button>
+        <button class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" type="submit">Register</button>
     </div>
 </form>

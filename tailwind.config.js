@@ -18,7 +18,10 @@ module.exports = {
         bresse: ["bresse", "sans-serif"],
       },
       maxWidth: {
-        'extra': '1800px',
+        '1440px': '1440px',
+      },
+      screens: {
+        customMax:'1440px', 
       }
     },
   },

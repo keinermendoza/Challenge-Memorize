@@ -1,4 +1,4 @@
-<h1 class="text-xl font-semibold mb-3">Login</h1>
+<h1 class="text-center text-3xl font-bresse font-medium mb-3">Login</h1>
 <form action="{% url 'account:login' %}" method="post">
     {% csrf_token %}
 
@@ -77,6 +77,6 @@
         {% endif %}
     {% endfor %}
     <div class="text-right">
-        <button class="px-2 py-1 text-black bg-teal-500" type="submit">Login</button>
+        <button class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" type="submit">Login</button>
     </div>
 </form>

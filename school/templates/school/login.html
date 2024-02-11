@@ -3,11 +3,13 @@
 
 
 {% block main %}
+<div class="mx-auto text-center sm:text-start sm:mx-0 max-w-md mb-8">
+    <h1 class="font-bresse text-5xl font-semibold mb-3">Study Flashcard</h1>
+    <h2 class="text-xl">Your platform for study and memorize, built in a pythonic way.</h2>
+</div>
 <section class="flex flex-col sm:flex-row gap-x-10 gap-y-5 justify-between items-center">
     <figure class="max-w-[300px] mx-2 overflow-hidden text-center">
-        <h1 class="font-mono text-2xl font-semibold">The Snake Study Platform</h1>
         <img class="w-full h-auto object-contain" src="{% static 'school/images/snake.png' %}" alt="A cute python lerning programming in it's laptop">
-        <figcaption class="text-sm">Your platform for learning to code. in the pythonic way.</figcaption>
     </figure>
 
     <div class="max-w-[400px] w-full">
