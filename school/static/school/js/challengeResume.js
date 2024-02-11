@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // QUESTIONS BY CATEGORY CHART
   const questionSetData = JSON.parse(document.getElementById('questions_data').textContent)
-  const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById('questions-by-category');
 
   let data = {
     // UPERCASING
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     options: {
       plugins: {
         title: {
-          display: true,
+          display: false,
           text: 'Questions By Category'
         },
       },
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new Chart(ctx, config);
 
   // GENERAL RESULTS
-  const outro = document.getElementById('outro')
+  const outro = document.getElementById('general-results')
 
   data = {
     // UPERCASING
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     options: {
       plugins: {
         title: {
-          display: true,
+          display: false,
           text: 'General Results'
         },
       },

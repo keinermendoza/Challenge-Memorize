@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'school',
 
     # thirds
+    "debug_toolbar",
     "django_htmx",
     "django_browser_reload",
     'widget_tweaks',
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     # third party middleware
     "django_htmx.middleware.HtmxMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 
 ]
 
@@ -137,3 +139,7 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/'
 
 FIXTURE_DIRS = [BASE_DIR / "assets" / "fixtures"]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

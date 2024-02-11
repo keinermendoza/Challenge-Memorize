@@ -1,6 +1,11 @@
 {% load static %}
 <div class="flex flex-col gap-3">
-    <h2 class="text-3xl font-bresse">Flashcards</h2>
+    <!-- HANDELING RENDER IN CHALLENGE RESUME -->
+    {% if challenge_resume %}
+        <h2 class="text-3xl mb-6 text-center font-bresse">Your Answers</h2>
+    {% else %}
+        <h2 class="text-3xl font-bresse">Flashcards</h2>
+    {% endif %}
     <ul id="card-list-container" class="flex flex-col">
     {% for card in cards %}
         {% include 'school/partials/cards/detail.html' with card=card %}

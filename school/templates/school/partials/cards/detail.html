@@ -6,11 +6,24 @@
         {% endif %}">
         <div class="mb-3 flex justify-between">
             
-            <span class="text-sm rounded px-2 py-1 bg-darkbody">
+            <span class="text-sm grid place-content-center rounded px-2 py-1 bg-darkbody">
                 {{card.category | upper}}
             </span>
 
             <div class="flex gap-3">
+                <!-- HANDELING THE RENDER IN CHALLENGE RESUME -->
+                {% if challenge_resume %}
+
+                    <span class="w-10 h-10 relative rounded-full {% if card.right_answered %}bg-right{% else %}bg-wrong{% endif %}">
+                        {% if card.right_answered %}
+                            <img class="absolute top-1 inset-0 mx-auto w-3/4" src="{% static 'school/icons/check.svg' %}" alt="question was answered right">
+                        {% else %}
+                            <img class="absolute inset-0 mx-auto w-3/4" src="{% static 'school/icons/x.svg' %}" alt="question was answered wrong">
+                        {% endif %}
+                    </span>
+                    
+                {% else %}
+                <!-- DELETE BUTTON -->
                 <button type="button" class="btn-delete-card w-7 h-7 grid cursor-pointer place-content-center bg-teal-500  rounded"
                     onclick="removeFlashcard(this)"
                     hx-delete="{% url 'school:flashcard_delete' card.id %}"
@@ -19,12 +32,14 @@
                     <img src="{% static 'school/icons/trash.svg' %}" alt="Button for Delete the flashcard">
                 </button>
 
+                <!-- EDIT BUTTON -->
                 <button class="p-1 rounded bg-teal-500 w-7 h-7" onclick="showEditModal()"
                     hx-get="{% url 'school:flashcard_edit' card.id %}"
                     hx-target="#flashcard-edit-container">
                 
                     <img class="" src="{% static 'school/icons/edit.svg' %}" alt="Edit the flashcard">
                 </button>
+                {% endif %}
             </div>
         </div>
 

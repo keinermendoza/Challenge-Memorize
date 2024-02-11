@@ -204,13 +204,19 @@ def challenge_answer(request, question_id):
         pass
     return HttpResponse(status=400)
 
+@login_required
 @require_http_methods("GET")
 def challenge_resume(request, challenge_id):
     """
         displays template with a json script of all challenge data 
     """
     challenge = get_object_or_404(Challenge, id=challenge_id)
+    right_answered = (
+        Q(challenge_questions__correct_answered=False) &
+        Q(challenge_questions__answered=True)
+    )
 
+    flashcards_with_questions = challenge.questions.annotate(right_answered=right_answered)
     results_by_category = list(
         challenge.challenge_questions.values(
             category=F("flashcard__category__name")
@@ -228,4 +234,8 @@ def challenge_resume(request, challenge_id):
 
     data = {"detail": results_by_category, "general": general_results}
 
-    return render(request, "school/challenges/resume.html", {"data": data})
+    return render(request, "school/challenges/resume.html", {
+        "data": data,
+        "challenge":challenge,
+        "flashcards": flashcards_with_questions
+        })

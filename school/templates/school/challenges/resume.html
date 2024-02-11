@@ -10,15 +10,28 @@
     
 
 {% block main %}
-<section class="flex flex-wrap gap-5 items-center justify-between">
+<h1 class="text-5xl font-bresse md:mb-5 text-center">Challenge Resume</h1>
 
-    <div class="w-full  md:w-1/3">
-        <canvas class="w-full" id="myChart"></canvas>
-    </div>
+{% if challenge.status == 0 %}
+<h2 class="text-xl md:mb-10 text-center">This challenge still open, do you want to continue?</h2>
+<div class="text-center mb-20">
+    <a class="transition-colors text-black border-amber-300 border-4 text-3xl font-bresse px-4 py-3 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" href="{{challenge.get_start_challenge_url}}">Continue</a>
+</div>
+{% endif %}
 
-    <div class="w-full  md:w-1/3">
-        <canvas class="w-full" id="outro"></canvas>
+<section class="mx-auto w-full max-w-5xl grid grid-rows-2 md:grid-cols-2">
+    <div class="grid place-content-center">
+        <h3 class="text-xl font-bresse mb-5 text-center">Questions By Category</h3>
+        <canvas class="w-full" id="questions-by-category"></canvas>
     </div>
+    <div class="grid place-content-center">
+        <h3 class="text-xl font-bresse mb-5 text-center">General Results</h3>
+        <canvas class="w-full" id="general-results"></canvas>
+    </div>
+</section>
+
+<section class="w-full mx-auto max-w-sm mt-36 md:-mt-80 lg:-mt-96">
+    {% include "school/partials/cards/list.html" with cards=flashcards challenge_resume=True %}
 </section>
 {% endblock main %}
     
