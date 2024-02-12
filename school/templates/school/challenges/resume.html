@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block script %}
+    <script src="{% static 'js/facebooksdk.js' %}"></script>
+
     <script src="{% static 'js/chart.js' %}"></script>
     <script src="{% static 'school/js/challengeResume.js' %}"></script>
 {{data|json_script:"questions_data" }}
@@ -11,6 +13,7 @@
 
 {% block main %}
 <h1 class="text-5xl font-bresse mb-5 text-center">Challenge Resume</h1>
+<div id="fb-root"></div>
 
 {% if challenge.status == 0 %}
 <h2 class="text-xl mb-10 text-center">This challenge still open, do you want to continue?</h2>
@@ -33,5 +36,22 @@
 <section class="w-full mx-auto max-w-sm">
     {% include "school/partials/cards/list.html" with cards=flashcards challenge_resume=True %}
 </section>
+
+<!-- SHARE IN SOCIAL NET -->
+<div class="text-center">
+    <!-- FACEBOOK -->
+    <div class="fb-share-button scale-110" 
+        data-href="https://keinermendoza.com"
+        data-size="large"
+        data-lazy="true" 
+        data-layout="button">
+    </div>
+    <div>
+        <a href="whatsapp://send?text=texto%20con%20URL">
+            whatsapp
+        </a>
+    </div>
+</div>
+
 {% endblock main %}
     
