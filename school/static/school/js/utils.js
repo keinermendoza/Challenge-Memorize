@@ -8,6 +8,12 @@ function toggleAnswerVisiblity(btn) {
     }
 }
 
+// DELETE MESSAGE
+function deleteparent(btn) {
+    document.querySelector(btn.dataset.parent).remove()
+}
+
+
 // DELETE FLASHCARD
 
 function removeFlashcard(btn) {

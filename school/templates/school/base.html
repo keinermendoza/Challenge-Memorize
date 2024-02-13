@@ -104,11 +104,27 @@
             </li>
         </ul>
     </nav>
-
     </header>
-    
+
+ 
     <main class="bg-darkbody grow">
         <div class="mx-auto w-full p-5 pt-10 md:px-12 max-w-1440px">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="message-{{forloop.counter0}}" 
+                        class="flex items-center mb-4 py-2 bg-amber-300 border-4 text-black text-lg  rounded ">
+                        <p class="grow text-xl font-medium text-center">{{message}}</p>
+                      
+                        <button type="button" class="ml-auto mr-2 btn-delete-card px-2 py-2 rounded-lg grid cursor-pointer  place-content-center border-2 border-black transition-colors bg-red-500  hover:bg-red-600 active:scale-95 "
+                            onclick="deleteparent(this)"
+                            data-parent="#message-{{forloop.counter0}}">
+                            <img src="{% static 'school/icons/x.svg' %}" alt="Button for Delete the flashcard">
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             {% block main %}
             {% endblock main %}
         </div>

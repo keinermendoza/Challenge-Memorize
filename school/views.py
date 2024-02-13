@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from school.decorators import  custom_login_required
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseForbidden, QueryDict
 from django.db import IntegrityError
@@ -21,7 +21,7 @@ from .forms import (
 def home(request):
     return render(request, "school/home.html")
 
-@login_required
+@custom_login_required
 @require_http_methods(["POST"])
 def category_create(request):
     """
@@ -48,7 +48,7 @@ def category_create(request):
         return retarget(response, "#category-form-container")
 
 
-@login_required
+@custom_login_required
 def flashcard_list(request):
     """
         GET: displays page with:
@@ -97,7 +97,7 @@ def flashcard_list(request):
     )
 
 
-@login_required
+@custom_login_required
 @require_http_methods(["POST"])
 def flashcard_create(request):
     form = FlashCardForm(request.POST)
@@ -125,7 +125,7 @@ def flashcard_create(request):
     response = reswap(response, "innerHTML")
     return retarget(response, "#flashcard-form-container")
 
-@login_required
+@custom_login_required
 @require_http_methods(["GET"])
 def fresh_flashcard_form(request):
     """
@@ -137,7 +137,7 @@ def fresh_flashcard_form(request):
     return render(request, "school/partials/forms/create_flashcard.html", {"form":form})
     
 
-@login_required
+@custom_login_required
 @require_http_methods(["GET", "POST"])
 def flashcard_edit(request, flashcard_id):
     if not request.htmx:
@@ -177,7 +177,7 @@ def flashcard_edit(request, flashcard_id):
         )
 
 
-@login_required
+@custom_login_required
 @require_http_methods(["DELETE"])
 def flashcard_delete(request, flashcard_id):
     flashcard = get_object_or_404(FlashCard, pk=flashcard_id)

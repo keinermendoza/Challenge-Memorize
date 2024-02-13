@@ -1,7 +1,8 @@
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from school.decorators import  custom_login_required
+
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Count, F, Case, When, Q
@@ -18,7 +19,7 @@ from .forms import (
     category_field_partial,
 )
 
-@login_required
+@custom_login_required
 @require_http_methods(["GET", "POST"])
 def challenges(request):
     """
@@ -43,7 +44,7 @@ def challenges(request):
         },
     )
 
-@login_required
+@custom_login_required
 @require_http_methods(["POST"])
 def challenge_create(request):
     """
@@ -80,7 +81,7 @@ def challenge_create(request):
     response = retarget(response, "#challenge-form-container")
     return reswap(response, 'innerHTML')
 
-@login_required
+@custom_login_required
 @require_http_methods(["GET"])
 def challenge_filter(request):
     """
@@ -124,7 +125,7 @@ def challenge_filter(request):
     
 
 
-@login_required
+@custom_login_required
 @require_http_methods(["GET"])
 def update_sections_challenge_form(request):
     """
@@ -204,7 +205,7 @@ def challenge_answer(request, question_id):
         pass
     return HttpResponse(status=400)
 
-@login_required
+@custom_login_required
 @require_http_methods("GET")
 def challenge_resume(request, challenge_id):
     """
