@@ -40,42 +40,7 @@
         </div>
 
         <div id="table-challenges-container" class="w-full"> 
-            <table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
-                <thead class="text-gray-800 uppercase bg-gray-50 ">
-                    <tr>
-                        <th class="hidden sm:table-cell lg:hidden px-6 py-3">Challenge</th>
-                        <th class="px-6 py-3">Title</th>
-                        <th class="hidden md:table-cell px-6 py-3">Level</th>
-                        <th class="hidden md:table-cell px-6 py-3">Status</th>
-                        <th class="px-6 py-3">Resume</th>
-                        <th class="hidden sm:table-cell px-6 py-3">Continue</th>
-
-                    </tr>
-                </thead>
-                <tbody class="text-gray-800">
-                    {% for challenge in challenges %}
-                    <tr class="bg-white border-b ">
-                        <td class="hidden sm:table-cell lg:hidden px-6 py-4">{{challenge.id}}</td>
-                        <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
-                        <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
-                        <td class="hidden md:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
-                        <td class="px-6 py-4">
-                            <a class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" href="{{challenge.get_resume_url}}">
-                                Resume
-                            </a>
-                        </td>
-                        <td class="hidden sm:table-cell" >
-                        {% if challenge.status == 0 %}
-                            <a class="transition-colors text-black border-amber-300 border-2 px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-600  active:scale-95" href="{{challenge.get_start_challenge_url}}">
-                                Continue
-                            </a>
-                        {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
+            {% include "school/partials/challenges/table.html" with challenges=challenges %}
         </div>
     </div>
 

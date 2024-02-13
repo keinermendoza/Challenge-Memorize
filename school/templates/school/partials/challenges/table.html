@@ -1,0 +1,48 @@
+{% load static %}
+<table class="rounded overflow-hidden w-full max-w-[max-content] mx-auto">
+    <thead class="text-gray-800 uppercase bg-gray-50 ">
+        <tr>
+            <th class="hidden sm:table-cell lg:hidden px-6 py-3">Challenge</th>
+            <th class="px-6 py-3">Title</th>
+            <th class="hidden md:table-cell px-6 py-3">Level</th>
+            <th class="hidden md:table-cell px-6 py-3">Status</th>
+            <th class="px-6 py-3">Resume</th>
+            <th class="hidden sm:table-cell px-6 py-3">Actions</th>
+
+        </tr>
+    </thead>
+    <tbody class="text-gray-800">
+        {% for challenge in challenges %}
+        <tr class="bg-white border-b ">
+            <td class="hidden sm:table-cell lg:hidden px-6 py-4">{{challenge.id}}</td>
+            <td scope="row" class=" px-6 py-4 font-medium text-gray-900 ">{{challenge.title}}</td>
+            <td class="hidden md:table-cell px-6 py-4">{{challenge.get_level_display}}</td>
+            <td class="hidden md:table-cell px-6 py-4">{{challenge.get_status_display}}</td>
+            <td class="px-6 py-4">
+                <a class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" href="{{challenge.get_resume_url}}">
+                    Resume
+                </a>
+            </td>
+            <td class="hidden sm:table-cell" >
+                <div class="flex items-center justify-around">
+                {% if challenge.status == 0 %}
+                    <a class="transition-colors font-semibold text-black border-amber-300 border-2 px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-600  active:scale-95" href="{{challenge.get_start_challenge_url}}">
+                        Go!
+                    </a>
+                {% endif %}
+
+                    <!-- DELETE BUTTON -->
+                    <button type="button" class="btn-delete-card px-2 py-2 rounded-lg grid cursor-pointer  place-content-center border-2 border-red-300 transition-colors bg-red-500  hover:bg-red-600 active:scale-95 "
+                        onclick="removeFlashcard(this)"
+                        hx-delete="algo-aqui-para-eliminar"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+                        <img src="{% static 'school/icons/trash.svg' %}" alt="Button for Delete the flashcard">
+                    </button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
