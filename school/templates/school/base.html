@@ -9,21 +9,38 @@
     <link rel="stylesheet" href="{% static 'tailwind/tail.css' %}">
     <script src="{% static 'js/htmx.min.js.gz' %}"></script>
     
-    <script  src="{% static 'js/SweetAlert.js' %}"></script>
     <script  src="{% static 'js/token.js' %}"></script>
 
-    <script  src="{% static 'school/js/alpineStore.js' %}"></script>
+    <script  src="{% static 'school/js/htmxEvents.js' %}"></script>
     <script src="{% static 'school/js/utils.js' %}"></script>
     
     <link rel="stylesheet" href="{% static 'school/css/animations.css' %}">
     <script defer src="{% static 'js/alpine.js' %}"></script>
+
+    <link rel="canonical" href="https://keinermendoza.com/demonstration-projects/memorize/">
+    <meta name="title" content="Challenge Memorize">
+    <meta name="description" content="The place where you memorize whatever you want with fun">
+
+    <meta charset="UTF-8">
+    <meta name="author" description="keiner mendoza" >
+
+    <meta property="og:url"           content="https://keinermendoza.com/demonstration-projects/memorize/" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Challenge Memorize" />
+    <meta property="og:description"   content="The place where you memorize whatever you want with fun" />
+    <meta property="og:image"         content="https://keinermendoza.com/demonstration-projects/memorize/{% static 'school/images/success.png' %}" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'school/icons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'school/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'school/icons/favicon-16x16.png' %}">
+    <link rel="icon" href="{% static 'school/icons/favicon.ico' %}" type="image/x-icon" />
 
     {% block script %}{% endblock script %}
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body class="text-white flex flex-col min-h-screen w-full">
     <header x-data="{isMobileOpen: false}" 
-        class="w-full bg-darkheader shadow-md shadow-slate-200">
+        class="w-full bg-darkheader shadow shadow-teal-700 fixed z-50">
         
         <div class="mx-auto max-w-1440px h-12 flex justify-between gap-10 items-center py-1 px-5 md:px-12 md:py-2">
 
@@ -80,8 +97,8 @@
     {% comment %} MOBILE MENU {% endcomment %}
     <nav x-bind:class="isMobileOpen ? 'block opacity-100 top-12' : 'hidden opacity-0 top-10'"
         x-cloak  
-        class="transition-all duration-300 bg-darkheader absolute w-full overflow-hidden">
-        <ul class="min-h-[calc(100vh-48px)] flex flex-col text-center">
+        class="transition-all duration-300 bg-darkheader fixed w-full overflow-hidden">
+        <ul class="min-h-screen flex flex-col text-center">
             <li>
                 <a class="transition duration-200 block py-3 w-full hover:bg-violet-900" 
                 href="{% url 'account:register' %}">Register</a>
@@ -108,7 +125,7 @@
 
  
     <main class="bg-darkbody grow">
-        <div class="mx-auto w-full p-5 pt-10 md:px-12 max-w-1440px">
+        <div class="mx-auto w-full p-5 pt-[calc(3rem+2.5rem)] md:px-12 max-w-1440px">
 
             {% if messages %}
                 {% for message in messages %}

@@ -1,5 +1,5 @@
 {% load static  %}
-<li class="mb-3">
+<li id="to-delete-flashcard-{{card.id}}" class="mb-3">
     <article class="p-3 rounded  bg-darkheader border border-teal-300
         {% if new_card %}
             new-card-animation
@@ -32,7 +32,7 @@
                 {% else %}
                 <!-- DELETE BUTTON -->
                 <button type="button" class="btn-delete-card w-7 h-7 rounded grid cursor-pointer place-content-center border-2 border-teal-300 transition-colors bg-teal-500  hover:bg-teal-600 active:scale-95 "
-                    onclick="removeFlashcard(this)"
+                    data-parent="#to-delete-flashcard-{{card.id}}"
                     hx-delete="{% url 'school:flashcard_delete' card.id %}"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 

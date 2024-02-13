@@ -238,3 +238,16 @@ def challenge_resume(request, challenge_id):
         "challenge":challenge,
         "flashcards": flashcards_with_questions
         })
+
+@custom_login_required
+@require_http_methods(["DELETE"])
+def challenge_delete(request, challenge_id):
+    challenge = get_object_or_404(Challenge, pk=challenge_id)
+
+    if challenge.user != request.user:
+        return HttpResponseForbidden()
+
+    challenge.delete()
+    return HttpResponse("")
+
+

@@ -1,6 +1,6 @@
 {% extends "school/base.html" %}
 {% load static %}
-
+{% block title %}Challenge: {{challenge.title}}{% endblock title %}
 {% block script %}
 <script  src="{% static 'js/js-confeti.js' %}"></script>
 <script  src="{% static 'school/js/Challenger.js' %}"></script>

@@ -1,5 +1,6 @@
 {% extends 'school/base.html' %}
 {% load static %}
+{% block title %}Challenges{% endblock title %}
 
 {% block main %}
 
@@ -26,7 +27,7 @@
             <h1 class="text-5xl font-semibold mb-3 font-bresse">Not Ready</h1>
             <p class="text-lg">You need to register at least one flashcard before you can create a Chalenge</p>
             <div class="mt-5 text-center">
-                <a class="text-xl py-1 px-2 rounded-sm bg-teal-500 hover:bg-teal-600 active:bg-teal-800 active:scale-95 text-black" href="{% url 'school:flashcard_list' %}">Go to FlashCards</a>
+                <a class="rounded bg-teal-500 text-black py-1 px-2 border-2 border-teal-300 transition-colors  hover:bg-teal-600 active:scale-95" href="{% url 'school:flashcard_list' %}">Go to FlashCards</a>
             </div>
         {% endif %}
     </div>

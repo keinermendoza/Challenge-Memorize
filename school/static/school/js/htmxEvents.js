@@ -41,12 +41,12 @@ htmx.on("htmx:afterRequest", (e) => {
 
      if (Array.from(e.target.classList).includes("btn-delete-card")) {
         if (e.detail.successful) {
-            const card = e.target.parentElement.parentElement
+            const card = document.querySelector(e.target.dataset.parent)
             card.classList.add("deleted-card-animation")
 
             // it's necesary delete the parent element
             // TODO change gap in ul by mb in the li. for  
-            card.onanimationend = (e) => e.target.parentElement.parentElement.remove()
+            card.onanimationend = (e) => card.remove()
         }
   
     } 

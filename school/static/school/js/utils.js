@@ -14,16 +14,6 @@ function deleteparent(btn) {
 }
 
 
-// DELETE FLASHCARD
-
-function removeFlashcard(btn) {
-    const card = btn.parentElement.parentElement.parentElement.parentElement // li element
-    console.log(card)
-    card.classList.add("deleted-card-animation")
-    // card.onanimationend = (e) => e.target.remove()
-}
-
-
 // MODAL
 function showEditModal() {
     document.getElementById('flashcard-edit-container').showModal()
@@ -40,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 })
 
+// CHALLENGE CREATE SELECT ALL
 function selectAll(checkboxLabel) {
     const checkboxAll = checkboxLabel.querySelector(checkboxLabel.dataset.checkbox)
     document.querySelectorAll('.category-checkbox').forEach(checkbox => checkbox.checked = checkboxAll.checked) //.check = checkboxAll.check 

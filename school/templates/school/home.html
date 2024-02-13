@@ -1,5 +1,6 @@
 {% extends 'school/base.html' %}
 {% load static %}
+{% block title %}Home{% endblock title %}
 
 {% block main %}
 {% comment %} <section class="flex flex-col-reverse items-center md:flex-row justify-between gap-5"> {% endcomment %}
@@ -12,7 +13,7 @@
         <div class="max-w-lg mx-auto">
             <h1 class="text-5xl font-bresse mb-3">Challenge Memorize</h1>
             <h2 class="text-2xl font-bresse mb-4">The place where you <span>memorize</span> whatever you want with <span>fun</span></h2>
-            <p class="text-lg">Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge</p>
+            <p class="text-lg">Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge.</p>
         </div>
         
         <div class="text-center mt-12">
@@ -25,8 +26,8 @@
         <div class="max-w-lg mx-auto">
 
             <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Create your Challenge</h2>
-            <p class="text-lg mb-2">Choose the level, categories and the maximum number of question, and we will select the questions for you</p>
-            <p class="text-lg">After you finished you can easely filter your challenges here for level, category and status</p>
+            <p class="text-lg mb-2">Choose the level, categories, and the maximum number of questions, and we will select the questions for you.</p>
+            <p class="text-lg">After you finish, you can easily filter your challenges here by level, category, and status.</p>
         </div>
     </article>
     <figure class="order-3 md:order-none contrast-[90%] rounded-lg overflow-hidden">
@@ -40,7 +41,7 @@
     <article class="order-4 md:order-none">
         <div class="max-w-lg mx-auto">
 
-            <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Time for Test</h2>
+            <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">The moment of Truth</h2>
             <p class="text-lg mb-2">Try to answer the question, use the <q>Show</q> button to check your answer and finally mark the question as <q>Correct</q> or <q>Wrong</q></p>
         </div>
     </article>
@@ -50,8 +51,7 @@
         <div class="max-w-lg mx-auto">
 
             <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Get a Resume of your Performance</h2>
-            <p class="text-lg mb-2">You can easely filter  your challenges for level, category and status</p>
-            <p class="text-lg">Chekout the detail information of your perfomance in each challenge with our charts</p>
+            <p class="text-lg">At the end of your challenge, you will be able to see your performance overall and by category with our graphics, as well as visualize the result of each question</p>
         </div>
     </article>
     <figure class="order-7 md:order-none  contrast-[90%] rounded-lg overflow-hidden">
