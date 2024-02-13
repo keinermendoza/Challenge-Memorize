@@ -2,33 +2,61 @@
 {% load static %}
 
 {% block main %}
-<section class="flex flex-col-reverse items-center md:flex-row justify-between gap-5">
-    <figure class="w-full max-w-md mb-20">
-        <img src="{% static 'school/images/flashcards.webp' %}" alt="demostration fo flashcard page">
+{% comment %} <section class="flex flex-col-reverse items-center md:flex-row justify-between gap-5"> {% endcomment %}
+<section class="grid grid-cols-1 md:grid-cols-2 place-items-center gap-24">
+    <figure class="order-1 md:order-none contrast-[90%] rounded-lg overflow-hidden">
+        <img class="w-full max-w-lg md:max-w-full" src="{% static 'school/images/flashcards.png' %}" alt="demostration fo flashcard page">
     </figure>
 
-    <article class="w-full max-w-md mb-20">
-        <h1 class="text-5xl font-bresse mb-3">Study Flashcards</h1>
-        <h2 class="text-2xl font-bresse mb-4">The place where you <span>memorize</span> whatever you want with <span>fun</span></h2>
-        <p class="text-lg">Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge</p>
+    <article class="order-first md:order-none">
+        <div class="max-w-lg mx-auto">
+            <h1 class="text-5xl font-bresse mb-3">Challenge Memorize</h1>
+            <h2 class="text-2xl font-bresse mb-4">The place where you <span>memorize</span> whatever you want with <span>fun</span></h2>
+            <p class="text-lg">Create your Flashcards, group them by category and level and then prove your memorization skills with a challenge</p>
+        </div>
+        
         <div class="text-center mt-12">
-            <a class="transition-colors text-black border-amber-300 border-4 text-3xl font-bresse px-4 py-3 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" href="{% url 'account:register'  %}">Start Now</a>
+            <a class="transition-colors text-black border-amber-300 border-4 text-2xl font-bresse px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600  active:border-0" href="{% url 'account:register'  %}">Start Now</a>
         </div>
     </article>
     
-</section>
 
-<section class="flex flex-col items-center md:flex-row justify-between gap-5">
-    <article class="w-full max-w-md mb-20">
-        <h2 class="text-3xl font-bresse mb-3">Get a Resume of your Performance</h2>
-        <p class="text-lg mb-2">You can easely filter  your challenges for level, category and status</p>
-        <p class="text-lg">Chekout the detail information of your perfomance in each challenge with our charts</p>
-        
+    <article class="order-2 md:order-none">
+        <div class="max-w-lg mx-auto">
+
+            <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Create your Challenge</h2>
+            <p class="text-lg mb-2">Choose the level, categories and the maximum number of question, and we will select the questions for you</p>
+            <p class="text-lg">After you finished you can easely filter your challenges here for level, category and status</p>
+        </div>
     </article>
-    <figure class="w-full max-w-md mb-20">
-        <img src="{% static 'school/images/challenges.png' %}" alt="demostration fo flashcard page">
+    <figure class="order-3 md:order-none contrast-[90%] rounded-lg overflow-hidden">
+        <img class="w-full max-w-lg md:max-w-full" src="{% static 'school/images/challenges.png' %}" alt="demostration fo flashcard page">
+    </figure>
+
+    <figure class="order-5 md:order-none contrast-[90%] rounded-lg overflow-hidden">
+        <img class="w-full max-w-lg md:max-w-full" src="{% static 'school/images/challenge-start.png' %}" alt="demostration fo flashcard page">
+    </figure>
+
+    <article class="order-4 md:order-none">
+        <div class="max-w-lg mx-auto">
+
+            <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Time for Test</h2>
+            <p class="text-lg mb-2">Try to answer the question, use the <q>Show</q> button to check your answer and finally mark the question as <q>Correct</q> or <q>Wrong</q></p>
+        </div>
+    </article>
+    
+
+    <article class="order-6 md:order-none">
+        <div class="max-w-lg mx-auto">
+
+            <h2 class="text-3xl font-bresse mb-3 lg:text-4xl lg:mb-4">Get a Resume of your Performance</h2>
+            <p class="text-lg mb-2">You can easely filter  your challenges for level, category and status</p>
+            <p class="text-lg">Chekout the detail information of your perfomance in each challenge with our charts</p>
+        </div>
+    </article>
+    <figure class="order-7 md:order-none  contrast-[90%] rounded-lg overflow-hidden">
+        <img class="w-full max-w-lg md:max-w-full" src="{% static 'school/images/resume.png' %}" alt="demostration fo flashcard page">
     </figure>
 </section>
-
 {% endblock main %}
     

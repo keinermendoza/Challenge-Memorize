@@ -3,14 +3,18 @@
 
 
 {% block main %}
-<div class="mx-auto text-center sm:text-start sm:mx-0 max-w-md mb-8">
-    <h1 class="font-bresse text-5xl font-semibold mb-3">Study Flashcard</h1>
-    <h2 class="text-xl">Your platform for study and memorize, built in a pythonic way.</h2>
-</div>
+
 <section class="flex flex-col sm:flex-row gap-x-10 gap-y-5 justify-between items-center">
-    <figure class="max-w-[300px] mx-2 overflow-hidden text-center">
-        <img class="w-full h-auto object-contain" src="{% static 'school/images/snake.png' %}" alt="A cute python lerning programming in it's laptop">
-    </figure>
+    <div class="mx-auto text-center sm:text-start sm:mx-0 max-w-md">
+        <h1 class="font-bresse text-5xl font-semibold mb-3">Challenge Memorize</h1>
+        <h2 class="text-xl mb-8">Your platform for study and memorize, built in a pythonic way.</h2>
+
+        <figure class="max-w-[300px] mx-2 overflow-hidden text-center">
+        
+            <img class="w-full h-auto object-contain" src="{% static 'school/images/snake.png' %}" alt="A cute python lerning programming in it's laptop">
+        </figure>
+    
+    </div>
 
     <div class="max-w-[400px] w-full">
         <div class=" bg-darkheader p-3 rounded-md"

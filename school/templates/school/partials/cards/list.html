@@ -11,9 +11,9 @@
         {% include 'school/partials/cards/detail.html' with card=card %}
     {% empty %}
         {% if searching %}
-            <p class="text-center">No matches</p>
+            <p class="text-center delete-on-create-flashcard">No matches</p>
         {% else %}
-            <p>You haven't registred any card yet. It's time for create one!</p>
+            <p class="delete-on-create-flashcard">You haven't registred any card yet. It's time for create one!</p>
         {% endif %}
         
     {% endfor %}

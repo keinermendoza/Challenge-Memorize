@@ -25,7 +25,7 @@ def register(request):
                                      password=cd["password"],
                                      username=cd["name"])
             login(request, user)
-            return redirect(reverse("school:home"))
+            return redirect(reverse("school:flashcard_list"))
         
     return render(request, "school/register.html", {"form":form})             
 

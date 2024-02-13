@@ -9,6 +9,14 @@ htmx.on("htmx:afterRequest", (e) => {
 
 
 htmx.on("htmx:afterRequest", (e) => {
+    if (Array.from(e.target.classList).includes("flashcard-create")) {
+        if (e.detail.successful) {
+            document.querySelector(".delete-on-create-flashcard").remove()
+        }
+    }
+})
+
+htmx.on("htmx:afterRequest", (e) => {
     if (Array.from(e.target.classList).includes("form-category")) {
         if (e.detail.successful) {
             e.target.name.value = ""
@@ -34,7 +42,6 @@ htmx.on("htmx:afterRequest", (e) => {
      if (Array.from(e.target.classList).includes("btn-delete-card")) {
         if (e.detail.successful) {
             const card = e.target.parentElement.parentElement
-            console.log(e.target.parentElement)
             card.classList.add("deleted-card-animation")
 
             // it's necesary delete the parent element

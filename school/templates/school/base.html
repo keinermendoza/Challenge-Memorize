@@ -25,38 +25,38 @@
     <header x-data="{isMobileOpen: false}" 
         class="w-full bg-darkheader shadow-md shadow-slate-200">
         
-        <div class="mx-auto max-w-1440px h-12 flex justify-between gap-6 items-center py-1 px-5 md:px-12 md:py-2">
+        <div class="mx-auto max-w-1440px h-12 flex justify-between gap-10 items-center py-1 px-5 md:px-12 md:py-2">
 
-        <a class="font-bresse font-semibold whitespace-pre" href="{% url 'school:home' %}">Study  Flashcards</a>
+        <a class="text-lg font-bresse font-semibold whitespace-pre underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'school:home' %}">Challenge  Memorize</a>
 
 
         <!-- hidden in screens shorter than sm -->
         <nav class="hidden sm:flex grow justify-between">
-            <ul class="flex gap-3">        
+            <ul class="flex gap-8 font-semibold ">        
                 <li>
-                    <a href="{% url 'school:flashcard_list' %}">Flashcards</a>
+                    <a class="transition-all underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'school:flashcard_list' %}">Flashcards</a>
                 </li>
 
                 <li>
-                    <a href="{% url 'school:challenges' %}">Challenges</a>
+                    <a class="underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'school:challenges' %}">Challenges</a>
                 </li>
             </ul>
 
-            <ul class="flex gap-3">
+            <ul class="flex gap-8 font-semibold ">
                 {% if user.is_authenticated %}
-                <li>
-                    <span >Logged as <strong>{{user.username | title}}</strong></span>
+                <li class="hidden md:block">
+                    <span>Logged as <strong>{{user.username | title}}</strong></span>
                 </li>
 
                 <li>
-                    <a href="{% url 'account:logout' %}">Logout</a>
+                    <a class="underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'account:logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li>
-                    <a href="{% url 'account:register' %}">Register</a>
+                    <a class="underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'account:register' %}">Register</a>
                 </li>
                 <li>
-                    <a href="{% url 'account:login' %}">Login</a>
+                    <a class="underline-offset-4 hover:underline hover:decoration-2 hover:decoration-slate-200" href="{% url 'account:login' %}">Login</a>
                 </li>
                 {% endif %}
                 
